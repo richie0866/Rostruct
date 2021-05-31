@@ -272,6 +272,12 @@ const Promise = Rostruct.Loader.Install("Promise.lua").expect();
 /** Sends an HTTP GET request. */
 const httpGet = Promise.promisify((url: string) => game.HttpGetAsync(url));
 
+/** Hosts functions with different aliases between exploits. */
+namespace APISupport {
+	declare const getsynasset: typeof getcustomasset;
+	export const generateAssetId = getcustomasset || getsynasset;
+}
+
 /** Global environment reserved for Rostruct. */
 namespace Reserved {
 	interface Globals {
@@ -601,12 +607,18 @@ class Reconciler {
 				return stringValue;
 
 			case "rbxm":
-				assert(getcustomasset, `This exploit does not support getcustomasset! (${file.path})`);
-				return game.GetObjects(getcustomasset(file.path))[0];
+				assert(
+					APISupport.generateAssetId,
+					`This exploit does not support rbxasset:// generation! (${file.path})`,
+				);
+				return game.GetObjects(APISupport.generateAssetId(file.path))[0];
 
 			case "rbxmx":
-				assert(getcustomasset, `This exploit does not support getcustomasset! (${file.path})`);
-				return game.GetObjects(getcustomasset(file.path))[0];
+				assert(
+					APISupport.generateAssetId,
+					`This exploit does not support rbxasset:// generation! (${file.path})`,
+				);
+				return game.GetObjects(APISupport.generateAssetId(file.path))[0];
 
 			default:
 				break;
