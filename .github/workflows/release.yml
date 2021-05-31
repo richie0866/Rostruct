@@ -1,8 +1,8 @@
 name: Release
 
 on:
-  push:
-    tags: ["v*.*.*"]
+  release:
+    types: [published]
 
 jobs:
   build:
@@ -19,16 +19,14 @@ jobs:
 
     - name: Install node_modules
       run: |
-        npm install -g roblox-ts@latest
         npm install
 
     - name: Build 
       run: |
         npm run build:out
 
-    - name: Release
-      uses: softprops/action-gh-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.github_token }}
+    - name: Upload to release
+      uses: AButler/upload-release-assets@v2.0
       with:
-        files: out/Rostruct.lua
+        files: 'artifacts/*;packages/*.nupkg'
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
