@@ -181,7 +181,6 @@ namespace Rostruct {
 			tag === undefined
 				? GetLatestReleaseInfo(user, repo).andThen((info) => info.tag_name)
 				: Promise.resolve(tag);
-
 		return tagPromise.andThen((tagName) => {
 			const assetUrl =
 				asset !== undefined
@@ -240,7 +239,7 @@ namespace Rostruct {
 		 * @returns The library loaded in Lua.
 		 */
 		function installAsync<T extends keyof ExternalDependencies>(fileName: T): ExternalDependencies[T] {
-			if (loadedModules[fileName] !== undefined) return loadedModules[fileName] as ExternalDependencies[T];
+			if (loadedModules[fileName]) return loadedModules[fileName] as ExternalDependencies[T];
 
 			const dependency = GetPath("dependencies/" + fileName);
 			const data = isfile(dependency) ? readfile(dependency) : game.HttpGetAsync(moduleUrls[fileName]);
@@ -482,10 +481,7 @@ class VirtualScript {
 	public execute(): ReturnType<VirtualScript.Executor> {
 		if (this.isLoaded) return this.result;
 		const result = this.createExecutor()();
-		assert(
-			this.instance.IsA("ModuleScript") && result !== undefined,
-			`Module '${this.file.path}' did not return any value`,
-		);
+		assert(this.instance.IsA("ModuleScript") && result, `Module '${this.file.path}' did not return any value`);
 		this.isLoaded = true;
 		return (this.result = result);
 	}
