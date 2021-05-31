@@ -6,21 +6,21 @@
 </div>
 
 <div align="center">
-	A script execution library inspired by Rojo.
+	A file execution library inspired by Rojo.
 </div>
 
 ---
 
-Rostruct is a script execution library, built in [TypeScript](https://roblox-ts.com/). It is designed to build and deploy projects and libraries in your favorite Roblox script executor.
+Rostruct is a file execution library, built in [TypeScript](https://roblox-ts.com/). It is designed to build and deploy projects from `lua` files to your favorite Roblox script executor.
 
 Take advantage of modular programming to ensure a quality coding experience.
 
 See the original concept [here](https://v3rmillion.net/showthread.php?tid=1081675).
 
 ## Introduction
-Typically, running scripts in exploits is limited to single instances. As a result, most complex projects are stored in a single large, complicated file, often spanning thousands of lines.
+Typically, scripts in exploits are limited to single instances. As a result, most large projects are stored in a single large, complicated file, often spanning thousands of lines.
 
-In this way, exploit scripting contrasts scripting in Roblox Studio or Rojo, which allow scripts, modules, and objects to interact without resorting to HTTP requests and `game.GetObjects` calls to get external assets.
+This is a stark contrast to scripting in Roblox Studio or Rojo, which allow scripts, modules, and objects to interact without needing HTTP requests and `game.GetObjects` calls to get external assets.
 
 Rostruct works to cover the best of both worlds, bringing the modern [Rojo](https://rojo.space/docs/6.x/sync-details/) workflow to exploits.
 
