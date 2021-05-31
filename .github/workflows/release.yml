@@ -19,6 +19,7 @@ jobs:
 
     - name: Install node_modules
       run: |
+        npm install cross-env
         npm install
 
     - name: Build Rostruct
