@@ -4,13 +4,12 @@
   "description": "",
   "main": "out/Rostruct.lua",
   "scripts": {
-    "prepublishOnly": "rbxtsc",
-    "build:out": "cross-env NODE_ENV=production TYPE=Luau rbxtsc --verbose --type=package"
+    "prepublishOnly": "rbxtsc"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "types": "out/include/",
+  "types": "types/",
   "files": [
     "out"
   ],
@@ -30,7 +29,6 @@
     "typescript": "^4.3.2"
   },
   "dependencies": {
-    "cross-env": "^7.0.3",
     "roblox-ts": "^1.1.1"
   }
 }
