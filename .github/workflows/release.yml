@@ -1,4 +1,4 @@
-name: Release
+name: Build release
 
 on:
   release:
@@ -21,12 +21,12 @@ jobs:
       run: |
         npm install
 
-    - name: Build 
+    - name: Build Rostruct
       run: |
         npm run build:out
 
     - name: Upload to release
       uses: AButler/upload-release-assets@v2.0
       with:
-        files: 'artifacts/*;packages/*.nupkg'
+        files: 'out/Rostruct.lua'
         repo-token: ${{ secrets.GITHUB_TOKEN }}
