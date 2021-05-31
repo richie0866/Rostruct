@@ -606,14 +606,12 @@ class Reconciler {
 				return stringValue;
 
 			case "rbxm":
-				warn("RBXM IN BETA");
-				const modelBinary = game.GetObjects(getcustomasset(file.path));
-				return modelBinary[0];
+				assert(getcustomasset, `This exploit does not support getcustomasset! (${file.path})`);
+				return game.GetObjects(getcustomasset(file.path))[0];
 
 			case "rbxmx":
-				warn("RBXMX IN BETA");
-				const modelXml = game.GetObjects(getcustomasset(file.path));
-				return modelXml[0];
+				assert(getcustomasset, `This exploit does not support getcustomasset! (${file.path})`);
+				return game.GetObjects(getcustomasset(file.path))[0];
 
 			default:
 				break;
