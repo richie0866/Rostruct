@@ -5,7 +5,7 @@
   "main": "out/Rostruct.lua",
   "scripts": {
     "prepublishOnly": "rbxtsc",
-    "build:luau": "cross-env NODE_ENV=production TYPE=Luau rbxtsc --verbose --type=package"
+    "build:out": "cross-env NODE_ENV=production TYPE=Luau rbxtsc --verbose --type=package"
   },
   "keywords": [],
   "author": "",
