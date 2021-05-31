@@ -510,7 +510,7 @@ declare namespace VirtualScript {
 	export type EnvironmentKey = "script" | "require" | "_PATH" | "_ROOT";
 
 	/** Base environment for VirtualScript instances. */
-	export interface Environment extends Map<EnvironmentKey, unknown> {}
+	export type Environment = Map<EnvironmentKey, unknown>;
 }
 
 /** Class used to build and deploy Rostruct projects. */
@@ -704,7 +704,7 @@ declare namespace Reconciler {
 /** Library for unzipping Github projects. */
 namespace GithubDownloader {
 	/** A list of files and directories sorted by deepness. */
-	interface ZipSort extends Array<ZipSortEntry> {}
+	type ZipSort = Array<ZipSortEntry>;
 
 	/** Data of a file or directory extracted from a zip file. */
 	interface ZipSortEntry {
