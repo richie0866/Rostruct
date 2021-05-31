@@ -193,6 +193,12 @@ namespace Rostruct {
 
 	/** Library for setting up Rostruct. */
 	export namespace Loader {
+		/** Where Rostruct files are stored. */
+		const root = "rostruct/";
+
+		/** A list of directories to create in the Rostruct folder specified in {@link Rostruct.Config}. */
+		const structure = ["dependencies/", "cache/"];
+
 		/** A list of modules that are loaded externally and cached under `rostuct/dependencies/`. */
 		export type ExternalDependencies = {
 			"zzlib.lua": zzlib;
@@ -206,12 +212,6 @@ namespace Rostruct {
 		};
 
 		const loadedModules: { [key in keyof ExternalDependencies]?: ExternalDependencies[key] } = {};
-
-		/** A list of directories to create in the Rostruct folder specified in {@link Rostruct.Config}. */
-		const structure = ["dependencies/", "cache/"];
-
-		/** Where Rostruct files are stored. */
-		const root = "rostruct/";
 
 		let initialized = false;
 
