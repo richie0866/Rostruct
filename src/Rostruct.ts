@@ -181,7 +181,6 @@ namespace Rostruct {
 			tag === undefined
 				? GetLatestReleaseInfo(user, repo).andThen((info) => info.tag_name)
 				: Promise.resolve(tag);
-
 		return tagPromise.andThen((tagName) => {
 			const assetUrl =
 				asset !== undefined
@@ -193,6 +192,12 @@ namespace Rostruct {
 
 	/** Library for setting up Rostruct. */
 	export namespace Loader {
+		/** Where Rostruct files are stored. */
+		const root = "rostruct/";
+
+		/** A list of directories to create in the Rostruct folder specified in {@link Rostruct.Config}. */
+		const structure = ["dependencies/", "cache/"];
+
 		/** A list of modules that are loaded externally and cached under `rostuct/dependencies/`. */
 		export type ExternalDependencies = {
 			"zzlib.lua": zzlib;
@@ -206,12 +211,6 @@ namespace Rostruct {
 		};
 
 		const loadedModules: { [key in keyof ExternalDependencies]?: ExternalDependencies[key] } = {};
-
-		/** A list of directories to create in the Rostruct folder specified in {@link Rostruct.Config}. */
-		const structure = ["dependencies/", "cache/"];
-
-		/** Where Rostruct files are stored. */
-		const root = "rostruct/";
 
 		let initialized = false;
 
@@ -240,7 +239,7 @@ namespace Rostruct {
 		 * @returns The library loaded in Lua.
 		 */
 		function installAsync<T extends keyof ExternalDependencies>(fileName: T): ExternalDependencies[T] {
-			if (loadedModules[fileName] !== undefined) return loadedModules[fileName] as ExternalDependencies[T];
+			if (loadedModules[fileName]) return loadedModules[fileName] as ExternalDependencies[T];
 
 			const dependency = GetPath("dependencies/" + fileName);
 			const data = isfile(dependency) ? readfile(dependency) : game.HttpGetAsync(moduleUrls[fileName]);
@@ -272,6 +271,12 @@ const Promise = Rostruct.Loader.Install("Promise.lua").expect();
 
 /** Sends an HTTP GET request. */
 const httpGet = Promise.promisify((url: string) => game.HttpGetAsync(url));
+
+/** Hosts functions with different aliases between exploits. */
+namespace APISupport {
+	declare const getsynasset: typeof getcustomasset;
+	export const generateAssetId = getcustomasset || getsynasset;
+}
 
 /** Global environment reserved for Rostruct. */
 namespace Reserved {
@@ -482,10 +487,7 @@ class VirtualScript {
 	public execute(): ReturnType<VirtualScript.Executor> {
 		if (this.isLoaded) return this.result;
 		const result = this.createExecutor()();
-		assert(
-			this.instance.IsA("ModuleScript") && result !== undefined,
-			`Module '${this.file.path}' did not return any value`,
-		);
+		assert(this.instance.IsA("ModuleScript") && result, `Module '${this.file.path}' did not return any value`);
 		this.isLoaded = true;
 		return (this.result = result);
 	}
@@ -514,7 +516,7 @@ declare namespace VirtualScript {
 	export type EnvironmentKey = "script" | "require" | "_PATH" | "_ROOT";
 
 	/** Base environment for VirtualScript instances. */
-	export interface Environment extends Map<EnvironmentKey, unknown> {}
+	export type Environment = Map<EnvironmentKey, unknown>;
 }
 
 /** Class used to build and deploy Rostruct projects. */
@@ -605,12 +607,18 @@ class Reconciler {
 				return stringValue;
 
 			case "rbxm":
-				assert(getcustomasset, `This exploit does not support getcustomasset! (${file.path})`);
-				return game.GetObjects(getcustomasset(file.path))[0];
+				assert(
+					APISupport.generateAssetId,
+					`This exploit does not support rbxasset:// generation! (${file.path})`,
+				);
+				return game.GetObjects(APISupport.generateAssetId(file.path))[0];
 
 			case "rbxmx":
-				assert(getcustomasset, `This exploit does not support getcustomasset! (${file.path})`);
-				return game.GetObjects(getcustomasset(file.path))[0];
+				assert(
+					APISupport.generateAssetId,
+					`This exploit does not support rbxasset:// generation! (${file.path})`,
+				);
+				return game.GetObjects(APISupport.generateAssetId(file.path))[0];
 
 			default:
 				break;
@@ -708,7 +716,7 @@ declare namespace Reconciler {
 /** Library for unzipping Github projects. */
 namespace GithubDownloader {
 	/** A list of files and directories sorted by deepness. */
-	interface ZipSort extends Array<ZipSortEntry> {}
+	type ZipSort = Array<ZipSortEntry>;
 
 	/** Data of a file or directory extracted from a zip file. */
 	interface ZipSortEntry {
