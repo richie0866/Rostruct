@@ -23,7 +23,7 @@ jobs:
 
     - name: Build Rostruct
       run: |
-        rbxtsc --verbose --type=package
+        npm run build:out
 
     - name: Upload to release
       uses: AButler/upload-release-assets@v2.0
