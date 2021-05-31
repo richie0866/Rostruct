@@ -4,7 +4,8 @@
   "description": "",
   "main": "out/Rostruct.lua",
   "scripts": {
-    "prepublishOnly": "rbxtsc"
+    "prepublishOnly": "rbxtsc",
+    "build:out": "cross-env NODE_ENV=production TYPE=Luau rbxtsc --verbose --type=package"
   },
   "keywords": [],
   "author": "",
