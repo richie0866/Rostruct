@@ -51,7 +51,7 @@ interface ReleaseInfoAsset {
  * Information about the latest release of a given Github repository.
  * See this [example](https://api.github.com/repos/Roblox/roact/releases/latest).
  */
-interface ReleaseInfo {
+export interface ReleaseInfo {
 	/** @example `https://api.github.com/repos/${user}/${repo}/releases/${id}` */
 	readonly url: string;
 	/** @example `https://api.github.com/repos/${user}/${repo}/releases/${id}/assets` */

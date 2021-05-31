@@ -1,6 +1,5 @@
-/// <reference types="./include/Krnl" />
-/// <reference types="./include/ReleaseInfo" />
-/// <reference types="./include/zzlib" />
+import { zzlib, ZipData } from "../types/zzlib";
+import { ReleaseInfo } from "../types/ReleaseInfo";
 
 /**
  * # Rostruct
