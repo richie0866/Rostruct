@@ -6,39 +6,45 @@
 </div>
 
 <div align="center">
-	A file execution library inspired by Rojo.
+	A project framework inspired by Rojo.
 </div>
 
 ---
 
-Rostruct is a file execution library, built in [TypeScript](https://roblox-ts.com/). It is designed to build and deploy projects from `lua` files to your favorite Roblox script executor.
+`Rostruct` is a file execution framework, built in [TypeScript](https://roblox-ts.com/), that deploys Lua projects to a Roblox script executor. This framework is a substitute for implementations using excessive `HttpGetAsync` and `GetObjects` calls.
 
-Take advantage of modular programming to ensure a quality coding experience.
+Whether you're familiar with Rojo, dislike yielding for dependencies, or simply want to lazy-load scripts, you might enjoy using this library. 
 
 See the original concept [here](https://v3rmillion.net/showthread.php?tid=1081675).
 
 ## Introduction
-Typically, scripts in exploits are limited to single instances. As a result, most large projects are stored in a single large, complicated file, often spanning thousands of lines.
+Typically, large projects are stored in a single large, complicated file, often spanning thousands of lines. Cluttered scripts can disrupt workflow and make development difficult overall.
 
-This is a stark contrast to scripting in Roblox Studio or Rojo, which allow scripts, modules, and objects to interact without needing HTTP requests and `game.GetObjects` calls to get external assets.
+This is a stark contrast to scripting in Roblox Studio or Rojo, which allow scripts, modules and assets to interact in real-time, without waiting for assets to load over the web.
 
-Rostruct works to cover the best of both worlds, bringing the modern [Rojo](https://rojo.space/docs/6.x/sync-details/) workflow to exploits.
+Rostruct works to bring the modern [Rojo](https://rojo.space/docs/6.x/sync-details/) workflow to exploiting.
 
 ## How it works
-When building, deploying, or requiring a project, the process goes as follows:
-1. First, Rostruct searches the target path for a `src/` or `lib/` directory to model the project after. Otherwise, the original path is used.
-2. Then, files compatible with Rostruct (`lua`, `json`, `rbxm`, etc.) are converted to Roblox instances following the [file conversion model](https://richie0866.github.io/Rostruct).
-3. If the project was deployed with `Rostruct.Deploy`, Rostruct executes every `LocalScript` in the instance tree. Each script has the `script` and `require` variables modified to mirror a Rojo & Roblox Studio workflow.
-4. If the project was deployed with `Rostruct.Require`, and the target path leads to a module, it requires the project and stores the result.
+How does Rostruct work like Rojo?
+1. First, Rostruct scans the project for a `src/` or `lib/` directory to build. Otherwise, the original path is used.
+2. Then, files compatible with Rostruct (`lua`, `json`, `rbxm`, etc.) are converted to Roblox instances following an intuitive [file conversion model](https://richie0866.github.io/Rostruct).
+
+What does deploying a project do?
+
+3. Projects can be deployed or required. If the project was deployed, Rostruct executes every `LocalScript` in the instance tree.
+4. If the project was required, and the project results in a `ModuleScript`, it requires the module and stores the result.
+
+Every script that runs comes with preset `script` and `require` variables, in order to closely mirror an **Instance-based** Rojo & Roblox Studio workflow.
 
 ## Features
 * Promotes modular programming
   * Ensure quality readability, debugging, and maintainability in your projects.
+* Instance-based execution
+  * Run your projects in an environment that closely mirrors a Rojo & Roblox Studio workflow.
 * Github support
   * Install and deploy projects directly from Github releases.
 * Builds `rbxm` models
-  * Go `GetObjects`-free by loading models directly from the project files.
-  * :warning: This feature requires `getcustomasset`!
+  * Go `GetObjects`-free by loading models directly from your project. **This feature requires `getcustomasset`!**
 * [Rojo](https://github.com/rojo-rbx/rojo#readme) support
   * Easily test your code in Roblox Studio before executing it.
 * Loader library for lazy-loading modules
