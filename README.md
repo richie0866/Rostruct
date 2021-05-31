@@ -4,7 +4,7 @@
 </div>
 
 <div align="center">
-	A script execution library inspired by [Rojo](https://github.com/rojo-rbx/rojo).
+	A script execution library inspired by Rojo.
 </div>
 
 ---
