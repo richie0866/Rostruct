@@ -449,17 +449,11 @@ class VirtualScript {
 	}
 
 	/**
-	 * Runs the executor function if not already run and returns results. Used internally.
-	 * @returns A promise which resolves with the value returned by the executor.
-	 */
-	private executePromisified = Promise.promisify(() => this.execute());
-
-	/**
 	 * Runs the executor function if not already run and returns results.
 	 * @returns A promise which resolves with the value returned by the executor.
 	 */
 	public executePromise(): Promise<ReturnType<VirtualScript.Executor>> {
-		return this.executePromisified().timeout(
+		return Promise.defer((resolve) => resolve(this.execute())).timeout(
 			30,
 			`Script ${this.file.path} reached execution timeout! Try not to yield the main thread in LocalScripts.`,
 		);
