@@ -139,12 +139,15 @@ namespace Rostruct {
 			tag === undefined
 				? GetLatestReleaseInfo(user, repo).andThen((info) => info.tag_name)
 				: Promise.resolve(tag);
+
+		const cacheName = `${user.lower()}-${repo.lower()}-${asset !== undefined ? asset.lower() : "Source"}`;
+
 		return tagPromise.andThen((tagName) => {
 			const assetUrl =
 				asset !== undefined
-					? `https://github.com/${user}/${repo}/releases/download/${tagName}/${asset}.zip`
+					? `https://github.com/${user}/${repo}/releases/download/${tagName}/${asset}`
 					: `https://github.com/${user}/${repo}/archive/refs/tags/${tagName}.zip`;
-			return GithubDownloader.fetch(assetUrl, `${user.lower()}-${repo.lower()}`, tagName, asset === undefined);
+			return GithubDownloader.fetch(assetUrl, cacheName, tagName, asset === undefined);
 		});
 	}
 
