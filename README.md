@@ -1,7 +1,8 @@
 <h1 align="center">Rostruct</h1>
 <div align="center">
-	<a href="https://github.com/richie0866/Rostruct/actions"><img src="https://github.com/richie0866/Rostruct/workflows/ESLint/badge.svg" alt="GitHub Actions ESLint Status" /></a>
-	<a href="https://github.com/richie0866/Rostruct/releases/latest"><img src="https://github.com/richie0866/Rostruct/workflows/Release/badge.svg" alt="GitHub Actions Release Status" /></a>
+	<a href="https://github.com/richie0866/Rostruct/actions/workflows/release.yml"><img src="https://github.com/richie0866/Rostruct/actions/workflows/release.yml/badge.svg?event=release" alt="GitHub Actions Release Status" /></a>
+	<a href="https://github.com/richie0866/Rostruct/actions/workflows/eslint.yml"><img src="https://github.com/richie0866/Rostruct/actions/workflows/eslint.yml/badge.svg?event=release" alt="GitHub Actions ESLint Status" /></a>
+	<a href="https://github.com/richie0866/Rostruct/releases/latest"><img src="https://img.shields.io/github/v/release/richie0866/Rostruct?include_prereleases" alt="Latest Release" /></a>
 	<a href="https://richie0866.github.io/Rostruct"><img src="https://img.shields.io/badge/docs-website-blue.svg" alt="Rostruct Documentation" /></a>
 </div>
 
@@ -21,6 +22,9 @@ See the original concept [here](https://v3rmillion.net/showthread.php?tid=108167
 Typically, large projects are stored in a single large, complicated file, spanning thousands of lines. Cluttered scripts can disrupt workflow and make development difficult overall.
 
 This contrasts with scripting in Roblox Studio or Rojo, which allows scripts, modules, and assets to depend on each other without loading during runtime. To achieve these benefits, Rostruct converts your project to Roblox instances before executing your code. Instead of waiting for assets to load, you can expect them to be there.
+
+## Documentation
+Documentation is available at the [Github pages site](https://richie0866.github.io/Rostruct).
 
 ## How it works
 How does Rostruct build instances?
@@ -74,6 +78,3 @@ local Rostruct = loadstring(readfile("rostruct/Rostruct.lua"))()
 ```lua
 local Rostruct = loadstring(game:HttpGetAsync(".../releases/download/TAGNAME/Rostruct.lua"))()
 ```
-
-## Documentation
-Documentation is available at the [Github pages site](https://richie0866.github.io/Rostruct).
