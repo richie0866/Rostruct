@@ -38,26 +38,12 @@ namespace Rostruct {
 
 		/**
 		 * An array of promises that resolve with LocalScripts and the result of executing them.
-		 * @example
-		 * ```lua
-		 * local project = Rostruct.Deploy("MyProjects/ESP")
-		 * Promise.all(project.RuntimePromises)
-		 * 	.andThen(function(scriptsAndResults)
-		 * 		print("Scripts executed: " .. #scriptsAndResults)
-		 * 	end)
-		 * ```
 		 */
 		RuntimePromises?: Array<Promise<[LocalScript, unknown]>>;
 
 		/**
 		 * A promise which resolves with the module required. Present when using {@link Rostruct.Require}.
 		 * This function uses Promises for control over errors and yielding.
-		 * @example
-		 * ```lua
-		 * local project = Rostruct.Require("MyProjects/UILibrary")
-		 * local UILibrary = project.RequirePromise:expect()
-		 * UILibrary.doThings()
-		 * ```
 		 */
 		RequirePromise?: Promise<unknown>;
 	}
@@ -88,14 +74,6 @@ namespace Rostruct {
 	 * @param target The target files to build.
 	 * @param parent Optional parent of the Instance tree.
 	 * @returns A project interface.
-	 * @example
-	 * ```lua
-	 * local project = Rostruct.Deploy("MyProjects/ESP")
-	 * Promise.all(project.RuntimePromises)
-	 * 	.andThen(function(scriptsAndResults)
-	 * 		print("Scripts executed: " .. #scriptsAndResults)
-	 * 	end)
-	 * ```
 	 */
 	export function Deploy(target: string, parent?: Instance): Project {
 		const project = Rostruct.Build(target, parent);
@@ -109,12 +87,6 @@ namespace Rostruct {
 	 * @param target The target files to build.
 	 * @param parent Optional parent of the Instance tree.
 	 * @returns A project interface.
-	 * @example
-	 * ```lua
-	 * local project = Rostruct.Require("MyProjects/UILibrary")
-	 * local UILibrary = project.RequirePromise:expect()
-	 * UILibrary.doThings()
-	 * ```
 	 */
 	export function Require(target: string, parent?: Instance): Project {
 		const project = Rostruct.Build(target, parent);
@@ -130,11 +102,6 @@ namespace Rostruct {
 	 * @param user The owner of this repository.
 	 * @param repo The name of this repository.
 	 * @returns Information about the latest release of the repository.
-	 * @example
-	 * ```lua
-	 * local releaseInfo = Rostruct.GetLatestReleaseInfo("Roblox", "roact"):expect()
-	 * print(releaseInfo.tag_name)
-	 * ```
 	 */
 	export function GetLatestReleaseInfo(user: string, repo: string): Promise<ReleaseInfo> {
 		return new Promise<ReleaseInfo>((resolve) =>
@@ -166,15 +133,6 @@ namespace Rostruct {
 	 * @param tag The version of the release to fetch. Defaults to the latest release, but will make an HTTP GET request to get the latest version.
 	 * @param asset The name of the release asset. If provided, this function downloads the release asset in its entirety. If `nil`, it downloads and unpacks the source.
 	 * @returns The results of the fetch.
-	 * @example
-	 * ```lua
-	 * local gitFetchResult = Rostruct.GitFetch("Roblox", "roact", "v1.3.0"):expect()
-	 * local project = Rostruct.Require(gitFetchResult.Location)
-	 * local Roact = project.RequirePromise:expect()
-	 * if gitFetchResult.ProcessingUpdate then
-	 * 	print("An update is available for Roact; re-execute to use it!")
-	 * end
-	 * ```
 	 */
 	export function GitFetch(user: string, repo: string, tag?: string, asset?: string): Promise<GitFetchResult> {
 		const tagPromise =
@@ -256,11 +214,6 @@ namespace Rostruct {
 		 * Returns the value of `loadfile("rostruct/dependencies/" ... fileName)()`
 		 * @param fileName The name of the file.
 		 * @returns A promise which resolves with the library loaded in Lua.
-		 * @example
-		 * ```lua
-		 * local Promise = Rostruct.Loader.Install("Promise.lua")
-		 * Promise.new(...)
-		 * ```
 		 */
 		export const Install = installAsync("Promise.lua").promisify(installAsync);
 	}
