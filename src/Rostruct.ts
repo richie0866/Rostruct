@@ -443,7 +443,7 @@ class VirtualScript {
 	public execute(): ReturnType<VirtualScript.Executor> {
 		if (this.isLoaded) return this.result;
 		const result = this.createExecutor()();
-		assert(this.instance.IsA("ModuleScript") && result, `Module '${this.file.path}' did not return any value`);
+		if (this.instance.IsA("ModuleScript")) assert(result, `Module '${this.file.path}' did not return any value`);
 		this.isLoaded = true;
 		return (this.result = result);
 	}
