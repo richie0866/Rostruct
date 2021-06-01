@@ -71,16 +71,16 @@ declare function isfolder(path: string): boolean;
 declare function readfile(file: string): string;
 
 /** Change the given file's contents. Creates a new file if it doesn't exist. */
-declare function writefile(file: string, content: string): undefined;
+declare function writefile(file: string, content: string): void;
 
 /** Returns a list of file paths in the given directory. */
 declare function listfiles(directory: string): Array<string>;
 
 /** Create a new directory at the given path. */
-declare function makefolder(directory: string): undefined;
+declare function makefolder(directory: string): void;
 
 /** Removes the directory at the given path. */
-declare function delfolder(directory: string): undefined;
+declare function delfolder(directory: string): void;
 
 /** Generates a rbxasset:// [`content`](https://developer.roblox.com/en-us/articles/Content) URL for the given asset from Krnl's `workspace` directory. */
 declare function getcustomasset(file: string): string;

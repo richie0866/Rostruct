@@ -276,6 +276,13 @@ const httpGet = Promise.promisify((url: string) => game.HttpGetAsync(url));
 namespace APISupport {
 	declare const getsynasset: typeof getcustomasset;
 	export const generateAssetId = getcustomasset || getsynasset;
+
+	/** Safely writes files by appending files with no extensions with `.file`. */
+	export const writeFile: typeof writefile = (file: string, content: string) => {
+		const extension = file.match("%.([^%./]+)$")[0];
+		if (extension === undefined) file += ".file";
+		writefile(file, content);
+	};
 }
 
 /** Global environment reserved for Rostruct. */
@@ -765,11 +772,12 @@ namespace GithubDownloader {
 			else return location + path;
 		}
 
-		// Create directories first to avoid file creation racing.
+		// Create directories first! Files made in nonexistent folders fail with no error.
 		for (const entry of zipSort) if (entry.isDirectory) makefolder(formatPath(entry.path));
 
-		// Then, we can create the files.
-		for (const entry of zipSort) if (!entry.isDirectory) writefile(formatPath(entry.path), entry.content);
+		// Then, create the files.
+		for (const entry of zipSort)
+			if (!entry.isDirectory) APISupport.writeFile(formatPath(entry.path), entry.content);
 	}
 
 	/**
