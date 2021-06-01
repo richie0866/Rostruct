@@ -248,12 +248,8 @@ namespace Reserved {
 		environments: Map<string, VirtualScript.Environment>;
 	}
 
-	/** Rostruct gglobals. */
-	// export const globals: Globals = (getgenv()._ROSTRUCT as Globals) || {
-	// 	currentScope: 0,
-	// 	environments: new Map<string, VirtualScript.Environment>(),
-	// };
-	export const globals: Globals = {
+	/** Rostruct globals. */
+	export const globals: Globals = (getgenv()._ROSTRUCT as Globals) || {
 		currentScope: 0,
 		environments: new Map<string, VirtualScript.Environment>(),
 	};
