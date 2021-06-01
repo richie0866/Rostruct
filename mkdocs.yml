@@ -1,7 +1,7 @@
 site_name: Rostruct Documentation
-site_url: https://richie0866.github.io/rostruct-ts/
-repo_name: richie0866/rostruct-ts
-repo_url: https://github.com/richie0866/rostruct-ts
+site_url: https://richie0866.github.io/Rostruct/
+repo_name: richie0866/Rostruct
+repo_url: https://github.com/richie0866/Rostruct
 
 theme:
   name: material
@@ -19,10 +19,11 @@ nav:
   - Guide:
     - Setting up: guide/setting-up.md
     - Basic usage: guide/basic-usage.md
+    - File conversion: guide/file-conversion.md
   - API Reference: api-reference.md
 
 extra_css:
-- extra.css
+  - extra.css
 
 markdown_extensions:
   - admonition

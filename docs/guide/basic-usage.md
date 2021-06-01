@@ -15,8 +15,7 @@ local MyProject = project.Instance
 
 `Rostruct.Build` also takes an optional `parent` argument, mainly for debugging, so you can see what your project looks like after being built.
 
-!!! info
-	Use an explorer like "Dex Explorer" to view your project in Workspace
+![image](./images/example-vscode-and-roblox.png)
 
 ```lua
 Rostruct.Build("Projects/MyProject", workspace)
@@ -32,7 +31,7 @@ project.Instance.Name = "Roact"
 
 The code above also applies to all other Rostruct functions.
 
-## Deploying your project
+## Deploy your project
 Deploying a project simply builds it and then executes every `LocalScript` on a deferred thread. It also adds an additional field to the `Project` interface: `RuntimePromises`, a list of promises that resolve with the script and what it returned. The code below is an example of how you could use this method:
 
 !!! warning
@@ -54,7 +53,7 @@ Promise.all(project.RuntimePromises)
 	end)
 ```
 
-## Requiring a project
+## Require a project
 Requiring a project builds and deploys it, but adds another additional field: `RequirePromise`. This promise resolves with exactly what the module returned. The code below is an example of how you could use this method:
 
 ```lua
@@ -65,7 +64,7 @@ local UILibrary = project.RequirePromise:expect()
 UILibrary:create("Frame")
 ```
 
-## Downloading from Github
+## Download from Github
 GitFetch downloads the latest release (or a specified release) of a given repository, and returns a `GitFetchResult` interface. The code below is a basic implementation of `Rostruct.GitFetch` on [a declarative UI library for Roblox Lua, Roact](https://github.com/Roblox/roact/):
 
 !!! note
