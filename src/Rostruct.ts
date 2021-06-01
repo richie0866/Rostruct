@@ -38,26 +38,12 @@ namespace Rostruct {
 
 		/**
 		 * An array of promises that resolve with LocalScripts and the result of executing them.
-		 * @example
-		 * ```lua
-		 * local project = Rostruct.Deploy("MyProjects/ESP")
-		 * Promise.all(project.RuntimePromises)
-		 * 	.andThen(function(scriptsAndResults)
-		 * 		print("Scripts executed: " .. #scriptsAndResults)
-		 * 	end)
-		 * ```
 		 */
 		RuntimePromises?: Array<Promise<[LocalScript, unknown]>>;
 
 		/**
 		 * A promise which resolves with the module required. Present when using {@link Rostruct.Require}.
 		 * This function uses Promises for control over errors and yielding.
-		 * @example
-		 * ```lua
-		 * local project = Rostruct.Require("MyProjects/UILibrary")
-		 * local UILibrary = project.RequirePromise:expect()
-		 * UILibrary.doThings()
-		 * ```
 		 */
 		RequirePromise?: Promise<unknown>;
 	}
@@ -88,14 +74,6 @@ namespace Rostruct {
 	 * @param target The target files to build.
 	 * @param parent Optional parent of the Instance tree.
 	 * @returns A project interface.
-	 * @example
-	 * ```lua
-	 * local project = Rostruct.Deploy("MyProjects/ESP")
-	 * Promise.all(project.RuntimePromises)
-	 * 	.andThen(function(scriptsAndResults)
-	 * 		print("Scripts executed: " .. #scriptsAndResults)
-	 * 	end)
-	 * ```
 	 */
 	export function Deploy(target: string, parent?: Instance): Project {
 		const project = Rostruct.Build(target, parent);
@@ -109,12 +87,6 @@ namespace Rostruct {
 	 * @param target The target files to build.
 	 * @param parent Optional parent of the Instance tree.
 	 * @returns A project interface.
-	 * @example
-	 * ```lua
-	 * local project = Rostruct.Require("MyProjects/UILibrary")
-	 * local UILibrary = project.RequirePromise:expect()
-	 * UILibrary.doThings()
-	 * ```
 	 */
 	export function Require(target: string, parent?: Instance): Project {
 		const project = Rostruct.Build(target, parent);
@@ -130,11 +102,6 @@ namespace Rostruct {
 	 * @param user The owner of this repository.
 	 * @param repo The name of this repository.
 	 * @returns Information about the latest release of the repository.
-	 * @example
-	 * ```lua
-	 * local releaseInfo = Rostruct.GetLatestReleaseInfo("Roblox", "roact"):expect()
-	 * print(releaseInfo.tag_name)
-	 * ```
 	 */
 	export function GetLatestReleaseInfo(user: string, repo: string): Promise<ReleaseInfo> {
 		return new Promise<ReleaseInfo>((resolve) =>
@@ -166,27 +133,21 @@ namespace Rostruct {
 	 * @param tag The version of the release to fetch. Defaults to the latest release, but will make an HTTP GET request to get the latest version.
 	 * @param asset The name of the release asset. If provided, this function downloads the release asset in its entirety. If `nil`, it downloads and unpacks the source.
 	 * @returns The results of the fetch.
-	 * @example
-	 * ```lua
-	 * local gitFetchResult = Rostruct.GitFetch("Roblox", "roact", "v1.3.0"):expect()
-	 * local project = Rostruct.Require(gitFetchResult.Location)
-	 * local Roact = project.RequirePromise:expect()
-	 * if gitFetchResult.ProcessingUpdate then
-	 * 	print("An update is available for Roact; re-execute to use it!")
-	 * end
-	 * ```
 	 */
 	export function GitFetch(user: string, repo: string, tag?: string, asset?: string): Promise<GitFetchResult> {
 		const tagPromise =
 			tag === undefined
 				? GetLatestReleaseInfo(user, repo).andThen((info) => info.tag_name)
 				: Promise.resolve(tag);
+
+		const cacheName = `${user.lower()}-${repo.lower()}-${asset !== undefined ? asset.lower() : "Source"}`;
+
 		return tagPromise.andThen((tagName) => {
 			const assetUrl =
 				asset !== undefined
-					? `https://github.com/${user}/${repo}/releases/download/${tagName}/${asset}.zip`
+					? `https://github.com/${user}/${repo}/releases/download/${tagName}/${asset}`
 					: `https://github.com/${user}/${repo}/archive/refs/tags/${tagName}.zip`;
-			return GithubDownloader.fetch(assetUrl, `${user.lower()}-${repo.lower()}`, tagName, asset === undefined);
+			return GithubDownloader.fetch(assetUrl, cacheName, tagName, asset === undefined);
 		});
 	}
 
@@ -256,11 +217,6 @@ namespace Rostruct {
 		 * Returns the value of `loadfile("rostruct/dependencies/" ... fileName)()`
 		 * @param fileName The name of the file.
 		 * @returns A promise which resolves with the library loaded in Lua.
-		 * @example
-		 * ```lua
-		 * local Promise = Rostruct.Loader.Install("Promise.lua")
-		 * Promise.new(...)
-		 * ```
 		 */
 		export const Install = installAsync("Promise.lua").promisify(installAsync);
 	}
@@ -276,6 +232,13 @@ const httpGet = Promise.promisify((url: string) => game.HttpGetAsync(url));
 namespace APISupport {
 	declare const getsynasset: typeof getcustomasset;
 	export const generateAssetId = getcustomasset || getsynasset;
+
+	/** Safely writes files by appending files with no extensions with `.file`. */
+	export const writeFile: typeof writefile = (file: string, content: string) => {
+		const extension = file.match("%.([^%./]+)$")[0];
+		if (extension === undefined) file += ".file";
+		writefile(file, content);
+	};
 }
 
 /** Global environment reserved for Rostruct. */
@@ -288,12 +251,8 @@ namespace Reserved {
 		environments: Map<string, VirtualScript.Environment>;
 	}
 
-	/** Rostruct gglobals. */
-	// export const globals: Globals = (getgenv()._ROSTRUCT as Globals) || {
-	// 	currentScope: 0,
-	// 	environments: new Map<string, VirtualScript.Environment>(),
-	// };
-	export const globals: Globals = {
+	/** Rostruct globals. */
+	export const globals: Globals = (getgenv()._ROSTRUCT as Globals) || {
 		currentScope: 0,
 		environments: new Map<string, VirtualScript.Environment>(),
 	};
@@ -487,23 +446,17 @@ class VirtualScript {
 	public execute(): ReturnType<VirtualScript.Executor> {
 		if (this.isLoaded) return this.result;
 		const result = this.createExecutor()();
-		assert(this.instance.IsA("ModuleScript") && result, `Module '${this.file.path}' did not return any value`);
+		if (this.instance.IsA("ModuleScript")) assert(result, `Module '${this.file.path}' did not return any value`);
 		this.isLoaded = true;
 		return (this.result = result);
 	}
-
-	/**
-	 * Runs the executor function if not already run and returns results. Used internally.
-	 * @returns A promise which resolves with the value returned by the executor.
-	 */
-	private executePromisified = Promise.promisify(() => this.execute());
 
 	/**
 	 * Runs the executor function if not already run and returns results.
 	 * @returns A promise which resolves with the value returned by the executor.
 	 */
 	public executePromise(): Promise<ReturnType<VirtualScript.Executor>> {
-		return this.executePromisified().timeout(
+		return Promise.defer((resolve) => resolve(this.execute())).timeout(
 			30,
 			`Script ${this.file.path} reached execution timeout! Try not to yield the main thread in LocalScripts.`,
 		);
@@ -761,15 +714,16 @@ namespace GithubDownloader {
 		const root = zipSort[0].path.match(".*/")[0] as string;
 
 		function formatPath(path: string): string {
-			if (excludesRoot) return location + path.sub(root.size() + 1);
-			else return location + path;
+			if (excludesRoot) return location + "/" + path.sub(root.size() + 1);
+			else return location + "/" + path;
 		}
 
-		// Create directories first to avoid file creation racing.
+		// Create directories first! Files made in nonexistent folders fail with no error.
 		for (const entry of zipSort) if (entry.isDirectory) makefolder(formatPath(entry.path));
 
-		// Then, we can create the files.
-		for (const entry of zipSort) if (!entry.isDirectory) writefile(formatPath(entry.path), entry.content);
+		// Then, create the files.
+		for (const entry of zipSort)
+			if (!entry.isDirectory) APISupport.writeFile(formatPath(entry.path), entry.content);
 	}
 
 	/**
@@ -779,8 +733,8 @@ namespace GithubDownloader {
 	 * @returns Whether the cache needs an update.
 	 */
 	function shouldUpdate(name: string, tag: string): boolean {
-		const location = Rostruct.Loader.GetPath(`cache/${name}/`);
-		const tagLocation = location + "VERSION_ROSTRUCT.txt";
+		const location = Rostruct.Loader.GetPath(`cache/${name}`);
+		const tagLocation = location + "/VERSION_ROSTRUCT.txt";
 
 		// The tag is the same as the one cached, do not update.
 		if (isfolder(location) && isfile(tagLocation) && readfile(tagLocation) === tag) return false;
@@ -804,7 +758,7 @@ namespace GithubDownloader {
 		tag: string,
 		excludesRoot?: boolean,
 	): Promise<Rostruct.GitFetchResult> {
-		const tagLocation = target + "VERSION_ROSTRUCT.txt";
+		const tagLocation = FileDescriptor.format(target) + "/VERSION_ROSTRUCT.txt";
 
 		// The project needs an update/has no tag, so clear existing files.
 		if (FileDescriptor.exists(target)) delfolder(target);
@@ -838,7 +792,7 @@ namespace GithubDownloader {
 		tag: string,
 		excludesRoot?: boolean,
 	): Promise<Rostruct.GitFetchResult> {
-		const target = Rostruct.Loader.GetPath(`cache/${name}/`);
+		const target = Rostruct.Loader.GetPath(`cache/${name}`);
 		const needsUpdate = shouldUpdate(name, tag);
 
 		let downloadPromise: Promise<Rostruct.GitFetchResult>;

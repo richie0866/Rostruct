@@ -16,6 +16,9 @@ theme:
 
 nav:
   - Home: index.md
+  - Guide:
+    - Setting up: guide/setting-up.md
+    - Basic usage: guide/basic-usage.md
   - API Reference: api-reference.md
 
 extra_css:
