@@ -768,8 +768,8 @@ namespace GithubDownloader {
 		const root = zipSort[0].path.match(".*/")[0] as string;
 
 		function formatPath(path: string): string {
-			if (excludesRoot) return location + path.sub(root.size() + 1);
-			else return location + path;
+			if (excludesRoot) return location + "/" + path.sub(root.size() + 1);
+			else return location + "/" + path;
 		}
 
 		// Create directories first! Files made in nonexistent folders fail with no error.
@@ -787,8 +787,8 @@ namespace GithubDownloader {
 	 * @returns Whether the cache needs an update.
 	 */
 	function shouldUpdate(name: string, tag: string): boolean {
-		const location = Rostruct.Loader.GetPath(`cache/${name}/`);
-		const tagLocation = location + "VERSION_ROSTRUCT.txt";
+		const location = Rostruct.Loader.GetPath(`cache/${name}`);
+		const tagLocation = location + "/VERSION_ROSTRUCT.txt";
 
 		// The tag is the same as the one cached, do not update.
 		if (isfolder(location) && isfile(tagLocation) && readfile(tagLocation) === tag) return false;
@@ -812,7 +812,7 @@ namespace GithubDownloader {
 		tag: string,
 		excludesRoot?: boolean,
 	): Promise<Rostruct.GitFetchResult> {
-		const tagLocation = target + "VERSION_ROSTRUCT.txt";
+		const tagLocation = FileDescriptor.format(target) + "/VERSION_ROSTRUCT.txt";
 
 		// The project needs an update/has no tag, so clear existing files.
 		if (FileDescriptor.exists(target)) delfolder(target);
@@ -846,7 +846,7 @@ namespace GithubDownloader {
 		tag: string,
 		excludesRoot?: boolean,
 	): Promise<Rostruct.GitFetchResult> {
-		const target = Rostruct.Loader.GetPath(`cache/${name}/`);
+		const target = Rostruct.Loader.GetPath(`cache/${name}`);
 		const needsUpdate = shouldUpdate(name, tag);
 
 		let downloadPromise: Promise<Rostruct.GitFetchResult>;
