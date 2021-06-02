@@ -45,7 +45,7 @@ traverse() {
 			filename=$(basename -- "$file")
 			extension="${filename##*.}"
 			filename="${filename%%.*}"
-			if [ "$extension" == 'lua' ]; then
+			if [ "$extension" = 'lua' ]; then
 				bundle+=$(wrap_function_decl "$filename" "$file")
 			fi
 		fi

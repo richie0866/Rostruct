@@ -6,7 +6,7 @@
   "scripts": {
     "prepublishOnly": "rbxtsc",
     "build:luau": "cross-env NODE_ENV=production TYPE=Luau rbxtsc --verbose --type=package",
-    "build:bundle": "chmod +x \"./.github/bundle.sh\" && sh ./.github/bundle.sh"
+    "build:bundle": "chmod +x \"./.github/bundle.sh\" && bash ./.github/bundle.sh"
   },
   "keywords": [],
   "author": "",
