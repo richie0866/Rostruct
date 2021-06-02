@@ -5,7 +5,7 @@
  */
 
 /** Modified version of a Lua zip library. */
-export interface zzlib {
+interface zzlib {
 	/**
 	 * Unzips the given zip data and returns a map of files and their contents.
 	 */
@@ -13,4 +13,4 @@ export interface zzlib {
 }
 
 /** A container for all files and file contents in a zip file. */
-export type ZipData = Map<string, string>;
+type ZipData = Map<string, string>;

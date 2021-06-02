@@ -24,10 +24,14 @@ jobs:
 
     - name: Build Rostruct
       run: |
-        npm run build:out
+        npm run build:luau
+
+    - name: Package Rostruct
+      run: |
+        npm run build:bundle
 
     - name: Upload to release
       uses: AButler/upload-release-assets@v2.0
       with:
-        files: 'out/Rostruct.lua'
+        files: 'Rostruct.lua'
         repo-token: ${{ secrets.GITHUB_TOKEN }}

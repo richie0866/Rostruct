@@ -1,3 +1,9 @@
+/*
+ * File: ReleaseInfo.d.ts
+ * File Created: Sunday, 30th May 2021 11:40:31 pm
+ * Author: richard
+ */
+
 interface ReleaseInfoAsset {
 	/** @example `https://api.github.com/repos/${user}/${repo}/releases/assets/${id}` */
 	readonly url: string;
@@ -51,7 +57,7 @@ interface ReleaseInfoAsset {
  * Information about the latest release of a given Github repository.
  * See this [example](https://api.github.com/repos/Roblox/roact/releases/latest).
  */
-export interface ReleaseInfo {
+interface ReleaseInfo {
 	/** @example `https://api.github.com/repos/${user}/${repo}/releases/${id}` */
 	readonly url: string;
 	/** @example `https://api.github.com/repos/${user}/${repo}/releases/${id}/assets` */
