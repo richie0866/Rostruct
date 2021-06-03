@@ -4,6 +4,9 @@
  * Author: richard
  */
 
+import Object from "@rbxts/object-utils";
+import { writeFile } from "api/compatibility";
+
 interface Descriptor {
 	/** Whether the data is a file or folder. */
 	descriptorType: Files.FileType;
@@ -82,12 +85,15 @@ export namespace Files {
 		origin?: string,
 		descriptorType = infer(location),
 	): File<FileOrUnknown> {
+		// 'fileName' is never null because the location must have a /
 		const fileName = location.match("([^/]+)$")[0] as string;
 
+		// 'name' can be null, but shouldn't be set to undefined /
 		const name = (fileName.match("^([^%.]+)")[0] as string) ?? "";
+
 		const extension = fileName.match("%.([^%.]+)$")[0] as string | undefined;
 		const extendedName = extension !== undefined ? fileName.sub(1, -extension.size() - 2) : name;
-		const fileType = fileName.match("%.(.*)")[0] as string;
+		const fileType = fileName.match("%.(.*)")[0] as string | undefined;
 
 		return {
 			descriptorType: descriptorType as FileOrUnknown,
@@ -109,5 +115,28 @@ export namespace Files {
 			location: format(location),
 			origin: origin,
 		};
+	}
+
+	/** Create an array of the file paths & contents from a file-content map. */
+	export function fileMapToFileArray(fileMap: {
+		[fileName: string]: string | undefined;
+	}): [string, string | undefined][] {
+		const fileArray: [string, string | undefined][] = [];
+		for (const [path, contents] of Object.entries(fileMap)) {
+			if (type(path) === "string") fileArray.push([path as string, contents]);
+		}
+		return fileArray;
+	}
+
+	/** Creates files from a list of paths. */
+	export function makeFiles(fileArray: [string, string | undefined][]) {
+		// Sort the paths to make certain folders first.
+		fileArray.sort((a, b) => a[0].gsub("/", "/")[1] < b[0].gsub("/", "/")[1]);
+
+		// Create directories first! Files made before their parent folders fail with no error.
+		for (const [path] of fileArray) if (path.sub(-1) === "/") makefolder(path);
+
+		// Then, create the files.
+		for (const [path, contents] of fileArray) if (path.sub(-1) !== "/") writeFile(path, contents ?? "");
 	}
 }

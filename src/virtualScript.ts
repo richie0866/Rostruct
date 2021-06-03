@@ -4,63 +4,77 @@
  * Author: richard
  */
 
-import { Promise } from "loader";
-import { Files, File } from "utils/files";
-import globals from "reserved";
+import { Promise } from "storage";
+import { Files, File } from "utils/file-utils";
+import globals from "utils/globals";
+import Object from "@rbxts/object-utils";
 
 const HttpService = game.GetService("HttpService");
 
+/** A script that can be created by Rostruct. */
+export type Executable = ModuleScript | LocalScript | Script;
+export type Executor = () => unknown;
+export type EnvironmentKey = "script" | "require" | "_PATH" | "_ROOT";
+
+/** Base environment for VirtualScript instances. */
+export interface Environment {
+	script: Executable;
+	require: (obj: ModuleScript) => unknown;
+	_PATH: string;
+	_ROOT: string;
+}
+
+/** Maps VirtualScripts to their instances. */
+const virtualScriptsByInstance = new Map<Executable, VirtualScript>();
+
+/**
+ * Requires a `ModuleScript`. If the module has a `VirtualScript` counterparg, this function will call `virtualScript.execute` and return the results.
+ * @param obj The ModuleScript to require.
+ * @returns The required module.
+ */
+export function loadVirtualScript(obj: ModuleScript): VirtualScript | unknown {
+	const virtualScript = virtualScriptsByInstance.get(obj);
+	if (virtualScript) return virtualScript.execute();
+	else return require(obj);
+}
+
 /** Class used to connect a file to virtual code. */
-class VirtualScript {
-	/** Maps VirtualScripts to their instances. */
-	private static readonly virtualScriptsByInstance = new Map<VirtualScript.Executable, VirtualScript>();
-
-	/**
-	 * Requires a `ModuleScript`. If the module has a `VirtualScript` counterparg, this function will call `virtualScript.execute` and return the results.
-	 * @param obj The ModuleScript to require.
-	 * @returns The required module.
-	 */
-	public static loadModule(obj: ModuleScript): VirtualScript | unknown {
-		const virtualScript = VirtualScript.virtualScriptsByInstance.get(obj);
-		if (virtualScript) return virtualScript.execute();
-		else return require(obj);
-	}
-
+export class VirtualScript {
 	/**
 	 * Returns the `VirtualScript` instance that was created for the given `Instance`.
 	 * @param obj The Instance to search by.
 	 * @returns The corresponding VirtualScript.
 	 */
-	public static fromInstance(obj: VirtualScript.Executable): VirtualScript | undefined {
-		return this.virtualScriptsByInstance.get(obj);
+	public static getFromInstance(obj: Executable): VirtualScript | undefined {
+		return virtualScriptsByInstance.get(obj);
 	}
 
-	/** An identifier for this object. */
+	/** An identifier used to store the object in `virtualScriptsByInstance`. */
 	public readonly id: string;
 
-	/** The Instance this object was created for. */
-	public readonly instance: VirtualScript.Executable;
+	/** The Instance that represents this object used for globals. */
+	public readonly instance: Executable;
 
-	/** The FileDescriptor this object represents. */
+	/** The file this object extends. */
 	public readonly file: File<Files.FileType.File>;
 
 	/** The scope of the Reconciler that created this object. Used to prevent overlapping globals when two Reconcilers are created. */
 	private readonly scope: number;
 
 	/** The function to be called at runtime when the script runs or gets required. */
-	private executor?: VirtualScript.Executor;
+	private executor?: Executor;
 
 	/** The executor's return value after being called the first time. ModuleScripts must have a non-nil result. */
 	private result?: unknown;
 
 	/** Whether the executor has already been called. */
-	private isLoaded = false;
+	private isDone = false;
 
-	/** The custom environment of the object. */
-	private readonly env: VirtualScript.Environment;
+	/** A custom environment for the object. */
+	private readonly env: Environment;
 
 	/** Construct a new VirtualScript. */
-	constructor(obj: VirtualScript.Executable, file: File<Files.FileType.File>, scope: number) {
+	constructor(obj: Executable, file: File<Files.FileType.File>, scope: number) {
 		assert(file.origin, `VirtualScript file must have an origin (${file.location})`);
 
 		this.id = `VirtualScript-${HttpService.GenerateGUID(false)}`;
@@ -68,15 +82,15 @@ class VirtualScript {
 		this.file = file;
 		this.scope = scope;
 
-		this.env = new Map<VirtualScript.EnvironmentKey, unknown>([
-			["script", obj],
-			["require", (obj: ModuleScript) => VirtualScript.loadModule(obj)],
-			["_PATH", file.location],
-			["_ROOT", file.origin],
-		]);
+		this.env = {
+			script: obj,
+			require: (obj: ModuleScript) => loadVirtualScript(obj),
+			_PATH: file.location,
+			_ROOT: file.origin,
+		};
 
 		globals.environments.set(`${scope}-${this.id}`, this.env);
-		VirtualScript.virtualScriptsByInstance.set(obj, this);
+		virtualScriptsByInstance.set(obj, this);
 	}
 
 	/**
@@ -85,9 +99,12 @@ class VirtualScript {
 	 */
 	private getSource(): string {
 		let header = `local _ENV = getgenv()._ROSTRUCT.environments['${this.scope}-${this.id}']; `;
-		for (const [key] of this.env) {
-			header += `local ${key} = _ENV['${key}']; `;
+
+		// Declare locals at the top of the script:
+		for (const k of Object.keys(this.env)) {
+			header += `local ${k} = _ENV['${k}']; `;
 		}
+
 		return header + readfile(this.file.location);
 	}
 
@@ -95,7 +112,7 @@ class VirtualScript {
 	 * Sets the executor function.
 	 * @param exec The function to call on execution.
 	 */
-	public setExecutor(exec: VirtualScript.Executor) {
+	public setExecutor(exec: Executor) {
 		this.executor = exec;
 		this.result = undefined;
 	}
@@ -104,7 +121,7 @@ class VirtualScript {
 	 * Gets or creates a new executor function
 	 * @returns The function to call on execution.
 	 */
-	public createExecutor(): VirtualScript.Executor {
+	public createExecutor(): Executor {
 		if (this.executor) return this.executor;
 		const [f, err] = loadstring(this.getSource(), "=" + this.file.location);
 		assert(f, err);
@@ -115,8 +132,8 @@ class VirtualScript {
 	 * Runs the executor function if not already run and returns results.
 	 * @returns The value returned by the executor.
 	 */
-	public execute(): ReturnType<VirtualScript.Executor> {
-		if (this.isLoaded) return this.result;
+	public execute(): ReturnType<Executor> {
+		if (this.isDone) return this.result;
 
 		const result = this.createExecutor()();
 
@@ -124,7 +141,7 @@ class VirtualScript {
 		if (this.instance.IsA("ModuleScript"))
 			assert(result, `Module '${this.file.location}' did not return any value`);
 
-		this.isLoaded = true;
+		this.isDone = true;
 
 		return (this.result = result);
 	}
@@ -133,22 +150,10 @@ class VirtualScript {
 	 * Runs the executor function if not already run and returns results.
 	 * @returns A promise which resolves with the value returned by the executor.
 	 */
-	public executePromise(): Promise<ReturnType<VirtualScript.Executor>> {
+	public executePromise(): Promise<ReturnType<Executor>> {
 		return Promise.defer((resolve) => resolve(this.execute())).timeout(
 			30,
 			`Script ${this.file.location} reached execution timeout! Try not to yield the main thread in LocalScripts.`,
 		);
 	}
 }
-
-declare namespace VirtualScript {
-	/** A script that can be created by Rostruct. */
-	export type Executable = ModuleScript | LocalScript | Script;
-	export type Executor = () => unknown;
-	export type EnvironmentKey = "script" | "require" | "_PATH" | "_ROOT";
-
-	/** Base environment for VirtualScript instances. */
-	export type Environment = Map<EnvironmentKey, unknown>;
-}
-
-export = VirtualScript;

@@ -5,35 +5,39 @@
  */
 
 import { generateAssetId } from "api/compatibility";
-import { Files, Directory, File } from "utils/files";
-import globals from "reserved";
-import VirtualScript from "virtualScript";
+import { Files, Directory, File } from "utils/file-utils";
+import globals from "utils/globals";
+import { Executable, VirtualScript } from "VirtualScript";
 
 const HttpService = game.GetService("HttpService");
 
+/** A list of file names that should not become files. */
+const RESERVED_NAMES: { [fileName: string]: boolean } = {
+	"init.lua": true,
+	"init.server.lua": true,
+	"init.client.lua": true,
+	"init.meta.json": true,
+};
+
+/** Interface for `init.meta.json` data. */
+interface InstanceMetadata<T extends keyof Instances> {
+	className?: T;
+	properties?: Map<keyof WritableInstanceProperties<Instances[T]>, never>;
+}
+
 /** Class used to build and deploy Rostruct projects. */
-class Reconciler {
-	/** A list of special file names that don't become files. */
-	private static readonly reservedNames: { [key: string]: boolean } = {
-		"init.lua": true,
-		"init.server.lua": true,
-		"init.client.lua": true,
-		"init.meta.json": true,
-	};
-
+export class Reconciler {
 	/** An identifier for this object. */
-	public readonly scope: number;
-
-	/** The file the object will build. */
-	public readonly target: Directory;
+	public readonly scope = globals.currentScope;
 
 	/** Maps tracked VirtualScript objects to their file locations. */
 	public readonly virtualScriptMap = new Map<string, VirtualScript>();
 
-	/** Construct a new Reconciler. */
-	constructor(directory: Directory) {
-		this.target = directory;
-		this.scope = globals.currentScope;
+	/**
+	 * Construct a new Reconciler.
+	 * @param target The file the object will build.
+	 */
+	constructor(public readonly target: Directory) {
 		globals.currentScope += 1;
 	}
 
@@ -42,7 +46,7 @@ class Reconciler {
 	 * @param obj The VirtualScript to track.
 	 * @returns The original object.
 	 */
-	private trackScript<T extends VirtualScript>(obj: T): T {
+	private trackScript(obj: VirtualScript): VirtualScript {
 		this.virtualScriptMap.set(obj.file.location, obj);
 		return obj;
 	}
@@ -81,18 +85,14 @@ class Reconciler {
 		switch (file.extension) {
 			// Script
 			case "lua":
-				let executable: VirtualScript.Executable;
+				let executable: Executable;
 
 				if (file.type === "server.lua") executable = this.make("Script", name, parent);
 				else if (file.type === "client.lua") executable = this.make("LocalScript", name, parent);
 				else executable = this.make("ModuleScript", name === file.name ? file.extendedName! : name, parent);
 
 				this.trackScript(
-					new VirtualScript(
-						executable as VirtualScript.Executable,
-						file as File<Files.FileType.File>,
-						this.scope,
-					),
+					new VirtualScript(executable as Executable, file as File<Files.FileType.File>, this.scope),
 				);
 
 				return executable;
@@ -100,9 +100,12 @@ class Reconciler {
 			// JSON module
 			case "json":
 				const jsonObj = this.make("ModuleScript", name, parent);
+
+				// Set the executor to return the decoded JSON data.
 				this.trackScript(new VirtualScript(jsonObj, file as File<Files.FileType.File>, this.scope)).setExecutor(
 					() => HttpService.JSONDecode(readfile(file.location)),
 				);
+
 				return jsonObj;
 
 			// Plain text
@@ -144,7 +147,7 @@ class Reconciler {
 		// https://rojo.space/docs/6.x/sync-details/#meta-files
 		const metaFile = Files.locate(dir, "init.meta.json");
 		if (metaFile) {
-			const metadata: Reconciler.InstanceMetadata<"Folder"> = HttpService.JSONDecode(readfile(metaFile.location));
+			const metadata: InstanceMetadata<"Folder"> = HttpService.JSONDecode(readfile(metaFile.location));
 
 			if (instance && metadata.className)
 				error(`Attempt to reassign ClassName of ${dir.location} to ${metadata.className}`);
@@ -157,13 +160,15 @@ class Reconciler {
 				}
 		}
 
-		// If nothing's different, just make a folder.
+		// If nothing's different, just make a folder
 		if (!instance) instance = this.make("Folder", dir.fileName);
 
-		// Scan the directory for more files.
+		// Scan the directory for more files
 		for (const f of listfiles(dir.location)) {
 			const fileName = f.match("([^/]+)$")[0] as string;
-			if (!Reconciler.reservedNames[fileName])
+
+			// Make sure the file is not reserved for special use
+			if (RESERVED_NAMES[fileName])
 				if (isfile(f))
 					this.makeInstance(
 						Files.describeFile(f, this.target.location, Files.FileType.File),
@@ -195,7 +200,7 @@ class Reconciler {
 	 */
 	public deploy(): Array<Promise<[LocalScript, unknown]>> {
 		const newPromises = new Array<Promise<[LocalScript, unknown]>>();
-		for (const [_, virtualScript] of this.virtualScriptMap)
+		for (const [, virtualScript] of this.virtualScriptMap)
 			if (virtualScript.instance.IsA("LocalScript"))
 				newPromises.push(
 					virtualScript.executePromise().then((result) => {
@@ -205,13 +210,3 @@ class Reconciler {
 		return newPromises;
 	}
 }
-
-declare namespace Reconciler {
-	/** Interface for `init.meta.json` data. */
-	export interface InstanceMetadata<T extends keyof Instances> {
-		className?: T;
-		properties?: Map<keyof WritableInstanceProperties<Instances[T]>, never>;
-	}
-}
-
-export = Reconciler;

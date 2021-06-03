@@ -4,7 +4,7 @@
  * Author: richard
  */
 
-import VirtualScript from "virtualScript";
+import { Environment } from "VirtualScript";
 
 /** Global environment reserved for Rostruct. */
 interface Globals {
@@ -12,15 +12,15 @@ interface Globals {
 	currentScope: number;
 
 	/** List of environments for running VirtualScripts. */
-	environments: Map<string, VirtualScript.Environment>;
+	environments: Map<string, Environment>;
 }
 
 /** Global environment reserved for Rostruct. */
-const globals: Globals = (getgenv()._ROSTRUCT as Globals) || {
+const globals: Globals = (getgenv().Rostruct as Globals) || {
 	currentScope: 0,
-	environments: new Map<string, VirtualScript.Environment>(),
+	environments: new Map<string, Environment>(),
 };
 
-getgenv()._ROSTRUCT = globals;
+getgenv().Rostruct = globals;
 
 export = globals;

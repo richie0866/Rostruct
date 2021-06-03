@@ -5,17 +5,20 @@
  * Description: Manages compatibility between exploits.
  */
 
-import { Promise } from "loader";
-
 declare const getsynasset: typeof getcustomasset;
 export const generateAssetId = getcustomasset || getsynasset;
 
+declare const syn_request: typeof request;
+export const httpRequest = request || syn_request;
+
+/** Append a file with no extension with `.file`. */
+export function fixUnknownFile(file: string): string {
+	const hasExtension = file.reverse().match("^([^%./]+%.)")[0] !== undefined;
+	if (!hasExtension) return file + ".file";
+	else return file;
+}
+
 /** Safely writes files by appending files with no extensions with `.file`. */
 export const writeFile: typeof writefile = (file: string, content: string) => {
-	const extension = file.match("%.([^%./]+)$")[0];
-	if (extension === undefined) file += ".file";
-	writefile(file, content);
+	writefile(fixUnknownFile(file), content);
 };
-
-/** Sends an HTTP GET request. */
-export const httpGet = Promise.promisify((url: string) => game.HttpGetAsync(url));

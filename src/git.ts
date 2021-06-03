@@ -4,9 +4,10 @@
  * Author: richard
  */
 
-import { httpGet, writeFile } from "api/compatibility";
-import { Files } from "utils/files";
-import { Loader, Promise } from "loader";
+import { writeFile } from "api/compatibility";
+import * as http from "utils/http";
+import { Files } from "utils/file-utils";
+import * as loader from "storage";
 
 /** Stores the result of the {@link GitFetch} function. */
 export interface GitFetchResult {
@@ -86,7 +87,7 @@ export namespace Git {
 	 * @returns Whether the cache needs an update.
 	 */
 	function shouldUpdate(name: string, tag: string): boolean {
-		const location = Loader.getPath(`cache/${name}`);
+		const location = loader.getPath("rostruct/cache/repos/", name);
 		const tagLocation = location + "/VERSION_ROSTRUCT.txt";
 
 		// The tag is the same as the one cached, do not update.
@@ -113,7 +114,7 @@ export namespace Git {
 		makefolder(target);
 
 		// Extract the file.
-		return Loader.install("zzlib.lua").andThen((zzlib) => {
+		return loader.loadModule("zzlib.lua").andThen((zzlib) => {
 			extractFromZipData(zzlib.unzip(data), target, excludesRoot);
 			if (tag !== undefined) writefile(tagLocation, tag);
 			return {
@@ -135,13 +136,13 @@ export namespace Git {
 	 * @returns A promise which resolves with the location of the project and whether the cache was updated.
 	 */
 	export function fetch(url: string, name: string, tag: string, excludesRoot?: boolean): Promise<GitFetchResult> {
-		const target = Loader.getPath(`cache/${name}`);
+		const target = loader.getPath("rostruct/cache/repos/", name);
 		const needsUpdate = shouldUpdate(name, tag);
 
 		let downloadPromise: Promise<GitFetchResult>;
 
 		// Update the cache in the background.
-		if (needsUpdate) downloadPromise = httpGet(url).andThen((data) => extract(data, target, tag, excludesRoot));
+		if (needsUpdate) downloadPromise = http.get(url).andThen((data) => extract(data, target, tag, excludesRoot));
 
 		// If a previous version is available, return it immediately.
 		if (Files.exists(target))
