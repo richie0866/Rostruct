@@ -39,15 +39,15 @@ traverse() {
 
 	# for file in $(ls $dir); do
 	for file in "$dir"/*; do
-		if [ -d "$file" ]; then
-			traverse "$file"
-		elif [ -f "$file" ]; then
+		if [ -f "$file" ]; then
 			filename=$(basename -- "$file")
 			extension="${filename##*.}"
 			filename="${filename%%.*}"
 			if [ "$extension" = 'lua' ]; then
 				bundle+=$(wrap_function_decl "$filename" "$file")
 			fi
+		elif [ -d "$file" ]; then
+			traverse "$file"
 		fi
 	done
 }
