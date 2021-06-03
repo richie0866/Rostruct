@@ -2,12 +2,32 @@ local TS = {
 	_G = {};
 }
 
-local OUT_DIR = "out/"
-
 -- Runtime classes
+local FilePtr
+do
+	FilePtr = {}
+	FilePtr.__index = FilePtr
+
+	function FilePtr.new(path)
+		local fileName, slash = string.match(path, "([^/]+)(/*)$")
+		return setmetatable({
+			name = fileName,
+			path = string.sub(path, 1, -#fileName - (slash ~= "" and 2 or 1)),
+		}, FilePtr)
+	end
+
+	function FilePtr:__index(k)
+		if k == "Parent" then
+			return FilePtr.new(self.path)
+		end
+	end
+
+end
+
 local Module
 do
 	Module = {}
+	Module.__index = Module
 
 	function Module.new(path, name, func)
 		return setmetatable({
@@ -22,7 +42,7 @@ do
 		if Module[k] then
 			return Module[k]
 		elseif k == "Parent" then
-			return self
+			return FilePtr.new(self.path)
 		elseif k == "Name" then
 			return self.path
 		end
@@ -39,6 +59,7 @@ do
 	function Module:GetFullName()
 		return self.path
 	end
+
 end
 
 local Symbol
@@ -93,7 +114,7 @@ TS.Symbol_iterator = Symbol("Symbol.iterator")
 local modulesByPath = {}
 local modulesByName = {}
 
--- Compatibility with exploits
+-- Bundle compatibility
 function TS.register(path, name, func)
 	local module = Module.new(path, name, func)
 	modulesByPath[path] = module
@@ -106,20 +127,36 @@ function TS.get(path)
 end
 
 function TS.initialize(path)
-	local marker = setmetatable({}, {__tostring = function()
-		return "$ROOT"
+	local symbol = setmetatable({}, {__tostring = function()
+		return "root"
 	end})
-	local caller = TS.register(marker, marker)
-	return TS.import(caller, nil, path)
+	local caller = TS.register(symbol, symbol)
+	return TS.import(caller, { path = "out/" }, path)
+end
+
+-- module resolution
+function TS.getModule(_object, _moduleName)
+	return error("TS.getModule is not supported yet", 2)
 end
 
 -- This is a hash which TS.import uses as a kind of linked-list-like history of [Script who Loaded] -> Library
 local currentlyLoading = {}
 local registeredLibraries = {}
 
-function TS.import(caller, _parent, ...)
-	local modulePath = OUT_DIR .. table.concat({...}, "/") .. ".lua"
-	local module = assert(modulesByPath[modulePath], "No module exists at path '" .. modulePath .. "'")
+function TS.import(caller, parentPtr, ...)
+	-- Caller may be an init file, so if that's true, just look in the parent
+	if caller == parentPtr then
+		parentPtr = caller.Parent
+	end
+	
+	-- Because 'Module.Parent' returns a FilePtr, the module handles the indexing.
+	-- Getting 'parentPtr.path' will return the result of FilePtr.Parent...
+	local modulePath = parentPtr.path .. table.concat({...}, "/") .. ".lua"
+	local initModulePath = parentPtr.path .. table.concat({...}, "/") .. "/init.lua"
+	local module = assert(
+		modulesByPath[modulePath] or modulesByPath[initModulePath],
+		"No module exists at path '" .. modulePath .. "'"
+	)
 
 	currentlyLoading[caller] = module
 
@@ -135,14 +172,14 @@ function TS.import(caller, _parent, ...)
 
 	while currentModule do
 		depth = depth + 1
-		currentModule = currentlyLoading[module]
+		currentModule = currentlyLoading[currentModule]
 
 		if currentModule == module then
 			local str = currentModule.name -- Get the string traceback
 
 			for _ = 1, depth do
 				currentModule = currentlyLoading[currentModule]
-				str ..= "  ⇒ " .. currentModule.name
+				str ..= " => " .. currentModule.name
 			end
 
 			error("Failed to import! Detected a circular dependency chain: " .. str, 2)
@@ -169,4 +206,3 @@ function TS.import(caller, _parent, ...)
 
 	return data
 end
-
