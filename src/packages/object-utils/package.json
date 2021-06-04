@@ -1,0 +1,59 @@
+{
+  "_from": "@rbxts/object-utils",
+  "_id": "@rbxts/object-utils@1.0.4",
+  "_inBundle": false,
+  "_integrity": "sha512-dLLhf022ipV+9i910sOE7kl9losKHoon0WgeerHqVMQA5EYsLUsVT2AxhJuhk8MiDn5oJ2GiFofE/LadY9TpJQ==",
+  "_location": "/@rbxts/object-utils",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "@rbxts/object-utils",
+    "name": "@rbxts/object-utils",
+    "escapedName": "@rbxts%2fobject-utils",
+    "scope": "@rbxts",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/@rbxts/object-utils/-/object-utils-1.0.4.tgz",
+  "_shasum": "c53d80f89e75c401365446be63fa1396bc2cffe7",
+  "_spec": "@rbxts/object-utils",
+  "_where": "C:\\Users\\richard\\Documents\\Source\\Projects\\rostruct",
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/roblox-ts/rbxts-object-utils/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "Polyfills for Object functions",
+  "devDependencies": {
+    "@rbxts/types": "^1.0.423",
+    "@typescript-eslint/eslint-plugin": "^4.8.2",
+    "@typescript-eslint/parser": "^4.8.2",
+    "eslint": "^7.14.0",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "prettier": "^2.2.0",
+    "typescript": "^4.1.2"
+  },
+  "files": [
+    "init.lua",
+    "index.d.ts"
+  ],
+  "homepage": "https://github.com/roblox-ts/rbxts-object-utils#readme",
+  "license": "ISC",
+  "main": "init.lua",
+  "name": "@rbxts/object-utils",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/roblox-ts/rbxts-object-utils.git"
+  },
+  "scripts": {},
+  "typings": "index.d.ts",
+  "version": "1.0.4"
+}

@@ -31,6 +31,8 @@
     "typescript": "^4.3.2"
   },
   "dependencies": {
+    "@rbxts/make": "^1.0.5",
+    "@rbxts/object-utils": "^1.0.4",
     "chmod": "^0.2.1",
     "roblox-ts": "^1.1.1"
   }
