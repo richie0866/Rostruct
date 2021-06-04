@@ -51,7 +51,7 @@ function transformDirectory(dir: fileUtils.Directory, scope: number): Instance {
 	if (init?.extension === "lua") instance = transformFile(init, scope, dir.fileName);
 	// Turns the directory into an instance using the metadata.
 	else if (init?.extension === "json")
-		makeFromMetadata(HttpService.JSONDecode(readfile(init.location)), dir.fileName);
+		instance = makeFromMetadata(HttpService.JSONDecode(readfile(init.location)), dir.fileName);
 	// Nothing is special about this directory! Make a normal folder.
 	else instance = Make("Folder", { Name: dir.fileName });
 
