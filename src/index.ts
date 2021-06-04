@@ -4,14 +4,15 @@
  * Author: richard
  */
 
-import * as http from "utils/http";
-import { Git, GitFetchResult } from "git";
-import { Promise } from "storage";
-import { Files } from "utils/file-utils";
-import { Reconciler } from "Reconciler";
-import { VirtualScript } from "VirtualScript";
+import * as httpUtils from "utils/http-utils";
+import Promise from "packages/Promise";
+import * as fileUtils from "utils/file-utils";
+import { Reconciler } from "core/Reconciler";
+import { VirtualScript } from "core/VirtualScript";
 
 const HttpService = game.GetService("HttpService");
+
+// TODO: Define these interfaces in a designated 'interfaces.ts' file
 
 /** Stores the result of {@link Build} and similar functions. */
 export interface Project {
@@ -24,13 +25,10 @@ export interface Project {
 	/** The file location of the project. */
 	Location: string;
 
-	/** An array of promises that resolve with LocalScripts and the result of executing them. */
-	RuntimePromises?: Array<Promise<[LocalScript, unknown]>>;
+	/** A promise that resolves once all scripts finish executing, returning an array of every script run. */
+	RuntimeWorker?: Promise<LocalScript[]>;
 
-	/**
-	 * A promise which resolves with the module required. Present when using {@link Require}.
-	 * This field uses Promises for error control and yielding.
-	 */
+	/** A promise which resolves with what the module returned. */
 	RequirePromise?: Promise<unknown>;
 }
 
@@ -44,10 +42,10 @@ export const Config = {};
  * @returns A project interface.
  */
 export function Build(target: string, parent?: Instance): Project {
-	const directory = Files.describeDirectory(target, target);
+	const directory = fileUtils.describeDirectory(target, target);
 	const reconciler = new Reconciler(directory);
 	return {
-		Instance: reconciler.buildTree(parent),
+		Instance: reconciler.reify(parent),
 		Reconciler: reconciler,
 		Location: directory.location,
 	};
@@ -55,20 +53,20 @@ export function Build(target: string, parent?: Instance): Project {
 
 /**
  * Builds the given project and executes every tracked LocalScript.
- * The result includes the {@link Project.RuntimePromises} fields.
+ * The result includes the {@link Project.RuntimeWorker} fields.
  * @param target The target files to build.
  * @param parent Optional parent of the Instance tree.
  * @returns A project interface.
  */
 export function Deploy(target: string, parent?: Instance): Project {
 	const project = Build(target, parent);
-	project.RuntimePromises = project.Reconciler.deploy();
+	project.RuntimeWorker = project.Reconciler.deployWorker();
 	return project;
 }
 
 /**
  * Builds the given project and executes every tracked LocalScript.
- * The result includes the {@link Project.RuntimePromises} and {@link Project.RequirePromise} fields.
+ * The result includes the {@link Project.RuntimeWorker} and {@link Project.RequirePromise} fields.
  * @param target The target files to build.
  * @param parent Optional parent of the Instance tree.
  * @returns A project interface.
@@ -76,8 +74,8 @@ export function Deploy(target: string, parent?: Instance): Project {
 export function Require(target: string, parent?: Instance): Project {
 	const project = Build(target, parent);
 	assert(project.Instance.IsA("ModuleScript"), `Object at path ${project.Location} must be a module`);
-	project.RuntimePromises = project.Reconciler.deploy();
-	project.RequirePromise = VirtualScript.getFromInstance(project.Instance)!.executePromise();
+	project.RuntimeWorker = project.Reconciler.deployWorker();
+	project.RequirePromise = VirtualScript.getFromInstance(project.Instance)!.deferExecutor();
 	return project;
 }
 
@@ -90,7 +88,7 @@ export function Require(target: string, parent?: Instance): Project {
  */
 export function GetLatestReleaseInfo(user: string, repo: string): Promise<ReleaseInfo> {
 	return new Promise<ReleaseInfo>((resolve) =>
-		http
+		httpUtils
 			.get(`https://api.github.com/repos/${user}/${repo}/releases/latest`)
 			.andThen((data) => resolve(HttpService.JSONDecode(data))),
 	);
@@ -107,17 +105,17 @@ export function GetLatestReleaseInfo(user: string, repo: string): Promise<Releas
  * @param asset The name of the release asset. If provided, this function downloads the release asset in its entirety. If `nil`, it downloads and unpacks the source.
  * @returns The results of the fetch.
  */
-export function GitFetch(user: string, repo: string, tag?: string, asset?: string): Promise<GitFetchResult> {
-	const tagPromise =
-		tag === undefined ? GetLatestReleaseInfo(user, repo).andThen((info) => info.tag_name) : Promise.resolve(tag);
-
-	const cacheName = `${user.lower()}-${repo.lower()}-${asset !== undefined ? asset.lower() : "Source"}`;
-
-	return tagPromise.andThen((tagName) => {
-		const assetUrl =
-			asset !== undefined
-				? `https://github.com/${user}/${repo}/releases/download/${tagName}/${asset}`
-				: `https://github.com/${user}/${repo}/archive/refs/tags/${tagName}.zip`;
-		return Git.fetch(assetUrl, cacheName, tagName, asset === undefined);
-	});
-}
+//export function GitFetch(user: string, repo: string, tag?: string, asset?: string): Promise<GitFetchResult> {
+//	const tagPromise =
+//		tag === undefined ? GetLatestReleaseInfo(user, repo).andThen((info) => info.tag_name) : Promise.resolve(tag);
+//
+//	const cacheName = `${user.lower()}-${repo.lower()}-${asset !== undefined ? asset.lower() : "Source"}`;
+//
+//	return tagPromise.andThen((tagName) => {
+//		const assetUrl =
+//			asset !== undefined
+//				? `https://github.com/${user}/${repo}/releases/download/${tagName}/${asset}`
+//				: `https://github.com/${user}/${repo}/archive/refs/tags/${tagName}.zip`;
+//		return Git.fetch(assetUrl, cacheName, tagName, asset === undefined);
+//	});
+//}

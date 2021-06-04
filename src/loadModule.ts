@@ -5,22 +5,14 @@
  * Description: Library for setting up Rostruct
  */
 
-import { Files } from "utils/file-utils";
+import { getPath } from "setupFiles";
+import Promise from "packages/Promise";
 
 /** A list of modules that are stored externally and cached. */
 export type ExternalDependencies = {
 	"zzlib.lua": zzlib;
 	"Promise.lua": PromiseConstructor;
 };
-
-/** Maps a list of files that handle Rostruct file storage. */
-export const storageMap = {
-	"rostruct/": "",
-	"rostruct/cache/": "",
-	"rostruct/cache/modules/": "",
-	"rostruct/cache/repos/": "",
-	"rostruct/cache/repo_tags.json": "{}",
-} as const;
 
 /** Map module names to their source URL. */
 const moduleUrls: { [moduleName in keyof ExternalDependencies]: string } = {
@@ -33,16 +25,6 @@ const moduleUrls: { [moduleName in keyof ExternalDependencies]: string } = {
 const modules: {
 	[moduleName in keyof ExternalDependencies]?: ExternalDependencies[moduleName];
 } = {};
-
-/**
- * Gets the value of `dir .. file`. Used for autocompletes.
- * @param dir The directory to index.
- * @param file The local path.
- * @returns A reference to the file.
- */
-export function getPath(dir: keyof typeof storageMap, file: string): string {
-	return dir + file;
-}
 
 /**
  * Installs and caches a library locally or from a site.
@@ -61,11 +43,6 @@ function loadModuleAsync<T extends keyof ExternalDependencies>(fileName: T): Ext
 	assert(f, err);
 	return (modules[fileName] = f() as ExternalDependencies[T]);
 }
-
-// Set up the file structure for Rostruct.
-Files.makeFiles(Files.fileMapToFileArray(storageMap));
-
-export const Promise = loadModuleAsync("Promise.lua");
 
 /**
  * Installs or gets an external dependency from the Rostruct cache.

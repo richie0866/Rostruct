@@ -4,8 +4,8 @@
  * Author: richard
  */
 
-import { httpRequest } from "api/compatibility";
-import { Promise } from "storage";
+import { httpRequest } from "api/aliases";
+import Promise from "packages/Promise";
 
 /** Sends an HTTP GET request. */
 export const get = Promise.promisify((url: string) => game.HttpGetAsync(url));
