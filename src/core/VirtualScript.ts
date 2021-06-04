@@ -1,7 +1,8 @@
 /*
- * File: virtualScript.ts
+ * File: VirtualScript.ts
  * File Created: Tuesday, 1st June 2021 8:58:51 pm
  * Author: richard
+ * Description: Execute files as Roblox instances.
  */
 
 import Promise from "packages/Promise";

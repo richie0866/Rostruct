@@ -1,3 +1,10 @@
+/*
+ * File: transformFile.ts
+ * File Created: Thursday, 3rd June 2021 11:13:25 pm
+ * Author: richard
+ * Description: Turns a file into a Roblox instance.
+ */
+
 import { generateAssetId } from "api/aliases";
 import Make from "packages/make";
 import * as fileUtils from "utils/file-utils";

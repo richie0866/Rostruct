@@ -1,7 +1,12 @@
-import { generateAssetId } from "api/aliases";
+/*
+ * File: transformDirectory.ts
+ * File Created: Friday, 4th June 2021 12:36:38 am
+ * Author: richard
+ * Description: Turns a folder directory into a Roblox instance.
+ */
+
 import Make from "packages/make";
 import * as fileUtils from "utils/file-utils";
-import { VirtualScript } from "core/VirtualScript";
 import transformFile from "./transformFile";
 
 /** A list of file names that should not become files. */

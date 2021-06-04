@@ -1,3 +1,10 @@
+/*
+ * File: index.ts
+ * File Created: Friday, 4th June 2021 1:52:37 am
+ * Author: richard
+ * Description: Transforms files into Roblox objects.
+ */
+
 import transformDirectory from "core/Reconciler/transformDirectory";
 import { VirtualScript } from "core/VirtualScript";
 import * as fileUtils from "utils/file-utils";
