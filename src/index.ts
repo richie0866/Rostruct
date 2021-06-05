@@ -4,11 +4,10 @@
  * Author: richard
  */
 
-import * as httpUtils from "utils/http-utils";
+import * as http from "utils/common/http";
 import Promise from "packages/Promise";
-import * as fileUtils from "utils/file-utils";
-import { Reconciler } from "core/Reconciler";
-import { VirtualScript } from "core/VirtualScript";
+import { Directory } from "utils/files";
+import { Reconciler, VirtualScript } from "core";
 
 const HttpService = game.GetService("HttpService");
 
@@ -42,7 +41,7 @@ export const Config = {};
  * @returns A project interface.
  */
 export function Build(target: string, parent?: Instance): Project {
-	const directory = fileUtils.describeDirectory(target, target);
+	const directory = Directory(target, target);
 	const reconciler = new Reconciler(directory);
 	return {
 		Instance: reconciler.reify(parent),
@@ -88,9 +87,9 @@ export function Require(target: string, parent?: Instance): Project {
  */
 export function GetLatestReleaseInfo(user: string, repo: string): Promise<ReleaseInfo> {
 	return new Promise<ReleaseInfo>((resolve) =>
-		httpUtils
+		http
 			.get(`https://api.github.com/repos/${user}/${repo}/releases/latest`)
-			.andThen((data) => resolve(HttpService.JSONDecode(data))),
+			.andThen((data) => resolve(HttpService.JSONDecode<ReleaseInfo>(data))),
 	);
 }
 

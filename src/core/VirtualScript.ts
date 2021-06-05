@@ -6,9 +6,9 @@
  */
 
 import Promise from "packages/Promise";
-import globals from "utils/globals";
+import { globals } from "globals";
 import Object from "packages/object-utils";
-import { File } from "utils/file-utils";
+import { File } from "utils/files";
 
 const HttpService = game.GetService("HttpService");
 
@@ -16,7 +16,7 @@ const HttpService = game.GetService("HttpService");
 export type Executor = () => unknown;
 
 /** Base environment for VirtualScript instances. */
-export interface Environment {
+export interface VirtualEnv {
 	/** A reference to the script object that a file is being executed for. */
 	script: LuaSourceContainer;
 
@@ -42,12 +42,20 @@ export class VirtualScript {
 	/** Keeps track of VirtualScripts created by scope. */
 	static readonly virtualScriptsOfScope = new Map<number, VirtualScript[]>();
 
-	/** Gets the VirtualScript attached to a specific instance. */
+	/**
+	 * Gets the VirtualScript attached to a specific instance.
+	 * @param obj The object that may have a VirtualScript.
+	 * @returns A possible VirtualScript object.
+	 */
 	static getFromInstance(obj: LuaSourceContainer): VirtualScript | undefined {
 		return this.virtualScriptsByInstance.get(obj);
 	}
 
-	/** Gets the VirtualScript attached to a specific instance. */
+	/**
+	 * Gets a list of VirtualScripts for a specific scope.
+	 * @param scope The scope to search for.
+	 * @returns A list of VirtualScripts for the given scope.
+	 */
 	static getVirtualScriptsOfScope(scope: number): VirtualScript[] | undefined {
 		return this.virtualScriptsOfScope.get(scope);
 	}
@@ -60,7 +68,7 @@ export class VirtualScript {
 	 */
 	private static require(obj: ModuleScript): VirtualScript | unknown {
 		const virtualScript = this.virtualScriptsByInstance.get(obj);
-		if (virtualScript) return virtualScript.runExecutorAsync();
+		if (virtualScript) return virtualScript.runExecutor();
 		else return require(obj);
 	}
 
@@ -77,7 +85,7 @@ export class VirtualScript {
 	private jobComplete = false;
 
 	/** A custom environment for the object. */
-	private readonly env: Environment;
+	private readonly env: VirtualEnv;
 
 	/** Creates a new VirtualScript object. */
 	constructor(
@@ -99,6 +107,7 @@ export class VirtualScript {
 			_ROOT: file.origin,
 		};
 
+		// Initialize a scope array if it does not already exist.
 		if (!VirtualScript.virtualScriptsOfScope.has(scope)) VirtualScript.virtualScriptsOfScope.set(scope, [this]);
 
 		// Reserves globals for this VirtualScript's environent.
@@ -127,7 +136,7 @@ export class VirtualScript {
 	 * @param exec The function to call on execution.
 	 */
 	setExecutor(exec: Executor) {
-		assert(this.result === undefined, "Cannot set executor after script was executed");
+		assert(this.jobComplete === false, "Cannot set executor after script was executed");
 		this.executor = exec;
 	}
 
@@ -146,7 +155,7 @@ export class VirtualScript {
 	 * Runs the executor function if not already run and returns results.
 	 * @returns The value returned by the executor.
 	 */
-	runExecutorAsync(): ReturnType<Executor> {
+	runExecutor(): ReturnType<Executor> {
 		if (this.jobComplete) return this.result;
 
 		const result = this.createExecutor()();
@@ -165,7 +174,7 @@ export class VirtualScript {
 	 * @returns A promise which resolves with the value returned by the executor.
 	 */
 	deferExecutor(): Promise<ReturnType<Executor>> {
-		return Promise.defer((resolve) => resolve(this.runExecutorAsync())).timeout(
+		return Promise.defer((resolve) => resolve(this.runExecutor())).timeout(
 			30,
 			`Script ${this.file.location} reached execution timeout! Try not to yield the main thread in LocalScripts.`,
 		);

@@ -7,8 +7,8 @@
 
 import transformDirectory from "core/Reconciler/transformDirectory";
 import { VirtualScript } from "core/VirtualScript";
-import * as fileUtils from "utils/file-utils";
-import globals from "utils/globals";
+import { Directory } from "utils/files";
+import { globals } from "globals";
 import Promise from "packages/Promise";
 
 /** Class used to transform files into a Roblox instance tree. */
@@ -19,7 +19,7 @@ export class Reconciler {
 	/** Creates a new Reconciler object. */
 	constructor(
 		/** The directory to turn into an instance tree. */
-		readonly target: fileUtils.Directory,
+		readonly target: Directory,
 	) {}
 
 	/**
@@ -49,7 +49,7 @@ export class Reconciler {
 			if (v.instance.IsA("LocalScript"))
 				runtimeJobs.push(v.deferExecutor().andThen(() => v.instance as LocalScript));
 
-		// Define as constant because the implementation of Roblox 'Promise.all' is faulty
+		// Define as constant because the typing for 'Promise.all' is faulty
 		const runtimeWorker = Promise.all(runtimeJobs);
 
 		return runtimeWorker as Promise<LocalScript[]>;

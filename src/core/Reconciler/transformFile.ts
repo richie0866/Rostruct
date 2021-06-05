@@ -5,9 +5,9 @@
  * Description: Turns a file into a Roblox instance.
  */
 
-import { generateAssetId } from "api/aliases";
+import { generateAssetId } from "globals";
 import Make from "packages/make";
-import * as fileUtils from "utils/file-utils";
+import { File } from "utils/files";
 import { VirtualScript } from "core/VirtualScript";
 
 const HttpService = game.GetService("HttpService");
@@ -16,11 +16,11 @@ const HttpService = game.GetService("HttpService");
  * Creates an Instance using the given file information.
  * If the object was a script, a reference to the file path is stored in the `Source` parameter.
  * @param file The file to make an Instance from.
- * @param name Optional name of the instance. Defaults to `file.name`.
+ * @param name Optional name of the instance.
  * @param parent Optional parent of the Instance.
  * @returns A new Instance if possible.
  */
-function transformFile(file: fileUtils.File, scope: number, name?: string): Instance | undefined {
+function transformFile(file: File, scope: number, name?: string): Instance | undefined {
 	switch (file.extension) {
 		// Script
 		// Creates a VirtualScript which executes the file as the instance.
@@ -30,12 +30,12 @@ function transformFile(file: fileUtils.File, scope: number, name?: string): Inst
 			switch (file.type) {
 				// Server script
 				case "server.lua":
-					luaObj = Make("Script", { Name: name ?? file.name, Source: file.location });
+					luaObj = Make("Script", { Name: name ?? file.shortName, Source: file.location });
 					break;
 
 				// Client script
 				case "client.lua":
-					luaObj = Make("LocalScript", { Name: name ?? file.name, Source: file.location });
+					luaObj = Make("LocalScript", { Name: name ?? file.shortName, Source: file.location });
 					break;
 
 				// Module script
@@ -44,7 +44,7 @@ function transformFile(file: fileUtils.File, scope: number, name?: string): Inst
 					luaObj = Make("ModuleScript", { Name: name ?? file.extendedName, Source: file.location });
 			}
 
-			new VirtualScript(luaObj, file as fileUtils.File, scope);
+			new VirtualScript(luaObj, file as File, scope);
 
 			return luaObj;
 
@@ -52,7 +52,7 @@ function transformFile(file: fileUtils.File, scope: number, name?: string): Inst
 		// Creates a VirtualScript which returns the decoded JSON data.
 		case "json":
 			const jsonObj = Make("ModuleScript", { Name: name ?? file.extendedName });
-			new VirtualScript(jsonObj, file as fileUtils.File, scope).setExecutor(() =>
+			new VirtualScript(jsonObj, file as File, scope).setExecutor(() =>
 				HttpService.JSONDecode(readfile(file.location)),
 			);
 			return jsonObj;
