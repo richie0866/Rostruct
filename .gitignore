@@ -2,4 +2,5 @@
 /out
 /site
 /include
+/Rostruct.lua
 *.tsbuildinfo
