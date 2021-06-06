@@ -1,3 +1,7 @@
+--[[
+	Originally RuntimeLib.lua supplied by roblox-ts, modified for use when bundled.
+]]
+
 local TS = {
 	_G = {};
 }
