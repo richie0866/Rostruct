@@ -2,15 +2,16 @@
   "name": "@rbxts/rostruct",
   "version": "1.0.0",
   "description": "",
-  "main": "out/Rostruct.lua",
+  "main": "src/index.ts",
   "scripts": {
     "prepublishOnly": "rbxtsc",
-    "build:out": "cross-env NODE_ENV=production TYPE=Luau rbxtsc --verbose --type=package"
+    "build:luau": "cross-env NODE_ENV=production TYPE=Luau rbxtsc --verbose --type=package",
+    "build:bundle": "chmod +x \"./.github/bundle.sh\" && bash ./.github/bundle.sh"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "types": "types/",
+  "types": "typings/",
   "files": [
     "out"
   ],
@@ -30,6 +31,9 @@
     "typescript": "^4.3.2"
   },
   "dependencies": {
+    "@rbxts/make": "^1.0.5",
+    "@rbxts/object-utils": "^1.0.4",
+    "chmod": "^0.2.1",
     "roblox-ts": "^1.1.1"
   }
 }

@@ -1,0 +1,74 @@
+{
+  "_from": "@rbxts/make",
+  "_id": "@rbxts/make@1.0.5",
+  "_inBundle": false,
+  "_integrity": "sha512-nx97nroUk+/YGVKNCHEoXBZ1BA64ZM2HSgtaxIFldWO+BwcI9CvkKvDY1O1qnzbqRFp3w/iUubqGiNViYsoZHw==",
+  "_location": "/@rbxts/make",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "@rbxts/make",
+    "name": "@rbxts/make",
+    "escapedName": "@rbxts%2fmake",
+    "scope": "@rbxts",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/@rbxts/make/-/make-1.0.5.tgz",
+  "_shasum": "faa2d5a20ac19de853f393e9f16eb84647ea3d9e",
+  "_spec": "@rbxts/make",
+  "_where": "C:\\Users\\richard\\Documents\\Source\\Projects\\rostruct",
+  "author": {
+    "name": "Validark"
+  },
+  "bugs": {
+    "url": "https://github.com/Validark/Roblox-TS-Libraries/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "@rbxts/compiler-types": "^1.1.1-types.3",
+    "@rbxts/types": "^1.0.471"
+  },
+  "deprecated": false,
+  "description": "Shorthand for declaring Instances with properties.",
+  "files": [
+    "init.lua",
+    "init.d.ts",
+    "README.md"
+  ],
+  "homepage": "https://github.com/Validark/Roblox-TS-Libraries/blob/master/make/README.md",
+  "keywords": [
+    "resources",
+    "roblox-typescript",
+    "RemoteEvents",
+    "RemoteFunctions",
+    "Remotes",
+    "Folder",
+    "Manager"
+  ],
+  "license": "ISC",
+  "main": "init.lua",
+  "name": "@rbxts/make",
+  "peerDependencies": {
+    "@rbxts/compiler-types": "^1.1.1-types.3",
+    "@rbxts/types": "^1.0.471"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Validark/Roblox-TS-Libraries/tree/master/make"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "types": "init.d.ts",
+  "version": "1.0.5"
+}

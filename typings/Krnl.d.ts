@@ -85,11 +85,17 @@ declare function delfolder(directory: string): void;
 /** Generates a rbxasset:// [`content`](https://developer.roblox.com/en-us/articles/Content) URL for the given asset from Krnl's `workspace` directory. */
 declare function getcustomasset(file: string): string;
 
+/** Sends an HTTP request using a dictionary to specify the request data, such as the target URL, method, headers and request body data. It returns a dictionary that describes the response data received. */
+declare function request(requestOptions: RequestAsyncRequest): RequestAsyncResponse;
+
 // Instances
 
 interface DataModel {
 	/** Sends an HTTP GET request. */
 	HttpGetAsync(this: DataModel, url: string): string;
+
+	/** Sends an HTTP POST request. */
+	HttpPostAsync(this: DataModel, url: string): string; // TODO: Check what it actually returns
 
 	/** Returns an array of Instances associated with the given [`content`](https://developer.roblox.com/en-us/articles/Content) URL. */
 	GetObjects(this: DataModel, url: string): Array<Instance>;
