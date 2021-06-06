@@ -4,7 +4,7 @@
  * Author: richard
  */
 
-import { VirtualEnv } from "core/VirtualScript";
+import { VirtualEnv } from "core";
 
 /** Global environment reserved for Rostruct. */
 interface Globals {

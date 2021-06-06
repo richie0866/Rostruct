@@ -6,13 +6,12 @@
  */
 
 import Make from "packages/make";
-import { Directory, File } from "utils/files";
+import { HttpService } from "packages/services";
+import { Directory, File } from "utils/filesystem";
 import transformFile from "./transformFile";
 
 /** A list of file names that should not become files. */
 const RESERVED_NAMES = new ReadonlySet<string>(["init.lua", "init.server.lua", "init.client.lua", "init.meta.json"]);
-
-const HttpService = game.GetService("HttpService");
 
 /** Interface for `init.meta.json` data. */
 interface InstanceMetadata<T extends keyof CreatableInstances> {

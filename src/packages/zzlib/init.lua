@@ -14,7 +14,7 @@ local result
 local infl do
 	local inflate = {}
 	
-	local bit = getfenv(0).bit32
+	local bit = bit32
 	
 	inflate.band = bit.band
 	inflate.rshift = bit.rshift
@@ -101,10 +101,10 @@ local infl do
 			local len = depths[i] or 0
 			if len > 0 then
 				local e = (i-1)*16 + len
-				local code2 = next_code[len]
+				local code = next_code[len]
 				local rcode = 0
 				for j=1,len do
-					rcode = rcode + bit.lshift(bit.band(1,bit.rshift(code2,j-1)),len-j)
+					rcode = rcode + bit.lshift(bit.band(1,bit.rshift(code,j-1)),len-j)
 				end
 				for j=0,2^nbits-1,2^len do
 					table[j+rcode] = e
@@ -184,7 +184,7 @@ local infl do
 				elseif v == 18 then
 					n = n + 8
 				end
-				for _=1,n do
+				for j=1,n do
 					depths[i] = c
 					i = i + 1
 				end
@@ -192,15 +192,9 @@ local infl do
 				error("wrong entry in depth table for literal/length alphabet: "..v);
 			end
 		end
-		local litdepths = {}
-		for _=1,hlit do
-			table.insert(litdepths,depths[i])
-		end
+		local litdepths = {} for i=1,hlit do table.insert(litdepths,depths[i]) end
 		local littable,nlit = hufftable_create(litdepths)
-		local distdepths = {}
-		for _=hlit+1,#depths do
-			table.insert(distdepths,depths[i])
-		end
+		local distdepths = {} for i=hlit+1,#depths do table.insert(distdepths,depths[i]) end
 		local disttable,ndist = hufftable_create(distdepths)
 		block_loop(out,bs,nlit,ndist,littable,disttable)
 	end
@@ -211,7 +205,7 @@ local infl do
 		local depths = {}
 		for i=1,4 do
 			local d = dpt[i]
-			for _=1,cnt[i] do
+			for j=1,cnt[i] do
 				table.insert(depths,d)
 			end
 		end
@@ -244,6 +238,7 @@ local infl do
 		local last,type
 		local output = {}
 		repeat
+			local block
 			last = bs:getb(1)
 			type = bs:getb(2)
 			if type == 0 then
@@ -266,7 +261,7 @@ local infl do
 			crc32_table = {}
 			for i=0,255 do
 				local r=i
-				for _=1,8 do
+				for j=1,8 do
 					r = bit.bxor(bit.rshift(r,1),bit.band(0xedb88320,bit.bnot(bit.band(r,1)-1)))
 				end
 				crc32_table[i] = r
@@ -346,13 +341,13 @@ local function inflate_gzip(bs)
 		-- TODO: check header CRC16
 		bs.pos = bs.pos+2
 	end
-	local newResult = arraytostr(infl.main(bs))
+	local result = arraytostr(infl.main(bs))
 	local crc = bs:getb(8)+256*(bs:getb(8)+256*(bs:getb(8)+256*bs:getb(8)))
 	bs:close()
-	if crc ~= infl.crc32(newResult) then
+	if crc ~= infl.crc32(result) then
 		error("checksum verification failed")
 	end
-	return newResult
+	return result
 end
 
 -- compute Adler-32 checksum
@@ -383,13 +378,13 @@ local function inflate_zlib(bs)
 		error("preset dictionary not implemented")
 	end
 	bs.pos=3
-	local newResult = arraytostr(infl.main(bs))
+	local result = arraytostr(infl.main(bs))
 	local adler = ((bs:getb(8)*256+bs:getb(8))*256+bs:getb(8))*256+bs:getb(8)
 	bs:close()
-	if adler ~= adler32(newResult) then
+	if adler ~= adler32(result) then
 		error("checksum verification failed")
 	end
-	return newResult
+	return result
 end
 
 function zzlib.gunzipf(filename)
@@ -420,6 +415,7 @@ end
 
 function zzlib.unzip(buf)
 	local p = #buf-21 - #("00bd21b8cc3a2e233276f5a70b57ca7347fdf520")
+	local quit = false
 	local fileMap = {}
 	if int4le(buf,p) ~= 0x06054b50 then
 		-- not sure there is a reliable way to locate the end of central directory record
@@ -429,31 +425,32 @@ function zzlib.unzip(buf)
 	local cdoffset = int4le(buf,p+16)
 	local nfiles = int2le(buf,p+10)
 	p = cdoffset+1
-	for _=1,nfiles do
+	for i=1,nfiles do
 		if int4le(buf,p) ~= 0x02014b50 then
 			error("invalid central directory header signature")
 		end
+		local flag = int2le(buf,p+8)
 		local method = int2le(buf,p+10)
 		local crc = int4le(buf,p+16)
 		local namelen = int2le(buf,p+28)
 		local name = buf:sub(p+46,p+45+namelen)
 		if true then
 			local headoffset = int4le(buf,p+42)
-			local p2 = 1+headoffset
-			if int4le(buf,p2) ~= 0x04034b50 then
+			local p = 1+headoffset
+			if int4le(buf,p) ~= 0x04034b50 then
 				error("invalid local header signature")
 			end
-			local csize = int4le(buf,p2+18)
-			local extlen = int2le(buf,p2+28)
-			p2 = p2+30+namelen+extlen
+			local csize = int4le(buf,p+18)
+			local extlen = int2le(buf,p+28)
+			p = p+30+namelen+extlen
 			if method == 0 then
 				-- no compression
-				result = buf:sub(p2,p2+csize-1)
+				result = buf:sub(p,p+csize-1)
 				fileMap[name] = result
 			else
 				-- DEFLATE compression
 				local bs = infl.bitstream_init(buf)
-				bs.pos = p2
+				bs.pos = p
 				result = arraytostr(infl.main(bs))
 				fileMap[name] = result
 			end

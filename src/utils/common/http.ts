@@ -5,7 +5,6 @@
  */
 
 import { httpRequest } from "globals";
-import Promise from "packages/Promise";
 
 /** Sends an HTTP GET request. */
 export const get = Promise.promisify((url: string) => game.HttpGetAsync(url));

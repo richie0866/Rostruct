@@ -7,10 +7,9 @@
 
 import { generateAssetId } from "globals";
 import Make from "packages/make";
-import { File } from "utils/files";
+import { File } from "utils/filesystem";
 import { VirtualScript } from "core/VirtualScript";
-
-const HttpService = game.GetService("HttpService");
+import { HttpService } from "packages/services";
 
 /**
  * Creates an Instance using the given file information.

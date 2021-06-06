@@ -1,3 +1,5 @@
+export {};
+
 /**
  * File types that can be attributed to file descriptors.
  * Enums add extra functionaliy that goes unused when transpiled.
@@ -31,3 +33,6 @@ export interface Descriptor {
 export type FileArray = [string, string | undefined][];
 
 export type FileArrayPath<T extends FileArray> = T[number][0];
+
+/** Prevent the transpiled Lua code from returning nil! */
+export const _ = undefined;

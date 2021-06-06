@@ -1,4 +1,5 @@
-import { writeFile } from "utils/files";
+import { HttpService } from "packages/services";
+import { makeFile } from "utils/filesystem";
 
 interface JSONData {
 	[key: string]: string | number | boolean | JSONData;
@@ -9,14 +10,15 @@ export interface JSONInterface {
 	/** A reference to the original path to the file. */
 	readonly file: string;
 
-	/** The data that was decoded. */
-	readonly data: JSONData;
+	/** The current state of the JSON file. */
+	data?: JSONData;
 
-	/** Saves the current JSON data to the file. */
+	/** Saves the current state to the file. */
 	save(): void;
-}
 
-const HttpService = game.GetService("HttpService");
+	/** Loads the JSON data of the file. */
+	load(): JSONData;
+}
 
 /**
  * Creates an object to read and write JSON data in an easier way.
@@ -26,9 +28,14 @@ const HttpService = game.GetService("HttpService");
 export function openJson(file: string): JSONInterface {
 	return {
 		file: file,
-		data: HttpService.JSONDecode<JSONData>(readfile(file)),
+		data: undefined,
 		save() {
-			writeFile(file, HttpService.JSONEncode(this.data));
+			if (this.data !== undefined) makeFile(file, HttpService.JSONEncode(this.data));
+		},
+		load() {
+			const data = HttpService.JSONDecode<JSONData>(readfile(file));
+			this.data = data;
+			return data;
 		},
 	} as const;
 }

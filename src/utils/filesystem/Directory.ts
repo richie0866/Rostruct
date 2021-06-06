@@ -1,4 +1,5 @@
 import { File } from "./File";
+import { formatPath } from "./makeFiles";
 import { Descriptor, FileType } from "./types";
 
 /** Describes directory metadata based on a given file location. */
@@ -21,6 +22,8 @@ export interface Directory extends Descriptor {
 
 /** Creates a new Directory object. */
 export function Directory(location: string, origin?: string): Directory {
+	// Add a trailing slash if missing
+	location = formatPath(location);
 	return {
 		descriptorType: "Directory",
 		location: location,

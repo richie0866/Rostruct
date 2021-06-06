@@ -5,34 +5,11 @@
  * Description: Execute files as Roblox instances.
  */
 
-import Promise from "packages/Promise";
 import { globals } from "globals";
 import Object from "packages/object-utils";
-import { File } from "utils/files";
-
-const HttpService = game.GetService("HttpService");
-
-/** A function that gets called when a VirtualScript is executed. */
-export type Executor = () => unknown;
-
-/** Base environment for VirtualScript instances. */
-export interface VirtualEnv {
-	/** A reference to the script object that a file is being executed for. */
-	script: LuaSourceContainer;
-
-	/**
-	 * Runs the supplied `ModuleScript` if it has not been run already, and returns what the ModuleScript returned (in both cases).
-	 *
-	 * If the module is attached to a `VirtualScript` object, it returns what the VirtualScript returned.
-	 */
-	require: (obj: ModuleScript) => unknown;
-
-	/** A reference to the path of the file that is being executed. */
-	_PATH: string;
-
-	/** A reference to the root directory `Reconciler.reify` was originally called with. */
-	_ROOT: string;
-}
+import { File } from "utils/filesystem";
+import { HttpService } from "packages/services";
+import { Executor, VirtualEnv } from "./types";
 
 /** Class used to execute files in a Roblox instance context. */
 export class VirtualScript {
@@ -124,7 +101,7 @@ export class VirtualScript {
 	 * @returns The source of the VirtualScript.
 	 */
 	private getSource(): string {
-		let header = `local _ENV = getgenv()._ROSTRUCT.environments['${this.scope}-${this.id}']; `;
+		let header = `local _ENV = getgenv().Rostruct.environments['${this.scope}-${this.id}']; `;
 
 		for (const k of Object.keys(this.env)) header += `local ${k} = _ENV['${k}']; `;
 

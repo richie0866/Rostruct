@@ -7,9 +7,8 @@
 
 import transformDirectory from "core/Reconciler/transformDirectory";
 import { VirtualScript } from "core/VirtualScript";
-import { Directory } from "utils/files";
+import { Directory } from "utils/filesystem";
 import { globals } from "globals";
-import Promise from "packages/Promise";
 
 /** Class used to transform files into a Roblox instance tree. */
 export class Reconciler {

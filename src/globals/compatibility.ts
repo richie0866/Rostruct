@@ -5,8 +5,10 @@
  * Description: Manages compatibility between exploits.
  */
 
+declare const syn: {
+	request: typeof request;
+};
 declare const getsynasset: typeof getcustomasset;
-export const generateAssetId = getcustomasset || getsynasset;
 
-declare const syn_request: typeof request;
-export const httpRequest = request || syn_request;
+export const generateAssetId = getcustomasset || getsynasset;
+export const httpRequest = request || syn.request;
