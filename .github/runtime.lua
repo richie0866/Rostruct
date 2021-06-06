@@ -2,6 +2,15 @@ local TS = {
 	_G = {};
 }
 
+setmetatable(TS, {
+	__index = function(self, k)
+		if k == "Promise" then
+			self.Promise = TS.initialize("packages", "Promise")
+			return self.Promise
+		end
+	end
+})
+
 -- Runtime classes
 local FilePtr
 do
@@ -205,4 +214,39 @@ function TS.import(caller, parentPtr, ...)
 	end
 
 	return data
+end
+
+-- general utility functions
+function TS.async(callback)
+	local Promise = TS.Promise
+	return function(...)
+		local n = select("#", ...)
+		local args = { ... }
+		return Promise.new(function(resolve, reject)
+			coroutine.wrap(function()
+				local ok, result = pcall(callback, unpack(args, 1, n))
+				if ok then
+					resolve(result)
+				else
+					reject(result)
+				end
+			end)()
+		end)
+	end
+end
+
+function TS.await(promise)
+	local Promise = TS.Promise
+	if not Promise.is(promise) then
+		return promise
+	end
+
+	local status, value = promise:awaitStatus()
+	if status == Promise.Status.Resolved then
+		return value
+	elseif status == Promise.Status.Rejected then
+		error(value, 2)
+	else
+		error("The awaited Promise was cancelled", 2)
+	end
 end
