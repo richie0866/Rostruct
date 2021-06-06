@@ -44,7 +44,12 @@ do
 
 	function Module.new(path, name, func)
 		return setmetatable({
-			path = path,
+			-- Init files are representations of their parent directory,
+			-- so if it's an init file, we trim the "/init.lua" off of
+			-- the file path.
+			path = name ~= "init"
+				and path
+				or  FilePtr.new(path).path,
 			name = name,
 			func = func,
 			data = nil;
@@ -62,8 +67,8 @@ do
 	end
 
 	function Module:require()
-		if not self.data then
-			self.data = assert(self.func(), "Module at '" .. self.path .. "' did not return exactly one value")
+		if self.func then
+			self.data = self.func()
 			self.func = nil
 		end
 		return self.data
@@ -139,17 +144,17 @@ function TS.get(path)
 	return modulesByPath[path]
 end
 
-function TS.initialize(path)
+function TS.initialize(...)
 	local symbol = setmetatable({}, {__tostring = function()
 		return "root"
 	end})
 	local caller = TS.register(symbol, symbol)
-	return TS.import(caller, { path = "out/" }, path)
+	return TS.import(caller, { path = "out/" }, ...)
 end
 
 -- module resolution
 function TS.getModule(_object, _moduleName)
-	return error("TS.getModule is not supported yet", 2)
+	return error("TS.getModule is not supported", 2)
 end
 
 -- This is a hash which TS.import uses as a kind of linked-list-like history of [Script who Loaded] -> Library
@@ -157,17 +162,11 @@ local currentlyLoading = {}
 local registeredLibraries = {}
 
 function TS.import(caller, parentPtr, ...)
-	-- Caller may be an init file, so if that's true, just look in the parent
-	if caller == parentPtr then
-		parentPtr = caller.Parent
-	end
-	
 	-- Because 'Module.Parent' returns a FilePtr, the module handles the indexing.
-	-- Getting 'parentPtr.path' will return the result of FilePtr.Parent...
+	-- Getting 'parentPtr.path' will return the result of FilePtr.Parent.Parent...
 	local modulePath = parentPtr.path .. table.concat({...}, "/") .. ".lua"
-	local initModulePath = parentPtr.path .. table.concat({...}, "/") .. "/init.lua"
 	local module = assert(
-		modulesByPath[modulePath] or modulesByPath[initModulePath],
+		modulesByPath[modulePath] or modulesByPath[parentPtr.path .. table.concat({...}, "/") .. "/init.lua"],
 		"No module exists at path '" .. modulePath .. "'"
 	)
 
