@@ -3,7 +3,7 @@ Rostruct is a project deployment library specializing in running Lua projects in
 
 This documentation is based on Rojo's documentation, but is a work in progress.
 
-!!! info
+!!! note
 	This documentation assumes some familiarity with Rojo. If you're new to using external project files, [Rojo's documentation](https://rojo.space/docs/) is a good introduction.
 
 ## Rostruct

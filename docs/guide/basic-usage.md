@@ -1,80 +1,91 @@
 # Basic usage
 
-!!! info
+!!! note
 	This page assumes some familiarity with the Promise object. Check out their [extensive documentation](https://eryn.io/roblox-lua-promise/lib/) for more info.
 
 ## Build your project
-Building projects is the core of Rostruct; it transforms the files into Roblox objects, and returns a `Project` interface.
-
-To create a project that can be deployed with Rostruct, locate your executor's `workspace/` directory, insert a folder somewhere safe inside, write some code, and *voila*! Rostruct only needs the project files themselves to build them, and no other dependencies are necessary.
-
-```lua
-local project = Rostruct.Build("Projects/MyProject")
-local MyProject = project.Instance
-```
-
-`Rostruct.Build` also takes an optional `parent` argument, mainly for debugging, so you can see what your project looks like after being built.
+`Rostruct.Build` is the core of Rostruct; it transforms your project files into Roblox objects, and returns a `BuildResult` object.
 
 ![image](./images/example-vscode-and-roblox.png)
 
+To set up a project, locate your executor's `workspace/` directory and create a folder somewhere to host your project. You can write code and insert model files, and they will be transformed into instances. Rostruct only needs the project files themselves, and no other dependencies are necessary.
+
 ```lua
-Rostruct.Build("Projects/MyProject", workspace)
+local project = Rostruct.Build("Projects/MyProject/")
+local MyProject = project.Instance
 ```
 
-If you'd like to rename the project instance, or manually make changes, you can!
-`LocalScripts` and `ModuleScripts` are all run on deferred threads, allowing you to change the name of the project before they execute:
+`Rostruct.Build` also takes an optional `parent` argument, mainly for debugging, to automatically parent your project to an instance.
 
 ```lua
-local project = Rostruct.Build("Projects/MyRepo/src")
+Rostruct.Build("Projects/MyProject/", workspace)
+```
+
+If you'd like to rename the project, or modify the instance before scripts are run, you can!
+`LocalScripts` and `ModuleScripts` are all run on deferred threads, allowing you to make your changes before they execute:
+
+```lua
+local project = Rostruct.Build("Projects/Roact/src/")
 project.Instance.Name = "Roact"
 ```
 
 The code above also applies to all other Rostruct functions.
 
 ## Deploy your project
-Deploying a project simply builds it and then executes every `LocalScript` on a deferred thread. It also adds an additional field to the `Project` interface: `RuntimePromises`, a list of promises that resolve with the script and what it returned. The code below is an example of how you could use this method:
+Deploying a project builds it and then executes every `LocalScript` on a deferred thread. It also adds an additional field to the `BuildResult` object: `RuntimeWorker`, a Promise which resolves with every LocalScript in your project after they all finish executing. The code below is an example of how you could use this field:
 
 !!! warning
-	Runtime promises automatically time out after 30 seconds, avoid making a script take too long to execute!
+	`RuntimeWorker` will automatically time out after 30 seconds of suspended execution, avoid making a script take too long to execute!
 
 ```lua
-local Promise = Rostruct.Loader.Install("Promise.lua"):expect()
-local project = Rostruct.Deploy("Projects/RemoteSpy")
+local project = Rostruct.Deploy("Projects/RemoteSpy/src/")
 
 -- Waits for all scripts to finish executing:
-Promise.all(project.RuntimePromises)
-	:andThen(function(scriptsAndResults)
-		print("Amount of scripts executed: " .. #scriptsAndResults)
-		for _, scriptAndResult in ipairs(scriptsAndResults) do
-			local obj = scriptAndResult[1]
-			local result = scriptAndResult[2]
-			print("Script " .. obj.Name .. " returned: " .. tostring(result))
-		end
-	end)
+project.RuntimeWorker:andThen(function(scripts)
+	print("Amount of scripts executed: " .. #scripts)
+	for _, obj in ipairs(scripts) do
+		print("Script " .. obj.Name .. " executed!")
+	end
+end)
 ```
 
 ## Require a project
-Requiring a project builds and deploys it, but adds another additional field: `RequirePromise`. This promise resolves with exactly what the module returned. The code below is an example of how you could use this method:
+Requiring a project builds and deploys it, but adds another additional field: `Module`, a Promise which resolves with exactly what the module returned. The code below is an example of how to require a library:
 
 ```lua
-local project = Rostruct.Deploy("Projects/UILibrary")
+local project = Rostruct.Require("Projects/UILibrary/lib/")
 
 -- Gets what Projects/UILibrary/init.lua returned:
-local UILibrary = project.RequirePromise:expect()
+local UILibrary = project.Module:expect()
 UILibrary:create("Frame")
 ```
 
-## Download from Github
-GitFetch downloads the latest release (or a specified release) of a given repository, and returns a `GitFetchResult` interface. The code below is a basic implementation of `Rostruct.GitFetch` on [a declarative UI library for Roblox Lua, Roact](https://github.com/Roblox/roact/):
+## Download a Github release
+Rostruct provides functions that allow a user to download and store a release from a Github repository.
 
-!!! note
-	Currently, calling `Rostruct.GitFetch` with no `tag` provided yields the promise, even if the project is already cached. This behavior is expected to change in the near future.
+The functions `Rostruct.DownloadRelease` and `Rostruct.DownloadLatestRelease` will download the release, with an optional asset target, and return a `DownloadResult` object.
+
+!!! info
+	By default, if the target asset is unspecified, Rostruct will download and extract the Source code zip file.
+	Assets that are zip files will automatically be extracted. Otherwise, they are downloaded as a single file.
+	![image](./images/github-asset.png)
+
+The code below demonstrates using `Rostruct.DownloadRelease` on the [declarative UI library, Roact](https://github.com/Roblox/roact/):
 
 ```lua
-Rostruct.GitFetch("Roblox", "roact"):andThen(function(gitFetchResult)
-	local project = Rostruct.Require(gitFetchResult.Location .. "/src")
-	return project.RequirePromise
-end):andThen(function(Roact)
-	print(Roact.createElement)
-end)
+-- Because the 4th parameter, 'asset,' isn't provided,
+-- it will download the source code of the release (see info)
+local downloadResult = Rostruct.DownloadRelease("Roblox", "roact", "v1.4.0"):expect()
+local buildResult = Rostruct.Require(result.Location .. "src/")
+
+local Roact = buildResult.Module:expect()
+print(Roact.createElement)
+```
+
+You can also download a specific asset. In this example, it will download the `Roact.rbxm` asset from the v1.4.0 release:
+
+```lua
+-- Note that Rostruct does not require or execute model files!
+-- They still get transformed, so only use them for asset management.
+Rostruct.DownloadRelease("Roblox", "roact", "v1.4.0", "Roact.rbxm")
 ```
