@@ -12,31 +12,36 @@
 
 ---
 
-`Rostruct` is a file execution framework, built in [TypeScript](https://roblox-ts.com/), that deploys Lua projects to a Roblox script executor. This framework is a substitute for implementations using excessive `HttpGetAsync` and `GetObjects` calls. Rostruct works to bring the modern [Rojo](https://rojo.space/docs/6.x/sync-details/) workflow to exploiting.
+`Rostruct` is a file execution library built with [roblox-ts](https://roblox-ts.com/) that deploys Lua projects in a Roblox script executor. This library is a substitute for frameworks that use `HttpGetAsync` and `GetObjects`. Rostruct works to bring the modern [Rojo](https://rojo.space/docs/6.x/sync-details/) workflow to exploiting.
 
-Whether you're familiar with Rojo, dislike loading assets during runtime, or simply want to lazy-load scripts, you might enjoy using this library. 
+Whether you're familiar with Rojo, dislike loading assets during runtime, or want to import libraries, you might enjoy using this library. 
 
 See the original concept [here](https://v3rmillion.net/showthread.php?tid=1081675).
 
-## Introduction
-Typically, large projects are stored in a single large, complicated file, spanning thousands of lines. Cluttered scripts can disrupt workflow and make development difficult overall.
+## Why Rostruct?
+Script executors only execute one script at a time. This restriction often forces developers to keep everything in a single file. Eventually, using comments to group chunks of code isn't enough, and internal modules only drive the point home. Cluttered scripts can disrupt workflow and make development difficult overall.
 
-This contrasts with scripting in Roblox Studio or Rojo, which allows scripts, modules, and assets to depend on each other without loading during runtime. To achieve these benefits, Rostruct converts your project to Roblox instances before executing your code. Instead of waiting for assets to load, you can expect them to be there.
+On the other hand, scripting in Roblox Studio or Rojo allows scripts, modules, and assets to access each other on the fly. You don't have to make an HTTP request to load a dependency or call `GetObjects` to load an asset. You only need to include them in your place file.
+
+Rostruct works to bring the benefits of Roblox Studio to exploiting by transforming your project files into Roblox instances _before_ executing your code. This way, instead of waiting for assets to load, you can store them in your project and expect them to be there.
 
 ## Documentation
 Documentation is available at the [Github pages site](https://richie0866.github.io/Rostruct).
 
 ## How it works
 How does Rostruct build instances?
-* First, Rostruct scans the project for a `src/` or `lib/` directory to build. Otherwise, the original path is used.
-* Then, files compatible with Rostruct (`lua`, `json`, `rbxm`, etc.) are converted to Roblox instances following an intuitive [file conversion model](https://richie0866.github.io/Rostruct).
+
+<img src="img/example-vscode-and-roblox.png" align="right"
+     alt="Size Limit logo by Anton Lovchikov" height="300">
+
+* Rostruct builds instances following a [file conversion model](https://richie0866.github.io/Rostruct). Files compatible with Rostruct (`lua`, `json`, `rbxm`, etc.) are converted to Roblox instances.
 
 What does deploying a project do?
 
-* Projects can be deployed or required. If the project was deployed, Rostruct executes every `LocalScript` in the instance tree.
-* If the project was required, and the project results in a `ModuleScript`, it requires the module and stores the result.
+* Projects can be deployed or required. If you deployed the project, Rostruct executes every `LocalScript` in the instance tree.
+* If you required the project, and the project results in a `ModuleScript`, it requires the module and stores the result.
 
-Every script that runs comes with preset `script` and `require` variables, in order to closely mirror an **Instance-based** Rojo & Roblox Studio workflow.
+Every script has preset `script` and `require` variables to closely mirror a Rojo & Roblox Studio workflow. This way, scripts in your project don't need any extra configuration to require modules and get assets.
 
 ## Features
 * Promotes modular programming
@@ -44,26 +49,21 @@ Every script that runs comes with preset `script` and `require` variables, in or
 * Instance-based execution
   * Run your projects in an environment that closely mirrors a Rojo & Roblox Studio workflow.
 * Github support
-  * Install and deploy projects directly from Github releases.
+  * Install and deploy projects directly from Github releases, allowing users to execute your code without manually downloading it.
 * Builds `rbxm` models
-  * Go `GetObjects`-free by loading models directly from your project. **This feature requires `getcustomasset`!**
-* [Rojo](https://github.com/rojo-rbx/rojo#readme) support
+  * Go `GetObjects`-free by loading models directly from your project files.
+* Designed with [Rojo](https://github.com/rojo-rbx/rojo#readme) in mind
   * Easily test your code in Roblox Studio before executing it.
-* Loader library for lazy-loading modules
-  * Require modules like [Promise](https://eryn.io/roblox-lua-promise/) without having to make an HTTP get request.
 
-What's planned ahead?
-* Build submodules
-  * This helps support project dependencies that slow down execution, like UI libraries.
-  * For now, project dependencies can be loaded by using Rostruct internally, or by downloading them locally.
-* Build from a project configuration file
-  * Using configuration files can help customize the structure of your project.
+What's on the roadmap?
+* Project configuration file
+  * Using configuration files can help customize the structure of your project. You decide where to build your files, and Rostruct handles it for you. 
 * Fully implement [`init.meta.json`](https://rojo.space/docs/6.x/sync-details/#meta-files) properties
-  * Currently, only basic properties like booleans and numbers can be set.
+  * Currently, only primitive types like `boolean` and `number` can be set.
 
 ## Installation
 ### Option 1: Local files
-* Download the latest `Rostruct.lua` file from the [Releases page](https://github.com/richie0866/Rostruct/releases/latest)
+* Download the latest `Rostruct.lua` file from the [Github Releases page](https://github.com/richie0866/Rostruct/releases/latest)
 * Locate your executor's `workspace/` directory and insert `Rostruct.lua` into a folder named "rostruct"
 * Rostruct is ready to use!
 ```lua
@@ -72,9 +72,11 @@ local Rostruct = loadstring(readfile("rostruct/Rostruct.lua"))()
 ```
 
 ### Option 2: From releases
-* Locate the latest release of Rostruct from the [Releases page](https://github.com/richie0866/Rostruct/releases/latest)
-* Copy the URL of the `Rostruct.lua` asset (ends with `/releases/download/TAGNAME/Rostruct.lua`)
+* Locate the latest release of Rostruct from the [Github Releases page](https://github.com/richie0866/Rostruct/releases/latest)
+* Right-click the `Rostruct.lua` asset and copy the URL (ends with `/releases/download/TAGNAME/Rostruct.lua`)
 * Use Rostruct in your code with `game.HttpGetAsync`!
 ```lua
 local Rostruct = loadstring(game:HttpGetAsync(".../releases/download/TAGNAME/Rostruct.lua"))()
 ```
+
+> Finding a way to load the latest Rostruct release automatically is not recommended, as updates can change functionality at any time. Instead, use Option 1 or Option 2, and Watch this repository to be notified of new releases.
