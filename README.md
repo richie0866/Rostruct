@@ -12,7 +12,7 @@
 
 ---
 
-`Rostruct` is a file execution library built with [roblox-ts](https://roblox-ts.com/) that deploys Lua projects in a Roblox script executor. This library is a substitute for frameworks that use `HttpGetAsync` and `GetObjects`. Rostruct works to bring the modern [Rojo](https://rojo.space/docs/6.x/sync-details/) workflow to exploiting.
+`Rostruct` is a file execution library built with [roblox-ts](https://roblox-ts.com/) that deploys Lua projects in a Roblox script executor. This library is a substitute for frameworks that use `HttpGetAsync` and `GetObjects` to run code. Rostruct works to bring the modern [Rojo](https://rojo.space/docs/6.x/sync-details/) workflow to exploiting.
 
 Whether you're familiar with Rojo, dislike loading assets during runtime, or want to import libraries, you might enjoy using this library. 
 
