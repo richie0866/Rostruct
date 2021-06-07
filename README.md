@@ -32,14 +32,14 @@ Documentation is available at the [Github pages site](https://richie0866.github.
 How does Rostruct build instances?
 
 <img src="img/example-vscode-and-roblox.png" align="right"
-     alt="Size Limit logo by Anton Lovchikov" height="300">
+     alt="Rostruct Build Example" height="300">
 
 * Rostruct builds instances following a [file conversion model](https://richie0866.github.io/Rostruct). Files compatible with Rostruct (`lua`, `json`, `rbxm`, etc.) are converted to Roblox instances.
 
 What does deploying a project do?
 
 * Projects can be deployed or required. If you deployed the project, Rostruct executes every `LocalScript` in the instance tree.
-* If you required the project, and the project results in a `ModuleScript`, it requires the module and stores the result.
+* If you required the project, and the project results in a `ModuleScript` (as seen in the image), it requires the module and stores the result.
 
 Every script has preset `script` and `require` variables to closely mirror a Rojo & Roblox Studio workflow. This way, scripts in your project don't need any extra configuration to require modules and get assets.
 
