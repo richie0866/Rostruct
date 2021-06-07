@@ -19,11 +19,11 @@ Whether you're familiar with Rojo, dislike loading assets during runtime, or wan
 See the original concept [here](https://v3rmillion.net/showthread.php?tid=1081675).
 
 ## Why Rostruct?
-Script executors only execute one script at a time. This restriction often forces developers to keep everything in a single file. Eventually, using comments to group chunks of code isn't enough, and internal modules only drive the point home. Cluttered scripts can disrupt workflow and make development difficult overall.
+Script executors run one script at a time. This often leads developers to store large projects in single files. Eventually, using comments to group chunks of code isn't enough, and using internal modules only drives the point home. Cluttered scripts can disrupt workflow and make development difficult overall.
 
-On the other hand, scripting in Roblox Studio or Rojo allows scripts, modules, and assets to access each other on the fly. You don't have to make an HTTP request to load a dependency or call `GetObjects` to load an asset. You only need to include them in your place file.
+On the other hand, scripting in Roblox Studio allows scripts, modules, and assets to access each other on the fly. You don't have to make an HTTP request to load a dependency or call `GetObjects` to load an asset; you only need to include them in your place file.
 
-Rostruct works to bring the benefits of Roblox Studio to exploiting by transforming your project files into Roblox instances _before_ executing your code. This way, instead of waiting for assets to load, you can store them in your project and expect them to be there.
+Rostruct works to bring the benefits of Roblox Studio to exploiting by transforming your project files into Roblox instances _before_ executing your code. This way, instead of waiting for assets to load, or keeping all your code in one file, you can store them in your project and run it as you would in Studio.
 
 ## Documentation
 Documentation is available at the [Github pages site](https://richie0866.github.io/Rostruct).
