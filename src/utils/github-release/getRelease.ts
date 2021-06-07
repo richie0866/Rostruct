@@ -10,23 +10,20 @@ import { Release, Releases } from "./types";
  * @param filterRelease Function to filter the release list.
  * @returns A list of Releases for the Github repository.
  */
-export function getReleases(
+export async function getReleases(
 	owner: string,
 	repo: string,
 	filterRelease = (release: Release) => !release.draft,
 ): Promise<Releases> {
-	return http
-		.request({
-			Url: `https://api.github.com/repos/${owner}/${repo}/releases`,
-			Headers: {
-				"User-Agent": "rostruct",
-			},
-		})
-		.andThen((response) => {
-			assert(response.Success, response.StatusMessage);
-			const releases: Releases = HttpService.JSONDecode(response.Body);
-			return releases.filter(filterRelease);
-		});
+	const response = await http.request({
+		Url: `https://api.github.com/repos/${owner}/${repo}/releases`,
+		Headers: {
+			"User-Agent": "rostruct",
+		},
+	});
+	assert(response.Success, response.StatusMessage);
+	const releases = HttpService.JSONDecode<Releases>(response.Body);
+	return releases.filter(filterRelease);
 }
 
 /**
@@ -37,18 +34,15 @@ export function getReleases(
  * @param tag The release tag to retrieve.
  * @returns A list of Releases for the Github repository.
  */
-export function getRelease(owner: string, repo: string, tag: string): Promise<Release> {
-	return http
-		.request({
-			Url: `https://api.github.com/repos/${owner}/${repo}/releases/tags/${tag}`,
-			Headers: {
-				"User-Agent": "rostruct",
-			},
-		})
-		.andThen((response) => {
-			assert(response.Success, response.StatusMessage);
-			return HttpService.JSONDecode(response.Body);
-		});
+export async function getRelease(owner: string, repo: string, tag: string): Promise<Release> {
+	const response = await http.request({
+		Url: `https://api.github.com/repos/${owner}/${repo}/releases/tags/${tag}`,
+		Headers: {
+			"User-Agent": "rostruct",
+		},
+	});
+	assert(response.Success, response.StatusMessage);
+	return HttpService.JSONDecode(response.Body);
 }
 
 /**
@@ -58,16 +52,13 @@ export function getRelease(owner: string, repo: string, tag: string): Promise<Re
  * @param repo The repository name.
  * @returns A list of Releases for the Github repository.
  */
-export function getLatestRelease(owner: string, repo: string): Promise<Release> {
-	return http
-		.request({
-			Url: `https://api.github.com/repos/${owner}/${repo}/releases/latest`,
-			Headers: {
-				"User-Agent": "rostruct",
-			},
-		})
-		.andThen((response) => {
-			assert(response.Success, response.StatusMessage);
-			return HttpService.JSONDecode(response.Body);
-		});
+export async function getLatestRelease(owner: string, repo: string): Promise<Release> {
+	const response = await http.request({
+		Url: `https://api.github.com/repos/${owner}/${repo}/releases/latest`,
+		Headers: {
+			"User-Agent": "rostruct",
+		},
+	});
+	assert(response.Success, response.StatusMessage);
+	return HttpService.JSONDecode(response.Body);
 }
