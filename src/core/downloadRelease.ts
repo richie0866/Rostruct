@@ -1,6 +1,6 @@
 import { openJson } from "utils/common/openJson";
 import { getLatestRelease, getRelease, identify } from "utils/github-release";
-import { downloadAsset } from "utils/github-release/downloadAsset";
+import { downloadAsset } from "./downloadAsset";
 import * as fileManager from "./file-manager";
 import { DownloadResult } from "./types";
 
