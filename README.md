@@ -34,7 +34,7 @@ How does Rostruct build instances?
 <img src="img/example-vscode-and-roblox.png" align="right"
      alt="Rostruct Build Example" height="300">
 
-* Rostruct builds instances following a [file conversion model](https://richie0866.github.io/Rostruct). Files compatible with Rostruct (`lua`, `json`, `rbxm`, etc.) are converted to Roblox instances.
+* Rostruct builds instances following a [file conversion model](https://richie0866.github.io/Rostruct/guide/file-conversion/). Files compatible with Rostruct (`lua`, `json`, `rbxm`, etc.) are converted to Roblox instances.
 
 What does deploying a project do?
 
