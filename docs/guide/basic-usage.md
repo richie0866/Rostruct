@@ -3,42 +3,51 @@
 !!! note
 	This page assumes some familiarity with the Promise object. Check out their [extensive documentation](https://eryn.io/roblox-lua-promise/lib/) for more info.
 
-## Build your project
-`Rostruct.Build` is the core of Rostruct; it transforms your project files into Roblox objects, and returns a `BuildResult` object.
+When creating a Rostruct project, you should script with instances in mind. Since your codebase will be turned into Roblox instances, your files will behave as scripts running in Roblox Studio. The following image demonstrates how a Rostruct project is run in Roblox:
 
 ![image](./images/example-vscode-and-roblox.png)
 
-To set up a project, locate your executor's `workspace/` directory and create a folder somewhere to host your project. You can write code and insert model files, and they will be transformed into instances. Rostruct only needs the project files themselves, and no other dependencies are necessary.
+The files are transformed into objects, and every Lua script has full functionality. This means your code can require other modules using the `require` function as you would in Roblox Studio.
+
+Your code should access itself and other objects using the `script` global. The following snippet demonstrates requiring some internal dependencies:
 
 ```lua
-local project = Rostruct.Build("Projects/MyProject/")
-local MyProject = project.Instance
+-- File: MidiPlayer/src/Components/Controller.lua
+local midiPlayer = script:FindFirstAncestor("MidiPlayer")
+
+local Signal = require(midiPlayer.Util.Signal)
+local Date = require(midiPlayer.Util.Date)
+local Thread = require(midiPlayer.Util.Thread)
 ```
 
-`Rostruct.Build` also takes an optional `parent` argument, mainly for debugging, to automatically parent your project to an instance.
+To set up a project, locate your executor's `workspace/` directory and create a folder somewhere to host your project. It's recommended to integrate Rojo into your workflow to test your code in Roblox Studio. Rostruct only builds the project files themselves, and no further configuration is needed.
+
+## Rostruct.Build
+`Rostruct.Build` is the core of Rostruct; it transforms your project files into Roblox objects, and returns a `BuildResult` object.
 
 ```lua
-Rostruct.Build("Projects/MyProject/", workspace)
+local project = Rostruct.Build("Projects/MidiPlayer/src/")
+local midiPlayer = project.Instance
 ```
 
 If you'd like to rename the project, or modify the instance before scripts are run, you can!
-`LocalScripts` and `ModuleScripts` are all run on deferred threads, allowing you to make your changes before they execute:
+Even if the project is deployed, `LocalScripts` and `ModuleScripts` are all run on deferred threads, allowing you to make your changes before they execute:
 
 ```lua
-local project = Rostruct.Build("Projects/Roact/src/")
-project.Instance.Name = "Roact"
+local project = Rostruct.Deploy("Projects/MidiPlayer/src/")
+project.Instance.Name = "MidiPlayer"
 ```
 
-The code above also applies to all other Rostruct functions.
+The code above applies to other similar Rostruct functions.
 
-## Deploy your project
+## Rostruct.Deploy
 Deploying a project builds it and then executes every `LocalScript` on a deferred thread. It also adds an additional field to the `BuildResult` object: `RuntimeWorker`, a Promise which resolves with every LocalScript in your project after they all finish executing. The code below is an example of how you could use this field:
 
-!!! warning
-	`RuntimeWorker` will automatically time out after 30 seconds of suspended execution, avoid making a script take too long to execute!
+!!! info
+	`RuntimeWorker` will automatically time out after 30 seconds of suspended execution; Avoid making a script take too long to execute!
 
 ```lua
-local project = Rostruct.Deploy("Projects/RemoteSpy/src/")
+local project = Rostruct.Deploy("Projects/Hydroxide/src/")
 
 -- Waits for all scripts to finish executing:
 project.RuntimeWorker:andThen(function(scripts)
@@ -49,13 +58,13 @@ project.RuntimeWorker:andThen(function(scripts)
 end)
 ```
 
-## Require a project
+## Rostruct.Require
 Requiring a project builds and deploys it, but adds another additional field: `Module`, a Promise which resolves with exactly what the module returned. The code below is an example of how to require a library:
 
 ```lua
 local project = Rostruct.Require("Projects/UILibrary/lib/")
 
--- Gets what Projects/UILibrary/init.lua returned:
+-- Gets what UILibrary/lib/init.lua returned:
 local UILibrary = project.Module:expect()
 UILibrary:create("Frame")
 ```

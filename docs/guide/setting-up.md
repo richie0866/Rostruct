@@ -1,6 +1,6 @@
 # Setting up
 
-## Loading the Rostruct library
+## Loading Rostruct
 
 The latest Rostruct Luau source is available from the [Github Releases page](https://github.com/richie0866/Rostruct/releases/latest).
 

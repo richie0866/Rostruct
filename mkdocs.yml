@@ -19,8 +19,11 @@ nav:
   - Guide:
     - Setting up: guide/setting-up.md
     - Basic usage: guide/basic-usage.md
+    - Examples: guide/examples.md
+    - Execution model: guide/execution-model.md
     - File conversion: guide/file-conversion.md
   - API Reference: api-reference.md
+  - Scripts using Rostruct: scripts-using-rostruct.md
 
 extra_css:
   - extra.css
