@@ -79,4 +79,29 @@ local Rostruct = loadstring(readfile("rostruct/Rostruct.lua"))()
 local Rostruct = loadstring(game:HttpGetAsync(".../releases/download/TAGNAME/Rostruct.lua"))()
 ```
 
-> Finding a way to load the latest Rostruct release automatically is not recommended, as updates can change functionality at any time. Instead, use Option 1 or Option 2, and Watch this repository to be notified of new releases.
+### Option 3: For your scripts
+> Because Rostruct is written in TypeScript, it uses the `TS` module to load. This is black magic that should be taken at face value when viewing the code below.
+> `TS.initialize("init")` essentially requires Rostruct straight from the source.
+* Make sure your Github repository is public and has a [release](https://docs.github.com/en/github/administering-a-repository/releasing-projects-on-github/managing-releases-in-a-repository) available.
+  * Typically, no further action is needed here, unless you want a specific asset released. In that case, bundle it in a zip file if needed.
+
+* Then, save the latest release of `Rostruct.lua` and replace the ending `return` statement with this to load it:
+```lua
+local Rostruct = TS.initialize("init")
+```
+* In your file, use Rostruct to download your latest release, with an optional asset if desired. You can write your code as such:
+```lua
+local Rostruct = TS.initialize("init")
+
+-- Download the latest release to local files:
+Rostruct.DownloadLatestRelease("REPO_OWNER", "REPO_NAME")
+    :andThen(function(download)
+	-- Your project may not have an 'src/' folder, but it's recommended
+	-- you have one to separate source files from things like
+	-- configuration files.
+        local project = Rostruct.Deploy(download.Location .. "src/")
+        project.Instance.Name = "REPO_NAME"
+    end)
+```
+* Useful examples of Rostruct in the wild can be found [in the documentation](https://richie0866.github.io/Rostruct/scripts-using-rostruct/).
+> Finding a way to load the latest Rostruct release automatically is not recommended, as updates can change functionality at any time. Instead, use any of the options, and Watch this repository to be notified of new releases.
