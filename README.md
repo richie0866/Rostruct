@@ -62,6 +62,7 @@ What's on the roadmap?
   * Currently, only primitive types like `boolean` and `number` can be set.
 
 ## Installation
+> Finding a way to load the latest Rostruct release automatically is not recommended, as updates can change functionality at any time. Instead, use any of the options, and Watch this repository to be notified of new releases.
 ### Option 1: Local files
 * Download the latest `Rostruct.lua` file from the [Github Releases page](https://github.com/richie0866/Rostruct/releases/latest)
 * Locate your executor's `workspace/` directory and insert `Rostruct.lua` into a folder named "rostruct"
@@ -108,4 +109,3 @@ Rostruct.DownloadLatestRelease("REPO_OWNER", "REPO_NAME")
     end)
 ```
 * Useful examples of Rostruct in the wild can be found [in the documentation](https://richie0866.github.io/Rostruct/scripts-using-rostruct/).
-> Finding a way to load the latest Rostruct release automatically is not recommended, as updates can change functionality at any time. Instead, use any of the options, and Watch this repository to be notified of new releases.
