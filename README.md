@@ -87,10 +87,14 @@ local Rostruct = loadstring(game:HttpGetAsync(".../releases/download/TAGNAME/Ros
 
 * Then, save the latest release of `Rostruct.lua` and replace the ending `return` statement with this to load it:
 ```lua
+-- Rostruct source here
+
 local Rostruct = TS.initialize("init")
 ```
 * In your file, use Rostruct to download your latest release, with an optional asset if desired. You can write your code as such:
 ```lua
+-- Rostruct source here
+
 local Rostruct = TS.initialize("init")
 
 -- Download the latest release to local files:
