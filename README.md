@@ -1,13 +1,12 @@
-<h1 align="center">Rostruct</h1>
 <div align="center">
+	<a href="https://richie0866.github.io/Rostruct"><img src="img/Rostruct.svg" alt="Rostruct logo" width="256"></img></a>
+	<h1>Rostruct</h1>
+	A framework inspired by Rojo.
+	<br><br>
 	<a href="https://github.com/richie0866/Rostruct/actions/workflows/release.yml"><img src="https://github.com/richie0866/Rostruct/actions/workflows/release.yml/badge.svg" alt="GitHub Actions Release Status" /></a>
 	<a href="https://github.com/richie0866/Rostruct/actions/workflows/eslint.yml"><img src="https://github.com/richie0866/Rostruct/actions/workflows/eslint.yml/badge.svg" alt="GitHub Actions ESLint Status" /></a>
 	<a href="https://github.com/richie0866/Rostruct/releases/latest"><img src="https://img.shields.io/github/v/release/richie0866/Rostruct?include_prereleases" alt="Latest Release" /></a>
 	<a href="https://richie0866.github.io/Rostruct"><img src="https://img.shields.io/badge/docs-website-blue.svg" alt="Rostruct Documentation" /></a>
-</div>
-
-<div align="center">
-	A project framework inspired by Rojo.
 </div>
 
 ---
