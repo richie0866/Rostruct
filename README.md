@@ -107,4 +107,4 @@ Rostruct.DownloadLatestRelease("REPO_OWNER", "REPO_NAME")
         project.Instance.Name = "REPO_NAME"
     end)
 ```
-* The [execution model page](https://richie0866.github.io/Rostruct/execution-model/) goes more in depth about this process.
+* The [execution model page](https://richie0866.github.io/Rostruct/guide/execution-model/) goes more in depth about this process.
