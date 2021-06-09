@@ -9,8 +9,8 @@ To gain a better understanding of Rostruct, seeing others' implementations may h
 
 A midi file autoplayer for Roblox piano games. Notable features include:
 
-* Uses `Rostruct.GetLatestRelease` with `Rostruct.Deploy`
-* UI stored in a model file to minimize loading times
+* Pairs `Rostruct.DownloadLatestRelease` with `Rostruct.Deploy`
+* UI stored in a model file
 * A single LocalScript initializes the code
 * Uses common utility modules
 
