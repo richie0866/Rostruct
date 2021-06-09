@@ -108,4 +108,4 @@ Rostruct.DownloadLatestRelease("REPO_OWNER", "REPO_NAME")
         project.Instance.Name = "REPO_NAME"
     end)
 ```
-* Useful examples of Rostruct in the wild can be found [in the documentation](https://richie0866.github.io/Rostruct/scripts-using-rostruct/).
+* The [execution model page](https://richie0866.github.io/Rostruct/execution-model/) goes more in depth about this process.
