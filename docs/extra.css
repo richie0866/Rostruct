@@ -1,3 +1,77 @@
 .md-typeset__table {
 	width: 100%;
 }
+
+:root {
+	--md-code-font-family: "JetBrains Mono";
+}
+
+/* API Tags */
+
+.tag-space {
+    margin-left: 6px;
+}
+
+.base-tag {
+	color: white;
+	padding: 4px;
+	padding-inline: 8px 8px;
+	border-radius: 4px;
+	vertical-align: middle;
+	font-size: 50%;
+	font-weight: bold;
+	font-family: "JetBrains Mono";
+    margin-left: 4px;
+}
+
+.static-tag {
+	background: #8f59d6;
+}
+.static-tag::before {
+	content: "static";
+}
+
+.interface-tag {
+	background: #da8146;
+}
+.interface-tag::before {
+	content: "interface";
+}
+
+.debug-tag {
+	background: #1ba5a5;
+}
+.debug-tag::before {
+	content: "debug";
+}
+
+/* Code */
+
+.code {
+	font-family: "JetBrains Mono";
+	color: #E9EBFC;
+}
+.symbol {
+	font-family: "JetBrains Mono";
+	color: #8F92AB;
+}
+.keyword {
+	font-family: "JetBrains Mono";
+	color: #a897ff;
+}
+.key {
+	font-family: "JetBrains Mono";
+	color: #73DACA;
+}
+.interface {
+	font-family: "JetBrains Mono";
+	color: #ffab73;
+}
+.type {
+	font-family: "JetBrains Mono";
+	color: #79b3ff;
+}
+.highlight {
+	font-family: "JetBrains Mono";
+	color: #90c9ff;
+}
