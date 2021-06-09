@@ -14,7 +14,6 @@ export function buildProject(target: string, parent?: Instance): BuildResult {
 	const reconciler = new Reconciler(directory);
 	return {
 		Instance: reconciler.reify(parent),
-		Reconciler: reconciler,
 		Location: directory.location,
 	};
 }
@@ -31,7 +30,6 @@ export function deployProject(target: string, parent?: Instance): BuildResult {
 	const instance = reconciler.reify(parent);
 	return {
 		Instance: instance,
-		Reconciler: reconciler,
 		Location: directory.location,
 		RuntimeWorker: reconciler.deployWorker(),
 	};
@@ -50,7 +48,6 @@ export function requireProject(target: string, parent?: Instance): BuildResult {
 	assert(instance.IsA("LuaSourceContainer"), `Failed to require ${directory.location} (Project is not a module)`);
 	return {
 		Instance: instance,
-		Reconciler: reconciler,
 		Location: directory.location,
 		RuntimeWorker: reconciler.deployWorker(),
 		Module: VirtualScript.getFromInstance(instance)!.deferExecutor(),

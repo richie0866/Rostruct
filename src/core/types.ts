@@ -27,9 +27,6 @@ export interface BuildResult {
 	/** The Instance tree built. */
 	Instance: Instance;
 
-	/** The {@link Reconciler} object (used internally). */
-	Reconciler: Reconciler;
-
 	/** The file location of the project. */
 	Location: string;
 
