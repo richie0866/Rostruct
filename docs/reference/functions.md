@@ -11,7 +11,7 @@
 	[<span class="interface"><u>BuildResult</u></span>](./types.md#buildresult)
 </span>
 
-Transforms files found at `location` into Roblox instances. This process is almost identical to to syncing Rojo to Roblox Studio, with [certain features omitted](./file-conversion.md).
+Transforms files found at `location` into Roblox instances. This process is almost identical to syncing Rojo to Roblox Studio, with [certain features omitted](./file-conversion.md).
 
 This function **does not** sync files, as Rostruct is purely an execution tool. `Rostruct.Build` creates instances and sets up Lua files for execution.
 
@@ -93,7 +93,9 @@ If the project is a **module**, it executes it and saves the result to an additi
 `Module` is a Promise which resolves with exactly what the root ModuleScript returned.
 
 !!! warning
-	Calling `Rostruct.Require()` on a directory with no `init.lua` file in it will throw an error. To require a project, the project folder must be set up to transform into a ModuleScript. See the [execution model page](../getting-started/execution-model.md#requiring-a-library) for how to do this, and [Rojo's sync details](https://rojo.space/docs/6.x/sync-details/#scripts) for a detailed explanation.
+	Calling `Rostruct.Require()` on a directory with no `init.lua` file in it will throw an error. When using this function, you should set up the project folder to transform into a ModuleScript.
+	
+	See the [execution model page](../getting-started/execution-model.md#requiring-a-library) for how to do this, and [Rojo's sync details](https://rojo.space/docs/6.x/sync-details/#scripts) for a detailed explanation.
 
 **Example use** 
 
@@ -132,13 +134,18 @@ local Roact = project.Module:expect()
 	[<span class="interface"><u>DownloadResult</u></span>](./types.md#downloadresult)
 </span>
 
-Downloads and saves a Github release of the `repo` owned by `owner`. The `tag` parameter refers to the **tag name** (AKA tag version), NOT the release name. The tag name is set while [making a release](https://docs.github.com/en/github/administering-a-repository/releasing-projects-on-github/managing-releases-in-a-repository). If `asset` is not specified, it will download the source code for the release.
+Downloads and saves a Github release of the `repo` owned by `owner`. The `tag` parameter refers to the **tag version**, NOT the release name. You set the tag version while [making a release](https://docs.github.com/en/github/administering-a-repository/releasing-projects-on-github/managing-releases-in-a-repository). If `asset` is not specified, it will download the source code for the release.
 
-??? question "How do I get the tag name?"
-	The tag name is **not** the name of the release. The tag name can be found to the left of the release name:
-	![image](../images/github-tag-version.png)
+??? tip "How do I get the tag version?"
+	![image](../images/github-tag-version.png){ align=right width=512 }
 
-When downloading a release, it will be saved to a folder in the cache. All attempts to download a cached release will make no HTTP requests, and the function will not try to redownload it. The location of the cached folder is returned in the [`DownloadResult`](./types.md#downloadresult) object.
+	The tag version is **not** the name of the release.
+	
+	You can find the tag version to the left of the release name:
+
+Downloading a release saves it to a folder in the cache. Attempting to download an already cached release will make no HTTP requests, and the function will not try to redownload it.
+
+The location of the cached folder is in the [`DownloadResult`](./types.md#downloadresult) object.
 
 !!! info
 	This function automatically extracts `.zip` files to a folder in the cache. If you'd like to download a specific group of files from your release, compress them to a `.zip` file and add it as a file in your release. How to add files to your release can be found [here](https://docs.github.com/en/github/administering-a-repository/releasing-projects-on-github/managing-releases-in-a-repository).

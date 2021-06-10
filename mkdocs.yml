@@ -81,9 +81,10 @@ nav:
 
   - Getting started:
     - "Why Rostruct?": getting-started/why-rostruct.md
-    - Installation: getting-started/installation.md
-    - Creating your project: getting-started/creating-your-project.md
-    - Publishing your project: getting-started/publishing-your-project.md
+    - Setup:
+      - Installation: getting-started/installation.md
+      - Creating your project: getting-started/creating-your-project.md
+      - Publishing your project: getting-started/publishing-your-project.md
     - Examples:
       - Execution model: getting-started/execution-model.md
       - Basic usage: getting-started/basic-usage.md

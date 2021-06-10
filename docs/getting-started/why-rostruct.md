@@ -1,6 +1,6 @@
 # Getting started
 
-**Rostruct** is a script execution library best used with [Rojo](https://rojo.space/docs/), a tool for syncing project files with Roblox Studio. Rostruct is designed to deploy Lua projects to Roblox script executors.
+**Rostruct** is a script execution library best used with [Rojo](https://rojo.space/docs/), a tool for syncing project files with Roblox Studio. Rostruct is used to deploy Lua projects to Roblox script executors.
 
 This documentation is a work in progress!
 
@@ -11,9 +11,9 @@ This documentation is a work in progress!
 
 Because of the limitations of script executors, developers are often lead to storing their codebase in a single Lua file. Large, messy files are detrimental to your workflow, as they make debugging, management, and working in teams difficult.
 
-In contrast, if you've ever used Rojo with Roblox Studio, you're able to distribute your codebase between separate, specialized files. Taking a **modular approach** to exploiting can greatly improve your workflow. This is where Rostruct comes in:
+In contrast, if you've ever used Rojo with Roblox Studio, you're able to distribute your codebase between separate, specialized files. Taking a **modular approach** to exploit scripting can significantly improve your workflow.
 
-Rostruct is designed to complement a Rojo-based workflow, introducing script developers to a professional way to manage projects. You host your project files in your exploit's `workspace/` directory, letting you integrate professional tools used in Roblox game development into your workflow.
+Rostruct's design complements this Rojo-based workflow, introducing script developers to a professional way to manage projects. You host your project files in your exploit's `workspace/` directory, allowing the integration of professional tools used in Roblox game development into your workflow.
 
 ---
 
@@ -21,9 +21,9 @@ Rostruct is designed to complement a Rojo-based workflow, introducing script dev
 
 ### Built for ambitious projects
 
-Rostruct is built to execute multiple files in conjunction, so you can focus on making your code readable, without worrying about the implementation.
+Rostruct executes multiple files at once, so you can focus on making your code readable, without worrying about the implementation.
 
-Create projects from UI libraries, to explorers - with little to no limitations.
+Create projects from UI libraries to explorers - with little to no limitations.
 
 ---
 
@@ -53,7 +53,7 @@ gui.Parent = gethui()
 
 Safely integrate external libraries into your projects with an intelligent Promise-based module loading system.
 
-External libraries can be required and executed as any other ModuleScript.
+External libraries load like any other ModuleScript.
 
 ![Roact example](../images/RoactPanel.svg){ align=right width=200 draggable=false }
 

@@ -1,6 +1,8 @@
-# Examples
+# Execution model
 
-When creating a Rostruct project, you should script with instances in mind. Since your codebase will be turned into Roblox instances, your files will behave as scripts running in Roblox Studio.
+When creating a Rostruct project, you should script with instances in mind. Since this library will turn your codebase into Roblox instances, your files should behave as scripts running in Roblox Studio.
+
+Rostruct turns your files into Roblox objects, and every Lua script executes as a script object. As a result, your code can require other modules using the `#!lua require()` function as you would in Roblox Studio.
 
 ??? example "File conversion"
 
@@ -11,8 +13,6 @@ When creating a Rostruct project, you should script with instances in mind. Sinc
 	=== "Rostruct"
 
 		![MyModule instance](../images/MidiPlayerPanel.svg){ width=256px }
-
-The files are transformed into objects, and every Lua script is executed as a script object. This means your code can require other modules using the `require` function as you would in Roblox Studio.
 
 ## Getting assets
 
@@ -45,7 +45,7 @@ return MyController
 ```
 
 !!! tip
-	If you need a specific file, scripts run with Rostruct contain the `_ROOT` and `_PATH` globals to access the project files and the current file location respectively.
+	If you need a specific file, scripts run with Rostruct contain the `_ROOT` and `_PATH` globals to access the project files and the current file location, respectively.
 
 ## Catching Rostruct errors
 
@@ -59,14 +59,14 @@ end)
 
 ## Requiring a library
 
-In order to use [`Rostruct.Require`](../reference/functions.md#require), your project must contain an `init.lua` file. This file transforms the parent directory into a ModuleScript. A detailed explanation can be found in [Rojo's sync details](https://rojo.space/docs/6.x/sync-details/#scripts).
+In order to use [`Rostruct.Require`](../reference/functions.md#require), your project must contain an `init.lua` file. This file transforms the parent directory into a ModuleScript. You can find a detailed explanation in [Rojo's sync details](https://rojo.space/docs/6.x/sync-details/#scripts).
 
 Let's say a project is structured like such:
 
 * MyModule/
-	* init.lua (Nested ModuleScript)
+	* init.lua <small>(Nested ModuleScript)</small>
 	* Util/
-		* Signal.lua (ModuleScript)
+		* Signal.lua <small>(ModuleScript)</small>
 
 We can require it as such:
 
@@ -78,7 +78,7 @@ local MyModule = project.Module:expect()
 
 ## Best practices
 
-* Only one LocalScript, if any, should manage execution in your project
+* Only one LocalScript, if any, should manage module runtime
 * Code should not rely on services like CollectionService that expose you to the client, make an alternative
-* LocalScripts should try to finish ASAP, and avoid yielding the main thread if possible
+* LocalScripts should try to finish ASAP and avoid yielding the main thread if possible
 * The codebase should never be exposed to the `game` object to prevent security vulnerabilities

@@ -10,12 +10,14 @@ If you'd like your Rostruct script featured here, contact `0866#3049` on Discord
 
 ### [MidiPlayer](https://github.com/richie0866/MidiPlayer) by 0866
 
-A midi file autoplayer for Roblox piano games. Notable features include:
+A midi file auto-player for Roblox piano games.
 
-* Pairs `Rostruct.DownloadLatestRelease` with `Rostruct.Deploy`
-* UI stored in a model file
-* A single LocalScript initializes the code
-* Uses common utility modules
+!!! summary "Notable features"
+
+	* Pairs `Rostruct.DownloadLatestRelease` with `Rostruct.Deploy`
+	* UI stored in a model file
+	* A single LocalScript initializes the code
+	* Uses common utility modules
 
 See the [Github repository](https://github.com/richie0866/MidiPlayer) for more information.
 

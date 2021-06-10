@@ -1,6 +1,7 @@
 # Basic usage
 
 ## [Build](../reference/functions.md#build) a project
+
 `Rostruct.Build` is the core of Rostruct; it transforms your project files into Roblox objects, and returns a `BuildResult` object.
 
 ```lua
@@ -9,8 +10,9 @@ local midiPlayer = project.Instance
 ```
 
 ???+ tip
-	If you'd like to rename the project, or modify the instance before scripts are run, you can!
-	Even if the project is deployed, `LocalScripts` and `ModuleScripts` are all run on deferred threads, allowing you to make your changes before they execute:
+	If you'd like to rename the project, modifying the instance before runtime, you can!
+
+	Regardless of whether you deploy or require the project, `LocalScripts` and `ModuleScripts` are all run on deferred threads, allowing you to make your changes before they execute:
 
 	```lua
 	local project = Rostruct.Deploy("Projects/MidiPlayer/src/")
@@ -18,7 +20,8 @@ local midiPlayer = project.Instance
 	```
 
 ## [Deploy](../reference/functions.md#deploy) scripts
-Deploying a project builds it and then executes every `LocalScript` on a deferred thread. It also adds an additional field to the `BuildResult` object: `RuntimeWorker`, a Promise which resolves with every LocalScript in your project after they finish executing.
+
+Deploying a project builds it and then executes every `LocalScript` on a deferred thread. It also adds a field to the `BuildResult` object: `RuntimeWorker`, a Promise that resolves with every LocalScript in your project after each execution job is complete.
 
 !!! info
 	`RuntimeWorker` will automatically time out after 30 seconds of suspended execution; Avoid making a script take too long to execute!
@@ -38,7 +41,8 @@ end)
 ```
 
 ## [Require](../reference/functions.md#require) a library
-Requiring a project builds and deploys it, but adds another additional field: `Module`, a Promise which resolves with exactly what the module returned.
+
+Requiring a project builds and deploys it, but adds another additional field: `Module`, a Promise that resolves with exactly what the module returned.
 
 The code below is an example of how to require a library:
 
@@ -51,7 +55,8 @@ UILibrary:create("Frame")
 ```
 
 ## Download a Github release
-Rostruct provides a set of functions that allows users to download and save releases from a Github repositories.
+
+Rostruct provides a set of functions that allow users to download and save releases from a Github repository.
 
 The functions [`Rostruct.DownloadRelease`](../reference/functions.md#downloadrelease) and [`DownloadLatestRelease`](../reference/functions.md#downloadlatestrelease) will download the release, with an optional asset target, and return a `DownloadResult` object.
 
@@ -61,7 +66,7 @@ The functions [`Rostruct.DownloadRelease`](../reference/functions.md#downloadrel
 
 	By default, if the `asset` is unspecified, Rostruct will download and extract the Source code zip file.
 	
-	Assets that are zip files will automatically be extracted. Otherwise, they are downloaded as a single file.
+	Downloading a release extracts `.zip` assets to a folder in the cache. Otherwise, it places the original file in the folder.
 
 The code below demonstrates using `Rostruct.DownloadRelease` on the [declarative UI library, Roact](https://github.com/Roblox/roact/):
 

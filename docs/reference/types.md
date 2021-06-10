@@ -27,7 +27,7 @@
 Stores the value of a successful build operation performed by [`Build`](./functions.md#build), [`Deploy`](./functions.md#deploy), or [`Require`](./functions.md#require).
 
 !!! tip
-	You can modify the `Instance` field before script runtime, as they are executed on deferred threads.
+	You can modify the `Instance` field before script runtime, as deployment executes them on deferred threads.
 
 
 ## <span class="code">DownloadResult</span> <span class="tag-space"></span> <span class="base-tag interface-tag"></span>

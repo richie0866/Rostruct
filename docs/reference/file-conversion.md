@@ -1,8 +1,8 @@
 # File conversion
 
-Rostruct file conversion is designed to mirror [Rojo's sync details](https://rojo.space/docs/6.x/sync-details/).
+Rostruct file conversion mirrors [Rojo's sync details](https://rojo.space/docs/6.x/sync-details/).
 
-Concepts on the table below will redirect you their respective Rojo pages.
+Concepts on the table below will redirect you to their respective Rojo pages.
 
 ## Overview
 
@@ -23,7 +23,8 @@ Concepts on the table below will redirect you their respective Rojo pages.
 	* Localization tables
 	* JSON models
 	* Projects
-	* Meta files (partially)
+	* `*.meta.json` files
+	* `init.meta.json` files <small>(partially)</small>
 
 !!! tip
 	Due to Rostruct being an exploiting tool, there are some key differences from Rojo:
@@ -33,4 +34,4 @@ Concepts on the table below will redirect you their respective Rojo pages.
 	* Rojo project files will not be supported
     	* Project files structure your codebase around the `game` object, which would expose your project to the client.
 
-	Exercise caution when using these features with Rojo, and keep track of their Github page for updates!
+	Please exercise caution when using these features with Rojo, and keep track of their Github page for updates!

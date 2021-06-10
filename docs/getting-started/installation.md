@@ -1,6 +1,6 @@
-# Getting started
+# Setup
 
-**Rostruct** is a script execution library best used with [Rojo](https://rojo.space/docs/), a tool for syncing project files with Roblox Studio. Rostruct is designed to deploy Lua projects to Roblox script executors.
+Learn how to integrate Rostruct into your workflow.
 
 ## Installation
 
@@ -16,15 +16,18 @@ local URL = "https://github.com/richie0866/Rostruct/releases/download/%s/Rostruc
 local Rostruct = loadstring(game:HttpGetAsync(string.format(URL, VERSION)))()
 ```
 
-This will load the Rostruct asset for the given [Github Release](https://github.com/richie0866/Rostruct/releases) tag name.
+This will load the Rostruct asset for the given [Github Release](https://github.com/richie0866/Rostruct/releases) **tag version**.
 
-??? question "How do I get the tag name?"
-	The tag name is **not** the name of the release. The tag name can be found to the left of the release name:
-	![image](../images/github-tag-version.png)
+??? tip "How do I get the tag version?"
+	![image](../images/github-tag-version.png){ align=right width=512 }
+
+	The tag version is **not** the name of the release.
+	
+	You can find the tag version to the left of the release name:
 
 ### with `#!lua loadfile()`
 
-Storing Rostruct in the filesystem is a great way to cut down on any loading time experienced when debugging. Save the latest `Rostruct.lua` file from the [Github Releases page](https://github.com/richie0866/Rostruct/releases/latest) to your executor's `workspace/` directory. Load the Lua file with:
+Storing Rostruct in the filesystem is a great way to cut down on any loading time experienced while debugging. Save the latest `Rostruct.lua` file from the [Github Releases page](https://github.com/richie0866/Rostruct/releases/latest) to your executor's `workspace/` directory. Load the Lua file with:
 
 === "loadfile"
 

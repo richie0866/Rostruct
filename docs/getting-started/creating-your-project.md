@@ -4,7 +4,7 @@ To set up a project, locate your executor's `workspace/` directory and create a 
 
 ## Sync to Roblox as you write
 
-Rostruct is designed to complement a workflow using [Rojo](https://rojo.space/docs/), a project management tool. Rojo syncs your files to Roblox Studio in real-time, allowing you to preview and to test your code.
+I designed Rostruct to complement a workflow using [Rojo](https://rojo.space/docs/), a project management tool. Rojo syncs your files to Roblox Studio in real-time, allowing you to preview and test your code.
 
 You can install [the Rojo VS Code extension](https://marketplace.visualstudio.com/items?itemName=evaera.vscode-rojo), which will install both the Rojo Roblox Studio plugin and the command line interface.
 
@@ -25,4 +25,4 @@ When you've finished setting up and writing your code, you can deploy or require
 	local MyModule = build.Module:expect()
 	```
 
-The contents of the folder you pass to these functions are transformed into Roblox objects for an intuitive, Roblox Studio-like environment. More details can be found in [the execution model](execution-model.md).
+These functions transform the contents of the desired folder into Roblox objects to mirror an intuitive Roblox Studio environment. More details can be found in [the execution model](execution-model.md).
