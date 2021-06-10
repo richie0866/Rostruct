@@ -1,38 +1,98 @@
-site_name: Rostruct Documentation
+# Project
+site_name: Rostruct
 site_url: https://richie0866.github.io/Rostruct/
+site_description: >-
+  A modern script execution library, built for Roblox and Rojo
+
+# Repository
 repo_name: richie0866/Rostruct
 repo_url: https://github.com/richie0866/Rostruct
 
+# Configuration
 theme:
   name: material
+
   highlightjs: true
+
   hljs_languages:
       - typescript
       - lua
+
   palette:
     scheme: slate
     primary: 'Light Blue'
     accent: 'Light Blue'
+    
+  features:
+    - navigation.tabs
+    - navigation.sections
 
-nav:
-  - Home: index.md
-  - Guide:
-    - Setting up: guide/setting-up.md
-    - Basic usage: guide/basic-usage.md
-    - Execution model: guide/execution-model.md
-    - File conversion: guide/file-conversion.md
-  - Scripts using Rostruct: scripts-using-rostruct.md
-  - API Reference: api-reference.md
-
+# Extras
 extra_css:
   - extra.css
 
+# Extensions
 markdown_extensions:
   - admonition
-  - codehilite:
-      guess_lang: false
+  - abbr
+  - attr_list
+  - def_list
+  - footnotes
+  - meta
+  - md_in_html
   - toc:
       permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
   - pymdownx.highlight
-  - pymdownx.superfences
-  - meta
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink:
+      repo_url_shorthand: true
+      user: squidfunk
+      repo: mkdocs-material
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+# Plugins
+plugins:
+  - macros
+
+# Page tree
+nav:
+  - Home: index.md
+
+  - Getting started:
+    - "Why Rostruct?": getting-started/why-rostruct.md
+    - Installation: getting-started/installation.md
+    - Creating your project: getting-started/creating-your-project.md
+    - Publishing your project: getting-started/publishing-your-project.md
+    - Examples:
+      - Execution model: getting-started/execution-model.md
+      - Basic usage: getting-started/basic-usage.md
+
+  - Reference:
+    - Types: reference/types.md
+    - Functions: reference/functions.md
+    - Globals: reference/globals.md
+    - File conversion: reference/file-conversion.md
+
+  - Featured:
+    - Community: featured/community.md

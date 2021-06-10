@@ -1,16 +1,8 @@
-.md-typeset__table {
-	width: 100%;
-}
-
 :root {
 	--md-code-font-family: "JetBrains Mono";
 }
 
 /* API Tags */
-
-.tag-space {
-    margin-left: 6px;
-}
 
 .base-tag {
 	color: white;
@@ -39,10 +31,17 @@
 }
 
 .debug-tag {
-	background: #1ba5a5;
+	background: #1ba565;
 }
 .debug-tag::before {
 	content: "debug";
+}
+
+.read-only-tag {
+	background: #1ba5a5;
+}
+.read-only-tag::before {
+	content: "read only";
 }
 
 /* Code */
@@ -75,3 +74,4 @@
 	font-family: "JetBrains Mono";
 	color: #90c9ff;
 }
+

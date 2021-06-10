@@ -1,32 +1,67 @@
-# Home
-Rostruct is a project execution library specializing in running Lua projects in a Roblox script executor. It transforms files into Roblox instances consistently with Rojo.
+---
+hide:
+  - navigation
+  - toc
+---
 
-This documentation is a work in progress!
+<style>
+	.hero-body {
+		background: url('images/backdrop-gradient.svg'), linear-gradient(
+			170deg,
+			#02A6F2 25%,
+			hsla(280, 67%, 55%, 1) 60%,
+			var(--md-default-bg-color) 99%
+		);
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-attachment: fixed;
+	}
 
-!!! note
-	This documentation assumes some familiarity with Rojo. If you're new to development in an external IDE, [Rojo's documentation](https://rojo.space/docs/) provides an in-depth explanation and why you should do it.
+	.landing-header {
+		padding-top: 100px;
+		width: 620px;
+		max-width: 75%;
+		margin: auto;
+	}
 
-## Rostruct
-Rostruct is designed to complement a Rojo-based workflow, introducing script developers to a professional way to manage projects. You host your project files in your exploit's `workspace/` directory, letting you integrate professional tools into your workflow.
+	.landing-header-logo {
+		width: 128px;
+		min-width: 50%;
+		max-width: 80%;
+		margin: auto;
+	}
+		
+	.landing-headline {
+		color: white;
+		font-weight: 700;
+	}
+</style>
 
-### Effortlessly load dependencies
-With functions to [download Github releases](api-reference.md#downloadrelease), you can easily require libraries as intricate as [Roact](https://github.com/Roblox/roact/) and use them to their full extent in your projects.
-
-### Act like it's Roblox Studio
-Transforming files into Roblox instances means that your code will run as if it were a Script object. Your code can interact with your codebase as if it's Roblox Studio, using the `script` and `require` globals to access other parts of your project.
-
-### Curb loading times
-With Rostruct, you can include assets as `rbxm` model files directly in your codebase. They get turned into Roblox objects with the rest of your files, so they're readily available during runtime.
-
-### Built for ambitious projects
-Rostruct is an **execution library** that executes multiple files in conjunction - this allows the developer tons of freedom to create projects like UI libraries, script hubs, explorers - you name it - with little to no restrictions.
-
-### Test at any time
-If your project is designed with Rojo for Roblox Studio, you can develop and test your projects, regardless of whether you have access to an unpatched script executor.
-
-### Recommended tools
-Rostruct can (and should!) be paired with professional-grade tools like:
-
-* [Rojo](https://rojo.space/docs/) - a project management tool designed to get professional resources in the hands of Roblox developers
-* [Roblox LSP](https://devforum.roblox.com/t/roblox-lsp-full-intellisense-for-roblox-and-luau/717745) - full intellisense for Roblox and Luau in VSCode
-* [Selene for VSCode](https://marketplace.visualstudio.com/items?itemName=Kampfkarren.selene-vscode) - a blazing-fast modern Lua linter
+<body class="hero-body">
+	<div class="landing-header" align="center">
+		<img
+			class="landing-header-logo"
+			src="images/Rostruct.svg"
+			alt="Rostruct logo"
+			draggable="false"
+		></img>
+		<h1><span class="landing-headline">Rostruct</span></h1>
+		<p>{{ config.site_description }}.</p>
+		<p>Manage your Lua projects using professional-grade tools to easily run, test, and publish your code. Deploy your project files to a Roblox script executor with a simple and flexible execution library.</p>
+		<a
+			href="{{ page.next_page.url }}"
+			title="{{ page.next_page.title }}"
+			class="md-button md-button--primary"
+		>
+			Quick start
+		</a>
+		&nbsp;
+		<a
+			href="https://github.com/richie0866/Rostruct/"
+			title="Github repository"
+			class="md-button"
+		>
+			Github
+		</a>
+	</div>
+</body>
