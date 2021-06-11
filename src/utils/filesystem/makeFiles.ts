@@ -40,6 +40,6 @@ export function makeFiles(fileArray: FileArray, map?: (path: string) => string) 
 	// Create the files and directories. No sorts need to be performed because parent folders
 	// in each path are made before the file/folder itself.
 	for (const [path, contents] of fileArray)
-		if (path.sub(-1) === "/" && !isfolder(path)) map ? makefolder(map(path)) : makefolder(path);
+		if (path.sub(-1) === "/" && !isfolder(path)) map ? makeFolder(map(path)) : makeFolder(path);
 		else if (path.sub(-1) !== "/" && !isfile(path)) map ? makeFile(map(path), contents) : makeFile(path, contents);
 }
