@@ -3,7 +3,9 @@
 Learn how to integrate Rostruct into your workflow.
 
 !!! warning
-	Loading the latest Rostruct release automatically is discouraged, as **breaking changes** can happen at any time. Read the changelogs when updating Rostruct just in case need to change your code.
+	Loading the latest Rostruct release automatically is discouraged, as **breaking changes** can happen at any time.
+	
+	Read the changelogs when updating Rostruct just in case you need to change your code.
 
 ## Installation
 
