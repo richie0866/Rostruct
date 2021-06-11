@@ -1,0 +1,264 @@
+{% extends "main.html" %}
+
+<!-- Render hero under tabs -->
+{% block tabs %}
+{{ super() }}
+
+<!-- Additional styles for landing page -->
+<style>
+	.md-main {
+		flex-grow: 0;
+	}
+
+	.md-main__inner {
+		display: flex;
+		height: 100%;
+	}
+
+	.tx-container {
+		padding-top: .0rem;
+		padding-bottom: 5rem;
+		background:
+			url("images/home-backdrop.svg") no-repeat top,
+			linear-gradient(
+				/* 175deg, */
+				var(--md-primary-fg-color),
+				hsla(280, 67%, 55%, 1) 80%,
+				var(--md-default-bg-color) 99%
+			);
+		background-size: cover;
+	}
+
+	.tx-hero {
+		margin: .0rem;
+		margin-left: .0rem;
+		margin-right: .0rem;
+		color: var(--md-primary-bg-color);
+		justify-content: center;
+	}
+
+	.tx-hero h1 {
+		margin-bottom: 1rem;
+		color: currentColor;
+		font-weight: 700
+	}
+
+	.tx-hero__content {
+		padding-bottom: .0rem;
+
+		padding: 24px;
+		padding-inline: 24px 24px;
+		border-radius: 8px;
+
+		filter: drop-shadow(0px 3px 0.5rem hsla(0, 0%, 0%, .5));
+	}
+
+	.tx-hero__image{
+		width: 512px;
+		order: 1;
+		padding-right: .0rem;
+		padding-top: 2.5rem;
+	}
+
+	.tx-hero .md-button {
+		margin-top: .5rem;
+		margin-right: .5rem;
+		color: var(--md-primary-bg-color)
+	}
+
+	.tx-hero .md-button--primary {
+		background-color: var(--md-primary-bg-color);
+		color: hsla(280deg, 37%, 48%, 1);
+		border-color: var(--md-primary-bg-color)
+	}
+
+	.tx-hero .md-button:focus,
+	.tx-hero .md-button:hover {
+		background-color: var(--md-primary-fg-color);
+		color: #FFF;
+		border-color: var(--md-primary-fg-color)
+	}
+
+	.feature-item h2 svg {
+		height: 30px;
+		float: left;
+		margin-right: 10px;
+		transform: translateY(10%);
+	}
+
+	.top-hr {
+		margin-top: 42px;
+	}
+
+	.feature-item {
+		font-family: 'Lato', sans-serif;
+		font-weight: 300;
+		box-sizing: border-box;
+		padding: 0 15px;
+		word-break: break-word
+	}
+
+	.feature-item h2 {
+		color: #333;
+		font-weight: 300;
+		font-size: 25px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		line-height: normal;
+		margin-top: 20px;
+		margin-bottom: 10px;
+		font-family: inherit;
+	}
+
+	.feature-item p {
+		font-size: 16px;
+		line-height: 1.8em;
+		text-rendering: optimizeLegibility;
+		-webkit-font-smoothing: antialiased;
+		color: #111;
+		margin: 0 0 10px;
+		display: block;
+	}
+
+	@media screen and (max-width:960px) {
+		.tx-container {
+			background:
+				url("images/home-backdrop.svg") no-repeat bottom,
+				linear-gradient(
+					/* 175deg, */
+					var(--md-primary-fg-color),
+					hsla(280, 67%, 55%, 1) 80%,
+					var(--md-default-bg-color) 99%
+				);
+			background-size: cover;
+		}
+
+		.tx-hero h1 {
+			font-size: 1.6rem
+		}
+
+		.tx-hero__content {
+			max-width: 100%;
+			margin-top: .0rem;
+			margin-left: .0rem;
+			margin-right: .0rem;
+			align-items: center;
+
+			background: #00000000;
+		}
+
+		.tx-hero__image {
+			width: 80%;
+			min-width: 210px;
+			max-width: 512px;
+			margin: 0px auto;
+		}
+	}
+
+	@media screen and (min-width:960px) {
+		.md-sidebar--secondary {
+			display: none
+		}
+
+		.tx-hero {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.tx-hero__content {
+			max-width: 24rem;
+			margin-top: 3.5rem;
+			margin-bottom: 3.5rem;
+			margin-left: 1.0rem;
+			margin-right: 4.0rem;
+			align-items: center;
+		}
+
+		.tx-hero__image {
+			width: 650px;
+			min-width: 512px;
+        	padding-right: .0rem;
+		}
+	}
+
+	.hr {
+		border-bottom: 1px solid #eee;
+		width: 100%;
+		margin: 20px 0;
+	}
+
+	.text-center {
+		text-align: center;
+		padding-right: 15px;
+		padding-left: 15px;
+		margin-right: auto;
+		margin-left: auto;
+		margin-top: 15px;
+		font-family: 'Lato', sans-serif;
+		font-size: 23px;
+		font-weight: 300;
+		padding-bottom: 10px;
+	}
+
+	.logos {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-flow: row wrap;
+		margin: 0 auto;
+	}
+
+	.logos img {
+		flex: 1 1 auto;
+		padding: 25px;
+		max-height: 130px;
+		vertical-align: middle;
+	}
+
+	.hr-logos {
+		margin-top: 0;
+		margin-bottom: 30px;
+	}
+
+	.md-footer-meta__inner {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		margin-top: 1.0rem;
+	}
+
+	.md-footer-social {
+		padding-top: 20px;
+	}
+</style>
+
+<!-- Main site Entry button descriptions -->
+<section class="tx-container">
+    <div class="md-grid md-typeset">
+      <div class="tx-hero" width="50px">
+        <div class="tx-hero__image">
+          <img src="images/home-samples.svg" draggable="false">
+        </div>
+        <div class="tx-hero__content">
+          <h1>Take exploiting to a new level</h1>
+          <p>Manage your Lua projects using <b>professional-grade tools</b> to easily run and publish your code. Deploy your project files to a <b>Roblox script executor</b> with a <b>simple and flexible</b> execution library.</p>
+          <a href="{{ page.next_page.url | url }}" title="{{ page.next_page.title | striptags }}" class="md-button md-button--primary">
+            Get started
+          </a>
+          <a href="{{ config.repo_url }}" title="{{ lang.t('source.link.title') }}" class="md-button">
+            Go to GitHub
+          </a>
+        </div>
+      </div>
+    </div>
+</section>
+
+{% endblock %}
+
+<!-- Content -->
+{% block content %}{% endblock %}
+
+<!-- Application footer -->
+{% block footer %}{% endblock %}

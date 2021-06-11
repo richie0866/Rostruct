@@ -1,5 +1,27 @@
 # File conversion
 
+???+ danger "Important"
+
+	Because Rostruct is for Roblox script execution, and Rojo is for the command-line, some key differences exist in functionality.
+	
+	Please exercise caution when using Rostruct with Rojo, and keep track of Rojo updates!
+
+	??? missing "Not supported"
+
+		* Localization tables
+		* JSON models
+		* Rojo project files
+			* Project files structure your codebase around the `game` object, which would expose your project to the client.
+		* `*.meta.json` files
+
+	??? check "Extra functionality"
+
+		* `.rbxm` and `.rbxmx` files are fully supported, but [Binary models](https://rojo.space/docs/6.x/sync-details/#models) are buggy in Rojo
+
+	??? bug "Known issues"
+
+		* `init.meta.json` files only set properties to primitive types like `boolean`, `string`, etc.
+
 Rostruct file conversion mirrors [Rojo's sync details](https://rojo.space/docs/6.x/sync-details/).
 
 Concepts on the table below will redirect you to their respective Rojo pages.
@@ -16,22 +38,3 @@ Concepts on the table below will redirect you to their respective Rojo pages.
 | Binary [models](https://rojo.space/docs/6.x/sync-details/#models)      | `*.rbxm`       |
 | [Plain text](https://rojo.space/docs/6.x/sync-details/#plain-text)     | `*.txt`        |
 | [JSON modules](https://rojo.space/docs/6.x/sync-details/#json-modules) | `*.json`       |
-
-!!! warning
-	Currently, Rostruct does not support the following Rojo concepts:
-
-	* Localization tables
-	* JSON models
-	* Projects
-	* `*.meta.json` files
-	* `init.meta.json` files <small>(partially)</small>
-
-!!! tip
-	Due to Rostruct being an exploiting tool, there are some key differences from Rojo:
-
-	* `.rbxm` and `.rbxmx` files are fully supported
-    	* Binary model files are currently buggy in Rojo
-	* Rojo project files will not be supported
-    	* Project files structure your codebase around the `game` object, which would expose your project to the client.
-
-	Please exercise caution when using these features with Rojo, and keep track of their Github page for updates!

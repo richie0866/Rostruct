@@ -2,7 +2,8 @@
 site_name: Rostruct
 site_url: https://richie0866.github.io/Rostruct/
 site_description: >-
-  A modern script execution library, built for Roblox and Rojo
+  A modern exploit project library, built for Roblox and Rojo.
+  Deploy your project files to a Roblox script executor with a simple and flexible execution library.
 
 # Repository
 repo_name: richie0866/Rostruct
@@ -11,6 +12,7 @@ repo_url: https://github.com/richie0866/Rostruct
 # Configuration
 theme:
   name: material
+  custom_dir: docs/overrides
 
   highlightjs: true
 
@@ -20,14 +22,14 @@ theme:
 
   palette:
     scheme: slate
-    primary: 'Light Blue'
-    accent: 'Light Blue'
+    primary: 'blue'
+    accent: 'Light blue'
     
   features:
     - navigation.tabs
     - navigation.sections
 
-# Extras
+# Extra css
 extra_css:
   - extra.css
 
@@ -71,6 +73,10 @@ markdown_extensions:
       custom_checkbox: true
   - pymdownx.tilde
 
+# Extra
+extra:
+  manifest: manifest.webmanifest
+
 # Plugins
 plugins:
   - macros
@@ -90,8 +96,8 @@ nav:
       - Basic usage: getting-started/basic-usage.md
 
   - Reference:
-    - Types: reference/types.md
     - Functions: reference/functions.md
+    - Types: reference/types.md
     - Globals: reference/globals.md
     - File conversion: reference/file-conversion.md
 

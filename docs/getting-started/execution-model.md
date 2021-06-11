@@ -12,7 +12,7 @@ Rostruct turns your files into Roblox objects, and every Lua script executes as 
 
 	=== "Rostruct"
 
-		![MyModule instance](../images/MidiPlayerPanel.svg){ width=256px }
+		![MyModule instance](../images/midi-player-panel.svg){ width=256px }
 
 ## Getting assets
 

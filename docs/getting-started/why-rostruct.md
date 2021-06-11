@@ -17,7 +17,7 @@ Rostruct's design complements this Rojo-based workflow, introducing script devel
 
 ---
 
-![Script hub example](../images/ScriptHubPanel.svg){ align=right width=200 draggable=false }
+![Script hub example](../images/script-hub-panel.svg){ align=right width=200 draggable=false }
 
 ### Built for ambitious projects
 
@@ -33,7 +33,7 @@ Store all of your UI, utilities, and models locally, and they'll be loaded as Ro
 
 Write your code without assets slowing down runtime.
 
-![MidiPlayer example](../images/MidiPlayerPanelShort.svg){ align=right width=200 draggable=false }
+![MidiPlayer example](../images/midi-player-panel-short.svg){ align=right width=200 draggable=false }
 
 ```lua
 local midiPlayer = script:FindFirstAncestor("MidiPlayer")
@@ -49,13 +49,13 @@ gui.Parent = gethui()
 
 ---
 
-### Use dependencies
+### Load dependencies
 
 Safely integrate external libraries into your projects with an intelligent Promise-based module loading system.
 
 External libraries load like any other ModuleScript.
 
-![Roact example](../images/RoactPanel.svg){ align=right width=200 draggable=false }
+![Roact example](../images/roact-panel.svg){ align=right width=200 draggable=false }
 
 ```lua
 local download = Rostruct.DownloadLatestRelease(
@@ -73,7 +73,7 @@ Roact.createElement(...)
 
 ---
 
-![VS Code logo](../images/VSCode.svg){ align=right width=180 draggable=false }
+![VS Code logo](../images/vs-code-logo.svg){ align=right width=180 draggable=false }
 
 ### Test at any time
 
