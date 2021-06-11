@@ -4,8 +4,12 @@
 
 This documentation is a work in progress!
 
-!!! note
-	This documentation assumes some familiarity with Rojo. If you're new to development in an external IDE, [Rojo's documentation](https://rojo.space/docs/) provides an in-depth explanation and why you should do it.
+???+ info
+	This documentation assumes some familiarity with Rojo and Roblox Promises.
+	
+	If you're new to development in an external IDE, [Rojo's documentation](https://rojo.space/docs/) provides an in-depth explanation of how it works and why you should do it.
+
+	Evaera's [Promise documentation](https://eryn.io/roblox-lua-promise/) has a detailed guide on the purpose and use of the Promise object.
 
 ## Why Rostruct?
 

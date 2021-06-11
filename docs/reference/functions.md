@@ -1,5 +1,8 @@
 # Static Functions
 
+!!! info
+	This documentation assumes some familiarity with the Roblox Promise library. Evaera's [Promise documentation](https://eryn.io/roblox-lua-promise/) has a detailed guide on the purpose and use of the Promise object.
+
 ## <span class="code">Build</span>&nbsp; <span class="base-tag static-tag"></span>
 
 <span class="code">
