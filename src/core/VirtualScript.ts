@@ -86,26 +86,18 @@ export class VirtualScript {
 
 		// Initialize a scope array if it does not already exist.
 		if (!VirtualScript.virtualScriptsOfScope.has(scope)) VirtualScript.virtualScriptsOfScope.set(scope, [this]);
-
-		// Reserves globals for this VirtualScript's environent.
-		globals.environments.set(`${scope}-${this.id}`, this.env);
+		else VirtualScript.virtualScriptsOfScope.get(scope)!.push(this);
 
 		// Tracks this VirtualScript for external use.
 		VirtualScript.virtualScriptsByInstance.set(instance, this);
-		VirtualScript.virtualScriptsOfScope.get(scope)!.push(this);
 	}
 
 	/**
-	 * Generates a source script. Generates locals as globals located at the
-	 * top of the code.
+	 * Generates a source script that injects globals into the environment.
 	 * @returns The source of the VirtualScript.
 	 */
 	private getSource(): string {
-		let header = `local _ENV = getgenv().Rostruct.environments['${this.scope}-${this.id}']; `;
-
-		for (const k of Object.keys(this.env)) header += `local ${k} = _ENV['${k}']; `;
-
-		return header + readfile(this.file.location);
+		return "setfenv(1, setmetatable(..., { __index = getfenv(0) }));" + readfile(this.file.location);
 	}
 
 	/**
@@ -135,7 +127,7 @@ export class VirtualScript {
 	runExecutor(): ReturnType<Executor> {
 		if (this.jobComplete) return this.result;
 
-		const result = this.createExecutor()();
+		const result = this.createExecutor()(this.env);
 
 		// Modules must return a value.
 		if (this.instance.IsA("ModuleScript"))
