@@ -19,7 +19,7 @@ local Rostruct = loadstring(game:HttpGetAsync(string.format(URL, VERSION)))()
 This will load the Rostruct asset for the given [Github Release](https://github.com/richie0866/Rostruct/releases) **tag version**.
 
 ??? tip "How do I get the tag version?"
-	![image](../images/github-tag-version.png){ align=right width=512 }
+	![image](../assets/images/github-tag-version.png){ align=right width=512 }
 
 	The tag version is **not** the name of the release.
 	

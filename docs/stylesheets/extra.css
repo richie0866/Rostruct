@@ -1,6 +1,4 @@
-:root {
-	--md-code-font-family: "JetBrains Mono";
-}
+/* Fonts */
 
 /* API Tags */
 
@@ -12,7 +10,7 @@
 	vertical-align: middle;
 	font-size: 50%;
 	font-weight: bold;
-	font-family: "JetBrains Mono", "Roboto Mono";
+	font-family: 'JetBrains Mono', 'Roboto Mono', Consolas, monospace;
     margin-left: 4px;
 }
 
@@ -47,31 +45,31 @@
 /* Code */
 
 .code {
-	font-family: "JetBrains Mono";
+	font-family: 'JetBrains Mono', 'Roboto Mono', Consolas, monospace;
 	color: #E9EBFC;
 }
 .symbol {
-	font-family: "JetBrains Mono";
+	font-family: 'JetBrains Mono', 'Roboto Mono', Consolas, monospace;
 	color: #8F92AB;
 }
 .keyword {
-	font-family: "JetBrains Mono";
+	font-family: 'JetBrains Mono', 'Roboto Mono', Consolas, monospace;
 	color: #a897ff;
 }
 .key {
-	font-family: "JetBrains Mono";
+	font-family: 'JetBrains Mono', 'Roboto Mono', Consolas, monospace;
 	color: #73DACA;
 }
 .interface {
-	font-family: "JetBrains Mono";
+	font-family: 'JetBrains Mono', 'Roboto Mono', Consolas, monospace;
 	color: #ffab73;
 }
 .type {
-	font-family: "JetBrains Mono";
+	font-family: 'JetBrains Mono', 'Roboto Mono', Consolas, monospace;
 	color: #79b3ff;
 }
 .highlight {
-	font-family: "JetBrains Mono";
+	font-family: 'JetBrains Mono', 'Roboto Mono', Consolas, monospace;
 	color: #90c9ff;
 }
 

@@ -62,7 +62,7 @@ The functions [`Rostruct.DownloadRelease`](../reference/functions.md#downloadrel
 
 ???+ info
 
-	![image](../images/github-asset.png){ align=right }
+	![image](../assets/images/github-asset.png){ align=right }
 
 	By default, if the `asset` is unspecified, Rostruct will download and extract the Source code zip file.
 	

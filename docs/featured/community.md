@@ -19,4 +19,4 @@ A midi file auto-player for Roblox piano games.
 	* A single LocalScript initializes the code
 	* Uses common utility modules
 
-![MidiPlayer UI](../images/midi-player-screenshot.png)
+![MidiPlayer UI](../assets/images/midi-player-screenshot.png)

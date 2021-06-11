@@ -13,6 +13,10 @@ repo_url: https://github.com/richie0866/Rostruct
 theme:
   name: material
   custom_dir: docs/overrides
+  
+  font:
+    code: JetBrains Mono
+    text: Roboto
 
   highlightjs: true
 
@@ -31,7 +35,7 @@ theme:
 
 # Extra css
 extra_css:
-  - extra.css
+  - stylesheets/extra.css
 
 # Extensions
 markdown_extensions:

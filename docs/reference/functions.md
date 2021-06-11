@@ -137,7 +137,7 @@ local Roact = project.Module:expect()
 Downloads and saves a Github release of the `repo` owned by `owner`. The `tag` parameter refers to the **tag version**, NOT the release name. You set the tag version while [making a release](https://docs.github.com/en/github/administering-a-repository/releasing-projects-on-github/managing-releases-in-a-repository). If `asset` is not specified, it will download the source code for the release.
 
 ??? tip "How do I get the tag version?"
-	![image](../images/github-tag-version.png){ align=right width=512 }
+	![image](../assets/images/github-tag-version.png){ align=right width=512 }
 
 	The tag version is **not** the name of the release.
 	
