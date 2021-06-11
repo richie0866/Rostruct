@@ -77,10 +77,6 @@ markdown_extensions:
       custom_checkbox: true
   - pymdownx.tilde
 
-# Extra
-extra:
-  manifest: manifest.webmanifest
-
 # Plugins
 plugins:
   - macros
