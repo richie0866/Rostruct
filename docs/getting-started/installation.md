@@ -21,7 +21,7 @@ local URL = "https://github.com/richie0866/Rostruct/releases/download/%s/Rostruc
 local Rostruct = loadstring(game:HttpGetAsync(string.format(URL, VERSION)))()
 ```
 
-This will load the Rostruct asset for the given [Github Release](https://github.com/richie0866/Rostruct/releases) **tag version**.
+This will load the Rostruct asset for the given [GitHub Release](https://github.com/richie0866/Rostruct/releases) **tag version**.
 
 ??? tip "How do I get the tag version?"
 	![image](../assets/images/github-tag-version.png){ align=right width=512 }
@@ -32,7 +32,7 @@ This will load the Rostruct asset for the given [Github Release](https://github.
 
 ### with `#!lua loadfile()`
 
-Storing Rostruct in the filesystem is a great way to cut down on any loading time experienced while debugging. Save the latest `Rostruct.lua` file from the [Github Releases page](https://github.com/richie0866/Rostruct/releases/latest) to your executor's `workspace/` directory. Load the Lua file with:
+Storing Rostruct in the filesystem is a great way to cut down on any loading time experienced while debugging. Save the latest `Rostruct.lua` file from the [GitHub Releases page](https://github.com/richie0866/Rostruct/releases/latest) to your executor's `workspace/` directory. Load the Lua file with:
 
 === "loadfile"
 

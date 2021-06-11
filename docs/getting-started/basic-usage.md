@@ -54,9 +54,9 @@ local UILibrary = project.Module:expect()
 UILibrary:create("Frame")
 ```
 
-## Download a Github release
+## Download a GitHub release
 
-Rostruct provides a set of functions that allow users to download and save releases from a Github repository.
+Rostruct provides a set of functions that allow users to download and save releases from a GitHub repository.
 
 The functions [`Rostruct.DownloadRelease`](../reference/functions.md#downloadrelease) and [`DownloadLatestRelease`](../reference/functions.md#downloadlatestrelease) will download the release, with an optional asset target, and return a `DownloadResult` object.
 

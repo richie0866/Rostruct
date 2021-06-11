@@ -25,7 +25,7 @@ In contrast, if you've ever used Rojo with Roblox Studio, you're able to distrib
 Rostruct's design complements this Rojo-based workflow, introducing script developers to a professional way to manage projects. You host your project files in your exploit's `workspace/` directory, allowing the integration of professional tools used in Roblox game development into your workflow.
 
 ## Documentation
-Documentation is available at the [Github Pages site](https://richie0866.github.io/Rostruct).
+Documentation is available at the [GitHub Pages site](https://richie0866.github.io/Rostruct).
 
 ## How it works
 How does Rostruct build instances?
@@ -49,8 +49,8 @@ Every script has preset `script` and `require` variables to closely mirror a Roj
 * Instance-based execution
   * Run your projects in an environment that closely mirrors a Rojo & Roblox Studio workflow.
 
-* Github support
-  * Install and deploy projects directly from Github releases, allowing users to execute your code without manually downloading it.
+* GitHub support
+  * Install and deploy projects directly from GitHub releases, allowing users to execute your code without manually downloading it.
 
 * Builds `rbxm` models
   * Go `GetObjects`-free by loading models directly from your project files.

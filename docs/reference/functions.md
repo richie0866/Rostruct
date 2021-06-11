@@ -137,7 +137,7 @@ local Roact = project.Module:expect()
 	[<span class="interface"><u>DownloadResult</u></span>](./types.md#downloadresult)
 </span>
 
-Downloads and saves a Github release of the `repo` owned by `owner`. The `tag` parameter refers to the **tag version**, NOT the release name. You set the tag version while [making a release](https://docs.github.com/en/github/administering-a-repository/releasing-projects-on-github/managing-releases-in-a-repository). If `asset` is not specified, it will download the source code for the release.
+Downloads and saves a GitHub release of the `repo` owned by `owner`. The `tag` parameter refers to the **tag version**, NOT the release name. You set the tag version while [making a release](https://docs.github.com/en/github/administering-a-repository/releasing-projects-on-github/managing-releases-in-a-repository). If `asset` is not specified, it will download the source code for the release.
 
 ??? tip "How do I get the tag version?"
 	![image](../assets/images/github-tag-version.png){ align=right width=512 }
@@ -204,7 +204,7 @@ Rostruct.DownloadRelease("Roblox", "roact", "v1.4.0", "Roact.rbxm")
 	[<span class="interface"><u>DownloadResult</u></span>](./types.md#downloadresult)
 </span>
 
-Downloads and saves the latest Github release of the `repo` owned by `owner`. If `asset` is not specified, it will download the source code for the release.
+Downloads and saves the latest GitHub release of the `repo` owned by `owner`. If `asset` is not specified, it will download the source code for the release.
 
 This functions identically to [`Rostruct.DownloadRelease`](#downloadrelease), except there is no `tag` parameter. This function will **always** make an HTTP GET request to get the latest release tag of the repository.
 

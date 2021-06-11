@@ -1,12 +1,12 @@
 # Publishing your project
 
-Once you're ready to distribute your project, you must consider how users can deploy your code. Fortunately, Rostruct provides functions to download and deploy your codebase through Github automatically.
+Once you're ready to distribute your project, you must consider how users can deploy your code. Fortunately, Rostruct provides functions to download and deploy your codebase through GitHub automatically.
 
-## Github Releases
+## GitHub Releases
 
-The best way to publish your Rostruct project is by creating a [Github Release](https://docs.github.com/en/github/administering-a-repository/releasing-projects-on-github/managing-releases-in-a-repository). Rostruct provides functions to download, cache, and deploy your project from a Github release to the end-user.
+The best way to publish your Rostruct project is by creating a [GitHub Release](https://docs.github.com/en/github/administering-a-repository/releasing-projects-on-github/managing-releases-in-a-repository). Rostruct provides functions to download, cache, and deploy your project from a GitHub release to the end-user.
 
-Using Github Releases, you can use a **deploy script** to make your project deploy for anyone, with no manual installation necessary. Your **deploy script** is what downloads and deploys the latest release of your **source code**. This script typically doesn't change, other than to update Rostruct.
+Using GitHub Releases, you can use a **deploy script** to make your project deploy for anyone, with no manual installation necessary. Your **deploy script** is what downloads and deploys the latest release of your **source code**. This script typically doesn't change, other than to update Rostruct.
 
 However, you'll need to load Rostruct in your deploy script without making it complicated for the user.
 
@@ -19,7 +19,7 @@ However, you'll need to load Rostruct in your deploy script without making it co
 
 A fast, but hefty way to use Rostruct in your **deploy script** is to load Rostruct internally. Thus, your code will not use an HTTP request to load Rostruct, nor will it load it from a file; you include Rostruct's complete source inside of your script.
 
-To add Rostruct's source to your deploy script, you first download the `Rostruct.lua` asset from the latest release of Rostruct from the [Github Releases page](https://github.com/richie0866/Rostruct/releases/latest).
+To add Rostruct's source to your deploy script, you first download the `Rostruct.lua` asset from the latest release of Rostruct from the [GitHub Releases page](https://github.com/richie0866/Rostruct/releases/latest).
 
 The file will end with `#!lua return TS.initialize("init")`. This line of code essentially loads Rostruct as a module and returns it when being called with `#!lua loadstring()` or `#!lua loadfile()`.
 
@@ -35,7 +35,7 @@ This loads the Rostruct library directly from the source code included above. Yo
 
 If you prefer a quick, concise way to load Rostruct, you can load it in your **deploy script** using an HTTP request. 
 
-To load Rostruct with an HTTP request, you should first locate the release you'd like to use from the [Github Releases page](https://github.com/richie0866/Rostruct/releases/latest). Once you've done that, you can copy the version to the left of the title, and paste it as `TAG_VERSION_HERE` in this code:
+To load Rostruct with an HTTP request, you should first locate the release you'd like to use from the [GitHub Releases page](https://github.com/richie0866/Rostruct/releases/latest). Once you've done that, you can copy the version to the left of the title, and paste it as `TAG_VERSION_HERE` in this code:
 
 ```lua
 local VERSION = "TAG_VERSION_HERE"
@@ -47,7 +47,7 @@ This loads the Rostruct library by executing the source code from the given vers
 
 ## Deployment
 
-After you've loaded Rostruct in your deploy script, use [`Rostruct.DownloadLatestRelease`](../reference/functions.md#downloadlatestrelease) to download your project's most recent Github Release files. This function automatically caches, updates, and version-checks your releases, so no further configuration is necessary.
+After you've loaded Rostruct in your deploy script, use [`Rostruct.DownloadLatestRelease`](../reference/functions.md#downloadlatestrelease) to download your project's most recent GitHub Release files. This function automatically caches, updates, and version-checks your releases, so no further configuration is necessary.
 
 !!! note
 	Prereleases and drafts do not count towards the latest release, but can be downloaded using [`Rostruct.DownloadRelease`](../reference/functions.md#downloadrelease).
@@ -83,4 +83,4 @@ After you've loaded Rostruct in your deploy script, use [`Rostruct.DownloadLates
 	local Roact = project.Module:expect()
 	```
 
-Whenever a new Github Release is available for your project, the `deploy script` will handle installation and deployment for you. You can then use this script for public or commercial use to execute your project.
+Whenever a new GitHub Release is available for your project, the **deploy script** will handle installation and deployment for you. You can then use this script for public or commercial use to execute your project.
