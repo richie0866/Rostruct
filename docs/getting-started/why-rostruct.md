@@ -13,10 +13,10 @@ This documentation is a work in progress!
 
 ## Why Rostruct?
 
-Because of the limitations of script executors, developers are often lead to storing their codebase in a single Lua file. Large, messy files are detrimental to your workflow, as they make debugging, management, and working in teams difficult.
+Because of the limitations of script executors, developers are often lead to storing their codebase in a single Lua file. Large, messy scripts are detrimental to your workflow, as they make debugging, management, and working in teams difficult.
 
-In contrast, if you've ever used Rojo with Roblox Studio, you're able to distribute your codebase between separate, specialized files. Taking a **modular approach** to exploit scripting can significantly improve your workflow.
-
+In contrast, if you've ever used Rojo with Roblox Studio, you're able to distribute your codebase between separate, specialized files. Taking a **modular approach** to development can improve how you plan, design, and maintain your codebase.
+.
 Rostruct's design complements this Rojo-based workflow, introducing script developers to a professional way to manage projects. You host your project files in your exploit's `workspace/` directory, allowing the integration of professional tools used in Roblox game development into your workflow.
 
 ---

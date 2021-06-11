@@ -2,6 +2,9 @@
 
 Learn how to integrate Rostruct into your workflow.
 
+!!! warning
+	Loading the latest Rostruct release automatically is discouraged, as **breaking changes** can happen at any time. Read the changelogs when updating Rostruct just in case need to change your code.
+
 ## Installation
 
 When using Rostruct to test and debug your code in an exploiting environment, you can easily load the library for personal use.
