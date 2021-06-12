@@ -1,19 +1,5 @@
 # Execution model
 
-When creating a Rostruct project, you should script with instances in mind. Since this library will turn your codebase into Roblox instances, your files should behave as scripts running in Roblox Studio.
-
-Rostruct turns your files into Roblox objects, and every Lua script executes as a script object. As a result, your code can require other modules using the `#!lua require()` function as you would in Roblox Studio.
-
-??? example "File conversion"
-
-	=== "Source code"
-
-		![MyModule source](../assets/images/midi-player-src.png){ width=256px }
-
-	=== "Rostruct"
-
-		![MyModule instance](../assets/images/midi-player-panel.svg){ width=256px }
-
 ## Getting assets
 
 A useful pattern is to keep all assets and dependencies within your project for immediate access. Let's say a project is structured like such:
@@ -29,7 +15,7 @@ A useful pattern is to keep all assets and dependencies within your project for 
 	* Assets/
 		* Character.rbxm <small>(Model)</small>
 
-We can write `MyController.lua` as such:
+We can get assets in `MyController.lua` with this code:
 
 ```lua
 -- MyProject/Controllers/MyController.lua
@@ -40,8 +26,6 @@ local Date = require(myProject.Util.Date)
 local Thread = require(myProject.Util.Thread)
 
 local character = myProject.Assets.Character
-...
-return MyController
 ```
 
 !!! tip
@@ -57,9 +41,14 @@ buildResult.RuntimeWorker:catch(function(err)
 end)
 ```
 
-## Requiring a library
+## Requiring your project
 
-In order to use [`Rostruct.Require`](../reference/functions.md#require), your project must contain an `init.lua` file. This file transforms the parent directory into a ModuleScript. You can find a detailed explanation in [Rojo's sync details](https://rojo.space/docs/6.x/sync-details/#scripts).
+!!! warning
+	You should generally avoid using Rostruct functions *inside* of your source code. Use this function if you're going to use a module outside of a Rostruct project.
+
+If you need to quickly require a library in your script executor without deploying a new project, Rostruct has you covered with the [`Rostruct.Require`](../reference/functions.md#require) function.
+
+The project you want to require must contain an `init.lua` file. This file tells Rostruct that the project turns into a ModuleScript. Check out the [file conversion](../reference/file-conversion.md) page for more information.
 
 Let's say a project is structured like such:
 
@@ -68,7 +57,9 @@ Let's say a project is structured like such:
 	* Util/
 		* Signal.lua <small>(ModuleScript)</small>
 
-We can require it as such:
+The `init.lua` file tells Rostruct that the `MyModule/` directory should be turned into a ModuleScript. The module also inherits the source code of `init.lua`.
+
+You can require modules with the following code snippet:
 
 ```lua
 local project = Rostruct.Require("MyModule/")
@@ -76,9 +67,12 @@ local project = Rostruct.Require("MyModule/")
 local MyModule = project.Module:expect()
 ```
 
+You can also use the GitHub Release functions Rostruct provides to download a library and use it.
+
 ## Best practices
 
 * Only one LocalScript, if any, should manage module runtime
 * Code should not rely on services like CollectionService that expose you to the client, make an alternative
 * LocalScripts should try to finish ASAP and avoid yielding the main thread if possible
 * The codebase should never be exposed to the `game` object to prevent security vulnerabilities
+* Avoid using Rostruct in your project to load dependencies; Instead, check out [how to use a module](using-other-projects.md)

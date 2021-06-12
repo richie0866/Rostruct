@@ -1,23 +1,16 @@
 # Getting started
 
-**Rostruct** is a script execution library best used with [Rojo](https://rojo.space/docs/), a tool for syncing project files with Roblox Studio. Rostruct is used to deploy Lua projects to Roblox script executors.
+With **Rostruct**, script executors can deploy your Lua projects from the filesystem. Integrate powerful tools like [Rojo](https://rojo.space/docs/) and [Selene for VS Code](https://marketplace.visualstudio.com/items?itemName=Kampfkarren.selene-vscode) into your workflow, ensuring a hassle-free development experience.
 
 This documentation is a work in progress!
-
-???+ info
-	This documentation assumes some familiarity with Rojo and Roblox Promises.
-	
-	If you're new to development in an external IDE, [Rojo's documentation](https://rojo.space/docs/) provides an in-depth explanation of how it works and why you should do it.
-
-	Evaera's [Promise documentation](https://eryn.io/roblox-lua-promise/) has a detailed guide on the purpose and use of the Promise object.
 
 ## Why Rostruct?
 
 Because of the limitations of script executors, developers are often lead to storing their codebase in a single Lua file. Large, messy scripts are detrimental to your workflow, as they make debugging, management, and working in teams difficult.
 
 In contrast, if you've ever used Rojo with Roblox Studio, you're able to distribute your codebase between separate, specialized files. Taking a **modular approach** to development can improve how you plan, design, and maintain your codebase.
-.
-Rostruct's design complements this Rojo-based workflow, introducing script developers to a professional way to manage projects. You host your project files in your exploit's `workspace/` directory, allowing the integration of professional tools used in Roblox game development into your workflow.
+
+Rostruct's design complements a Rojo-based workflow, introducing script developers to a professional way to manage projects. You host your project files in your exploit's `workspace/` directory, allowing for a more professional developing environment.
 
 ---
 
@@ -35,7 +28,7 @@ Create projects from UI libraries to explorers - with little to no limitations.
 
 Store all of your UI, utilities, and models locally, and they'll be loaded as Roblox objects before runtime.
 
-Write your code without assets slowing down runtime.
+Write your code without waiting for assets.
 
 ![MidiPlayer example](../assets/images/midi-player-panel-short.svg){ align=right width=200 draggable=false }
 
@@ -55,7 +48,7 @@ gui.Parent = gethui()
 
 ### Load dependencies
 
-Safely integrate external libraries into your projects with an intelligent Promise-based module loading system.
+Safely integrate external libraries into your script with an intelligent Promise-based module loading system.
 
 External libraries load like any other ModuleScript.
 

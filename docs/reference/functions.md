@@ -1,8 +1,5 @@
 # Static Functions
 
-!!! info
-	This documentation assumes some familiarity with the Roblox Promise library. Evaera's [Promise documentation](https://eryn.io/roblox-lua-promise/) has a detailed guide on the purpose and use of the Promise object.
-
 ## <span class="code">Build</span>&nbsp; <span class="base-tag static-tag"></span>
 
 <span class="code">
@@ -98,7 +95,7 @@ If the project is a **module**, it executes it and saves the result to an additi
 !!! warning
 	Calling `Rostruct.Require()` on a directory with no `init.lua` file in it will throw an error. When using this function, you should set up the project folder to transform into a ModuleScript.
 	
-	See the [execution model page](../getting-started/execution-model.md#requiring-a-library) for how to do this, and [Rojo's sync details](https://rojo.space/docs/6.x/sync-details/#scripts) for a detailed explanation.
+	See the [execution model page](../getting-started/execution-model.md#requiring-your-project) for how to do this, and [Rojo's sync details](https://rojo.space/docs/6.x/sync-details/#scripts) for a detailed explanation.
 
 **Example use** 
 
@@ -134,10 +131,10 @@ local Roact = project.Module:expect()
 	&nbsp;&nbsp;&nbsp;&nbsp;tag<span class="symbol">:</span> <span class="type">string</span><span class="symbol">,</span>  
 	&nbsp;&nbsp;&nbsp;&nbsp;asset<span class="symbol">?:</span> <span class="type">string</span>  
 	<span class="symbol">) </span><span class="keyword">=></span>
-	[<span class="interface"><u>DownloadResult</u></span>](./types.md#downloadresult)
+	<span class="interface">Promise</span>&lt;[<span class="interface"><u>DownloadResult</u></span>](./types.md#downloadresult)&gt;
 </span>
 
-Downloads and saves a GitHub release of the `repo` owned by `owner`. The `tag` parameter refers to the **tag version**, NOT the release name. You set the tag version while [making a release](https://docs.github.com/en/github/administering-a-repository/releasing-projects-on-github/managing-releases-in-a-repository). If `asset` is not specified, it will download the source code for the release.
+Downloads and saves a GitHub release of the `repo` owned by `owner`. The `tag` parameter refers to the **tag version**. You set the tag version while [making a release](https://docs.github.com/en/github/administering-a-repository/releasing-projects-on-github/managing-releases-in-a-repository). If `asset` is not specified, it will download the source code of the release.
 
 ??? tip "How do I get the tag version?"
 	![image](../assets/images/github-tag-version.png){ align=right width=512 }
@@ -201,10 +198,10 @@ Rostruct.DownloadRelease("Roblox", "roact", "v1.4.0", "Roact.rbxm")
 	&nbsp;&nbsp;&nbsp;&nbsp;repo<span class="symbol">:</span> <span class="type">string</span><span class="symbol">,</span>  
 	&nbsp;&nbsp;&nbsp;&nbsp;asset<span class="symbol">?:</span> <span class="type">string</span>  
 	<span class="symbol">) </span><span class="keyword">=></span>
-	[<span class="interface"><u>DownloadResult</u></span>](./types.md#downloadresult)
+	<span class="interface">Promise</span>&lt;[<span class="interface"><u>DownloadResult</u></span>](./types.md#downloadresult)&gt;
 </span>
 
-Downloads and saves the latest GitHub release of the `repo` owned by `owner`. If `asset` is not specified, it will download the source code for the release.
+Downloads and saves the latest GitHub release of the `repo` owned by `owner`. If `asset` is not specified, it will download the source code of the release.
 
 This functions identically to [`Rostruct.DownloadRelease`](#downloadrelease), except there is no `tag` parameter. This function will **always** make an HTTP GET request to get the latest release tag of the repository.
 
@@ -223,7 +220,10 @@ if download.Updated then
 end
 
 -- Requires Roact:
-local Roact = Rostruct.Require(download.Location .. "src/").Module:expect()
+local build = Rostruct.Require(download.Location .. "src/")
+build.Instance.Name = "Roact"
+
+local Roact = build.Module:expect()
 ```
 
 **Parameters**

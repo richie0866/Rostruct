@@ -1,41 +1,24 @@
 # Publishing your project
 
-Once you're ready to distribute your project, you must consider how users can deploy your code. Fortunately, Rostruct provides functions to download and deploy your codebase through GitHub automatically.
+Once you're ready to distribute your project, it's important to note that a manual setup should not be required by the user. They should only have to paste a script to run your project.
 
-## GitHub Releases
+Fortunately, Rostruct provides functionality to download and deploy your codebase through GitHub in one go:
 
-The best way to publish your Rostruct project is by creating a [GitHub Release](https://docs.github.com/en/github/administering-a-repository/releasing-projects-on-github/managing-releases-in-a-repository). Rostruct provides functions to download, cache, and deploy your project from a GitHub release to the end-user.
+## Deploying from GitHub
 
-Using GitHub Releases, you can use a **deploy script** to make your project deploy for anyone, with no manual installation necessary. Your **deploy script** is what downloads and deploys the latest release of your **source code**. This script typically doesn't change, other than to update Rostruct.
+The best way to publish your Rostruct project is by creating a [GitHub Release](https://docs.github.com/en/github/administering-a-repository/releasing-projects-on-github/managing-releases-in-a-repository). With Rostruct, you can download, cache, and version-check releases, all in a single function.
 
-However, you'll need to load Rostruct in your deploy script without making it complicated for the user.
+Ideally, deploying your project should be effortless. Writing a **deploy script** grants users the ability to deploy your project without any extra setup. This script handles the execution of your project's latest **GitHub Release**. However, you'll need to load Rostruct to do that.
 
 ## Loading Rostruct
 
-### with TS <small>recommended</small> { data-toc-label="with TS" }
+The **deploy script** can load Rostruct internally in two ways: through an HTTP request or Rostruct's source code. Each option has its pros and cons, so choose whichever one best fits your project.
 
-!!! note
-	Because Rostruct is written in TypeScript for Roblox, it uses the `TS` module internally to simulate runtime. This is black magic that should be taken at face value when viewing the code below. `TS.initialize("init")` essentially requires Rostruct straight from the source.
+### with HTTP GET <small>recommended</small> { data-toc-label="with HTTP GET" }
 
-A fast, but hefty way to use Rostruct in your **deploy script** is to load Rostruct internally. Thus, your code will not use an HTTP request to load Rostruct, nor will it load it from a file; you include Rostruct's complete source inside of your script.
+If you prefer a quick, concise way to load Rostruct, you can load through an HTTP request. 
 
-To add Rostruct's source to your deploy script, you first download the `Rostruct.lua` asset from the latest release of Rostruct from the [GitHub Releases page](https://github.com/richie0866/Rostruct/releases/latest).
-
-The file will end with `#!lua return TS.initialize("init")`. This line of code essentially loads Rostruct as a module and returns it when being called with `#!lua loadstring()` or `#!lua loadfile()`.
-
-Because you will be using Rostruct from the source, replace `#!lua return TS.initialize("init")` with the following code:
-
-```lua
-local Rostruct = TS.initialize("init")
-```
-
-This loads the Rostruct library directly from the source code included above. You can now [use Rostruct in your deploy script](#deployment).
-
-### with HTTP GET
-
-If you prefer a quick, concise way to load Rostruct, you can load it in your **deploy script** using an HTTP request. 
-
-To load Rostruct with an HTTP request, you should first locate the release you'd like to use from the [GitHub Releases page](https://github.com/richie0866/Rostruct/releases/latest). Once you've done that, you can copy the version to the left of the title, and paste it as `TAG_VERSION_HERE` in this code:
+To load Rostruct with an HTTP request, you should first locate your preferred release from the [GitHub Releases page](https://github.com/richie0866/Rostruct/releases/latest). Once you've done that, you can copy the version to the left of the title, and paste it as `TAG_VERSION_HERE` in this code:
 
 ```lua
 local VERSION = "TAG_VERSION_HERE"
@@ -43,14 +26,37 @@ local URL = "https://github.com/richie0866/Rostruct/releases/download/%s/Rostruc
 local Rostruct = loadstring(game:HttpGetAsync(string.format(URL, VERSION)))()
 ```
 
-This loads the Rostruct library by executing the source code from the given version.
+This loads the Rostruct library by downloading the source and executing it. You can now [deploy your project](#deployment).
 
-## Deployment
+### with the source
 
-After you've loaded Rostruct in your deploy script, use [`Rostruct.DownloadLatestRelease`](../reference/functions.md#downloadlatestrelease) to download your project's most recent GitHub Release files. This function automatically caches, updates, and version-checks your releases, so no further configuration is necessary.
+If making an HTTP request is not your style, you can decrease loading time by running the source code. In other words, you'll be using Rostruct as an **internal module**.
+
+To add Rostruct's source to your deploy script, download the `Rostruct.lua` asset from your preferred release of Rostruct from the [GitHub Releases page](https://github.com/richie0866/Rostruct/releases/latest).
+
+This file ends with `#!lua return TS.initialize("init")`, which is kind of like calling `#!lua require()` on a ModuleScript, and then returning the result.
+
+??? question "What is `TS`?"
+	Because Rostruct uses TypeScript for Roblox, it uses the `TS` module to simulate its runtime. Essentially, running `#!lua TS.initialize("init")` requires Rostruct from the source code.
+
+Because you will be using Rostruct from the source, replace `#!lua return TS.initialize("init")` with the following code:
+
+```lua
+local Rostruct = TS.initialize("init")
+```
+
+Although your deploy script is much longer, you now have immediate access to Rostruct, with no yielding required.
+
+## Running your project
+
+After you've loaded Rostruct in your deploy script, use [`Rostruct.DownloadLatestRelease`](../reference/functions.md#downloadlatestrelease) to download your project's most recent GitHub Release files. This function automatically caches, updates, and version-checks your releases, to ensure a hassle-free user experience.
 
 !!! note
-	Prereleases and drafts do not count towards the latest release, but can be downloaded using [`Rostruct.DownloadRelease`](../reference/functions.md#downloadrelease).
+	Drafts and prereleases are ignored in `DownloadLatestRelease`, but can be downloaded using [`Rostruct.DownloadRelease`](../reference/functions.md#downloadrelease).
+
+### Deployment
+
+Rostruct's GitHub Release functions return a Promise that resolves with a useful `DownloadResult` object. Using the result, you can get the location of the release in the cache, and use Rostruct to deploy or require it:
 
 === "Deploy"
 
@@ -63,7 +69,6 @@ After you've loaded Rostruct in your deploy script, use [`Rostruct.DownloadLates
 
 	-- Deploy and set up:
 	local project = Rostruct.Deploy(download.Location .. "src/")
-	project.Instance.Name = "MidiPlayer"
 	```
 
 === "Require"
@@ -79,8 +84,28 @@ After you've loaded Rostruct in your deploy script, use [`Rostruct.DownloadLates
 	local project = Rostruct.Require(download.Location .. "src/")
 	project.Instance.Name = "Roact"
 
-	-- Require:
-	local Roact = project.Module:expect()
+	-- Require and return:
+	return project.Module:expect()
 	```
 
-Whenever a new GitHub Release is available for your project, the **deploy script** will handle installation and deployment for you. You can then use this script for public or commercial use to execute your project.
+Remember to test your deploy script! Anyone with this script can deploy your project in their script executor. However, this **should not** be the only code you distribute to the end-user.
+
+### Distribution
+
+Some users may want to use your resource without using the entire deploy script. To account for this, you should encourage them to use `loadstring-HttpGet` syntax to load your module.
+
+Loading your module through an HTTP request may seem counterproductive, but it's much easier to manage when working with a single-file project. Thus, you should provide additional code that looks something like this:
+
+=== "Deploy"
+
+	```lua
+	loadstring(game:HttpGetAsync( RAW_DEPLOY_SCRIPT_URL ))()
+	```
+
+=== "Require"
+
+	```lua
+	local MyModule = loadstring(game:HttpGetAsync( RAW_DEPLOY_SCRIPT_URL ))()
+	```
+
+`RAW_DEPLOY_SCRIPT_URL` should be replaced with a link to your **deploy script**'s raw contents. It may be in your best interest to include Rostruct's source [in your deploy script](#with-source) to avoid excess HTTP requests when loading your module.
