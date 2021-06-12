@@ -1,5 +1,3 @@
-import { Reconciler } from "./Reconciler";
-
 /** A function that gets called when a VirtualScript is executed. */
 export type Executor = (globals: VirtualEnv) => unknown;
 
