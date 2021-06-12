@@ -13,7 +13,6 @@ local download = Rostruct.DownloadLatestRelease(
 ):expect()
 
 local project = Rostruct.Require(download.Location .. "src/")
-project.Instance.Name = "Roact"
 
 return project.Module:expect()
 ```

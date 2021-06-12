@@ -155,7 +155,11 @@ The location of the cached folder is in the [`DownloadResult`](./types.md#downlo
 ```lua
 -- Downloads the source code of Roact v1.4.0
 -- and waits for the Promise to finish:
-local download = Rostruct.DownloadRelease("Roblox", "roact", "v1.4.0"):expect()
+local download = Rostruct.DownloadRelease(
+	"Roblox",
+	"roact",
+	"v1.4.0"
+):expect()
 
 -- Output something if it's a new download:
 if download.Updated then
@@ -163,14 +167,22 @@ if download.Updated then
 end
 
 -- Requires Roact:
-local Roact = Rostruct.Require(download.Location .. "src/").Module:expect()
+local build = Rostruct.Require(download.Location .. "src/")
+build.Name = "Roact"
+
+local Roact = build.Module:expect()
 ```
 
 If you'd like to load a specific asset from your release, you can write your code as such:
 
 ```lua
 -- Downloads the model file for Roact v1.4.0:
-Rostruct.DownloadRelease("Roblox", "roact", "v1.4.0", "Roact.rbxm")
+Rostruct.DownloadRelease(
+	"Roblox",
+	"roact",
+	"v1.4.0",
+	"Roact.rbxm"
+)
 ```
 
 **Parameters**
@@ -212,7 +224,10 @@ If a new release is available, it will clear the cached data and download the ne
 ```lua
 -- Downloads the latest source code of Roact
 -- and waits for the Promise to finish:
-local download = Rostruct.DownloadLatestRelease("Roblox", "roact"):expect()
+local download = Rostruct.DownloadLatestRelease(
+	"Roblox",
+	"roact"
+):expect()
 
 -- Output something if a new release was downloaded:
 if download.Updated then

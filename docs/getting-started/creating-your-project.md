@@ -61,7 +61,7 @@ You can set build metadata with [meta files](https://rojo.space/docs/6.x/sync-de
 
 !!! info "Rostruct scripts run regardless of the `Disabled` property"
 
-=== "Script.meta.json"
+=== "foo.meta.json"
 
 	```json
 	{
@@ -71,7 +71,7 @@ You can set build metadata with [meta files](https://rojo.space/docs/6.x/sync-de
 	}
 	```
 
-=== "Script.server.lua"
+=== "foo.server.lua"
 
 	![Disabled script](../assets/images/disabled-script.png)
 
