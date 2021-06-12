@@ -46,7 +46,7 @@ export class Reconciler {
 
 		for (const v of virtualScripts)
 			if (v.instance.IsA("LocalScript"))
-				runtimeJobs.push(v.deferExecutor().andThen(() => v.instance as LocalScript));
+				runtimeJobs.push(v.deferExecutor().andThenReturn(v.instance as LocalScript));
 
 		// Define as constant because the typing for 'Promise.all' is faulty
 		const runtimeWorker = Promise.all(runtimeJobs);
