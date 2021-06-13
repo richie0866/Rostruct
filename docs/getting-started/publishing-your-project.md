@@ -18,7 +18,7 @@ The **deploy script** can load Rostruct internally in two ways: through an HTTP 
 
 If you prefer a quick, concise way to load Rostruct, you can load through an HTTP request. 
 
-To load Rostruct with an HTTP request, you should first locate your preferred release from the [GitHub Releases page](https://github.com/richie0866/Rostruct/releases/latest). Once you've done that, you can copy the version to the left of the title, and paste it as `TAG_VERSION_HERE` in this code:
+To do this, you should first pick a release from the [GitHub Releases page](https://github.com/richie0866/Rostruct/releases/latest). Once you've done that, you can copy the **tag version** and paste it as `TAG_VERSION_HERE` in this code:
 
 ```lua
 local VERSION = "TAG_VERSION_HERE"
@@ -30,7 +30,7 @@ This loads the Rostruct library by downloading the source and executing it. You 
 
 ### with the source
 
-If making an HTTP request is not your style, you can decrease loading time by running the source code. In other words, you'll be using Rostruct as an **internal module**.
+If making an HTTP request is not your style, you can load Rostruct instantly by running the source code. In other words, you'll be using Rostruct as an **internal module**.
 
 To add Rostruct's source to your deploy script, download the `Rostruct.lua` asset from your preferred release of Rostruct from the [GitHub Releases page](https://github.com/richie0866/Rostruct/releases/latest).
 
@@ -56,7 +56,7 @@ After you've loaded Rostruct in your deploy script, use [`Rostruct.DownloadLates
 
 ### Deployment
 
-Rostruct's GitHub Release functions return a Promise that resolves with a useful `DownloadResult` object. Using the result, you can get the location of the release in the cache, and use Rostruct to deploy or require it:
+Rostruct's GitHub Release functions return a Promise that resolves with a `DownloadResult`. Using the result, you can get the location of the release in the cache, and use Rostruct to deploy or require it:
 
 === "Deploy"
 
@@ -92,7 +92,7 @@ Remember to test your deploy script! Anyone with this script can deploy your pro
 
 ### Distribution
 
-Some users may want to use your resource without using the entire deploy script. To account for this, you should encourage them to use `loadstring-HttpGet` syntax to load your module.
+Some users may want to use your project without saving the entire deploy script. To account for this, you should encourage them to use the `loadstring-HttpGet` pattern to run your project's **deploy script**.
 
 Loading your module through an HTTP request may seem counterproductive, but it's much easier to manage when working with a single-file project. Thus, you should provide additional code that looks something like this:
 

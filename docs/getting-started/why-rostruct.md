@@ -26,7 +26,7 @@ Create projects from UI libraries to explorers - with little to no limitations.
 
 ### Asset management
 
-Store all of your UI, utilities, and models locally, and they'll be loaded as Roblox objects before runtime.
+Store all of your UI, modules, and assets locally, and they'll be loaded as Roblox objects before runtime.
 
 Write your code without waiting for assets.
 
@@ -48,7 +48,7 @@ gui.Parent = gethui()
 
 ### Load dependencies
 
-Safely integrate external libraries into your script with an intelligent Promise-based module loading system.
+Don't want to make a project? Safely integrate Rostruct projects into your script with an intelligent Promise-based module system.
 
 External libraries load like any other ModuleScript.
 
@@ -63,9 +63,7 @@ local download = Rostruct.DownloadLatestRelease(
 local project = Rostruct.Require(download.Location .. "src/")
 project.Instance.Name = "Roact"
 
-local Roact = project.Module:expect()
-
-Roact.createElement(...)
+return project.Module:expect()
 ```
 
 ---
@@ -74,7 +72,7 @@ Roact.createElement(...)
 
 ### Test at any time
 
-Design your project with Rojo, a popular tool used to sync an external IDE with Roblox Studio. Access your project even during exploit downtime. 
+Design your project with Rojo, a popular tool used to sync an external code editor with Roblox Studio. Develop your project during exploit downtime.
 
 Rostruct brings the modern game development workflow to exploiting.
 

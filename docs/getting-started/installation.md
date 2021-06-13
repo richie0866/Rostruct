@@ -14,8 +14,8 @@ This guide assumes:
 - [x] You're familiar with development in an external code editor.
   * If you're unsure of how to manage Roblox projects externally, [Rojo's documentation](https://rojo.space/docs/) provides an in-depth explanation of how it works and why you should do it.
 
-- [x] You understand how to use the Promise object.
-  * You can refer to evaera's [Promise documentation](https://eryn.io/roblox-lua-promise/), a detailed guide on the purpose and use of the Promise object. 
+- [x] You understand how to use Promises.
+  * You can refer to evaera's [Promise documentation](https://eryn.io/roblox-lua-promise/) for a detailed guide on their purpose and usage. 
 
 ## Installation
 

@@ -33,7 +33,7 @@ local character = myProject.Assets.Character
 
 ## Catching Rostruct errors
 
-Functions like [`Rostruct.Require`](../reference/functions.md#require) and [`Rostruct.Deploy`](../reference/functions.md#deploy) use the Promise object to manage yielding and error handling. Errors thrown during runtime can be caught using the `#!lua Promise:catch()` method:
+Functions like [`Rostruct.Require`](../reference/functions.md#require) and [`Rostruct.Deploy`](../reference/functions.md#deploy) use Promises to manage yielding and error handling. Errors thrown during runtime can be caught using the `#!lua Promise:catch()` method:
 
 ```lua
 buildResult.RuntimeWorker:catch(function(err)
