@@ -18,11 +18,11 @@ Whether you're familiar with Rojo, dislike loading assets during runtime, or wan
 See the original concept [here](https://v3rmillion.net/showthread.php?tid=1081675).
 
 ## Why Rostruct?
-Because of the limitations of script executors, developers are often lead to storing their codebase in a single Lua file. Large, messy scripts are detrimental to your workflow, as they make debugging, management, and working in teams difficult.
+When it comes to exploiting, developers often write their projects as a single Lua file. However, large, messy scripts are detrimental to your workflow, as they make debugging, management, and working in teams difficult.
 
 In contrast, if you've ever used Rojo with Roblox Studio, you're able to distribute your codebase between separate, specialized files. Taking a **modular approach** to development can improve how you plan, design, and maintain your codebase.
 
-Rostruct's design complements this Rojo-based workflow, introducing script developers to a professional way to manage projects. You host your project files in your exploit's `workspace/` directory, allowing the integration of professional tools used in Roblox game development into your workflow.
+Rostruct's design complements a Rojo-based workflow, introducing script developers to a professional way to manage projects. Host your project files in your exploit's `workspace/` directory, allowing for a more professional developing environment.
 
 ## Documentation
 Documentation is available at the [GitHub Pages site](https://richie0866.github.io/Rostruct).
