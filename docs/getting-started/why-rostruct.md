@@ -4,13 +4,23 @@ With **Rostruct**, script executors can deploy your Lua projects from the filesy
 
 This documentation is a work in progress!
 
+## What you need to know
+
+This guide assumes:
+
+- [x] You're familiar with development in an external code editor.
+  * If you're unsure of how to manage Roblox projects externally, [Rojo's documentation](https://rojo.space/docs/) provides an in-depth explanation of how it works and why you should do it.
+
+- [x] You understand how to use Promises.
+  * You can refer to evaera's [Promise documentation](https://eryn.io/roblox-lua-promise/) for a detailed guide. 
+
 ## Why Rostruct?
 
-Because of the limitations of script executors, developers are often lead to storing their codebase in a single Lua file. Large, messy scripts are detrimental to your workflow, as they make debugging, management, and working in teams difficult.
+When it comes to exploiting, developers often write their projects as a single Lua file. However, large, messy scripts are detrimental to your workflow, as they make debugging, management, and working in teams difficult.
 
 In contrast, if you've ever used Rojo with Roblox Studio, you're able to distribute your codebase between separate, specialized files. Taking a **modular approach** to development can improve how you plan, design, and maintain your codebase.
 
-Rostruct's design complements a Rojo-based workflow, introducing script developers to a professional way to manage projects. You host your project files in your exploit's `workspace/` directory, allowing for a more professional developing environment.
+Rostruct's design complements a Rojo-based workflow, introducing script developers to a professional way to manage projects. Host your project files in your exploit's `workspace/` directory, allowing for a more professional developing environment.
 
 ---
 
@@ -46,11 +56,11 @@ gui.Parent = gethui()
 
 ---
 
-### Load dependencies
+### Use other projects
 
-Don't want to make a project? Safely integrate Rostruct projects into your script with an intelligent Promise-based module system.
+Don't want to make a project? Integrate Rostruct projects into your script with an intelligent Promise-based module system.
 
-External libraries load like any other ModuleScript.
+Restructuring your script for Rostruct is completely optional.
 
 ![Roact example](../assets/images/roact-panel.svg){ align=right width=200 draggable=false }
 

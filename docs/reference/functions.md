@@ -50,7 +50,7 @@ Runs every LocalScript object in the Instance created by [`Rostruct.Build`](#bui
 
 **Example use** 
 
-```lua
+```lua hl_lines="4"
 local project = Rostruct.Deploy("Projects/Hydroxide/src/")
 
 -- Waits for all scripts to finish executing:

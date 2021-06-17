@@ -20,7 +20,7 @@ If you prefer a quick, concise way to load Rostruct, you can load through an HTT
 
 To do this, you should first pick a release from the [GitHub Releases page](https://github.com/richie0866/Rostruct/releases/latest). Once you've done that, you can copy the **tag version** and paste it as `TAG_VERSION_HERE` in this code:
 
-```lua
+```lua hl_lines="1"
 local VERSION = "TAG_VERSION_HERE"
 local URL = "https://github.com/richie0866/Rostruct/releases/download/%s/Rostruct.lua"
 local Rostruct = loadstring(game:HttpGetAsync(string.format(URL, VERSION)))()
@@ -60,7 +60,7 @@ Rostruct's GitHub Release functions return a Promise that resolves with a `Downl
 
 === "Deploy"
 
-	```lua
+	```lua hl_lines="8"
 	-- Download the latest release to local files:
 	local download = Rostruct.DownloadLatestRelease(
 		"richie0866",
@@ -73,7 +73,7 @@ Rostruct's GitHub Release functions return a Promise that resolves with a `Downl
 
 === "Require"
 
-	```lua
+	```lua hl_lines="8 12"
 	-- Download the latest release to local files:
 	local download = Rostruct.DownloadLatestRelease(
 		"Roblox",
