@@ -1,5 +1,5 @@
-import zzlib from "packages/zzlib";
-import { FileArray, formatPath, makeFiles } from "utils/filesystem";
+import zzlib from "modules/zzlib";
+import { FileArray, makeFiles, pathUtils } from "utils/file-utils";
 
 /**
  * Extracts files from raw zip data.
@@ -15,12 +15,14 @@ export function extract(rawData: string, target: string, ungroup?: boolean) {
 	const fileArray: FileArray = [];
 
 	// Convert the path-content map to a file array
-	for (const [path, contents] of zipData) fileArray.push([path, contents]);
+	for (const [path, contents] of zipData)
+		if (ungroup) {
+			// Trim the first folder off the path if 'ungroup' is true
+			fileArray.push([pathUtils.addTrailingSlash(target) + (path.gsub("^([^/]*/)", "")[0] as string), contents]);
+		} else {
+			fileArray.push([pathUtils.addTrailingSlash(target) + path, contents]);
+		}
 
 	// Make the files at the given target.
-	// If 'ungroup' is true, excludes the first folder.
-	makeFiles(
-		fileArray,
-		(path: string) => formatPath(target) + (ungroup ? (path.gsub("^([^/]*/)", "")[0] as string) : path),
-	);
+	makeFiles(fileArray);
 }

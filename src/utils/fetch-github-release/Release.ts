@@ -1,4 +1,4 @@
-export interface Author {
+interface Author {
 	readonly login: string;
 	readonly id: number;
 	readonly node_id: string;
@@ -31,7 +31,7 @@ export interface Author {
 	readonly site_admin: boolean;
 }
 
-export interface Asset {
+interface Asset {
 	/** @example `https://api.github.com/repos/${user}/${repo}/releases/assets/${id}` */
 	readonly url: string;
 	readonly id: number;
@@ -53,7 +53,7 @@ export interface Asset {
  * Information about the latest release of a given Github repository.
  * See this [example](https://api.github.com/repos/Roblox/roact/releases/latest).
  */
-export interface Release {
+interface Release {
 	/** @example `https://api.github.com/repos/${user}/${repo}/releases/${id}` */
 	readonly url: string;
 	/** @example `https://api.github.com/repos/${user}/${repo}/releases/${id}/assets` */
@@ -80,7 +80,4 @@ export interface Release {
 	readonly body: string;
 }
 
-export type Releases = Release[];
-
-/** Prevent the transpiled Lua code from returning nil! */
-export const _ = undefined;
+export = Release;

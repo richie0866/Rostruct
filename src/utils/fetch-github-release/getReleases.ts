@@ -1,6 +1,6 @@
-import { HttpService } from "packages/services";
-import * as http from "utils/common/http";
-import { Release, Releases } from "./types";
+import { HttpService } from "modules/services";
+import * as http from "utils/http";
+import Release from "./Release";
 
 /**
  * Gets a list of releases for the Github repository.
@@ -14,7 +14,7 @@ export async function getReleases(
 	owner: string,
 	repo: string,
 	filterRelease = (release: Release) => !release.draft,
-): Promise<Releases> {
+): Promise<Release[]> {
 	const response = await http.request({
 		Url: `https://api.github.com/repos/${owner}/${repo}/releases`,
 		Headers: {
@@ -22,7 +22,7 @@ export async function getReleases(
 		},
 	});
 	assert(response.Success, response.StatusMessage);
-	const releases = HttpService.JSONDecode<Releases>(response.Body);
+	const releases = HttpService.JSONDecode<Release[]>(response.Body);
 	return releases.filter(filterRelease);
 }
 

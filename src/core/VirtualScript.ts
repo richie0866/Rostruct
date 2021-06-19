@@ -1,23 +1,11 @@
-/*
- * File: VirtualScript.ts
- * File Created: Tuesday, 1st June 2021 8:58:51 pm
- * Author: richard
- * Description: Execute files as Roblox instances.
- */
-
-import { globals } from "globals";
-import Object from "packages/object-utils";
-import { File } from "utils/filesystem";
-import { HttpService } from "packages/services";
-import { Executor, VirtualEnv } from "./types";
+import { Store } from "./Store";
+import { HttpService } from "modules/services";
+import { Executor, VirtualEnvironment } from "./types";
 
 /** Class used to execute files in a Roblox instance context. */
 export class VirtualScript {
 	/** Maps VirtualScripts to their instances. */
-	static readonly virtualScriptsByInstance = new Map<LuaSourceContainer, VirtualScript>();
-
-	/** Keeps track of VirtualScripts created by scope. */
-	static readonly virtualScriptsOfScope = new Map<number, VirtualScript[]>();
+	private static readonly fromInstance = Store.getStore<LuaSourceContainer, VirtualScript>("VirtualScriptStore");
 
 	/**
 	 * Gets the VirtualScript attached to a specific instance.
@@ -25,32 +13,40 @@ export class VirtualScript {
 	 * @returns A possible VirtualScript object.
 	 */
 	static getFromInstance(obj: LuaSourceContainer): VirtualScript | undefined {
-		return this.virtualScriptsByInstance.get(obj);
-	}
-
-	/**
-	 * Gets a list of VirtualScripts for a specific scope.
-	 * @param scope The scope to search for.
-	 * @returns A list of VirtualScripts for the given scope.
-	 */
-	static getVirtualScriptsOfScope(scope: number): VirtualScript[] | undefined {
-		return this.virtualScriptsOfScope.get(scope);
+		return this.fromInstance.get(obj);
 	}
 
 	/**
 	 * Requires a `ModuleScript`. If the module has a `VirtualScript` counterpart,
 	 * this method will call `virtualScript.execute` and return the results.
-	 * @param obj The ModuleScript to require.
+	 *
+	 * Detects recursive references using roblox-ts's RuntimeLib solution.
+	 * The original source of this module can be found in the link below, as well as the license:
+	 *
+	 * Source: https://github.com/roblox-ts/roblox-ts/blob/master/lib/RuntimeLib.lua
+	 * License: https://github.com/roblox-ts/roblox-ts/blob/master/LICENSE
+	 *
+	 * @param object The ModuleScript to require.
+	 * @param caller The calling VirtualScript.
+	 * @param level The position of an error when thrown. Defaults to `2` to position it at the function caller.
 	 * @returns The required module.
 	 */
-	private static require(obj: ModuleScript): VirtualScript | unknown {
-		const virtualScript = this.virtualScriptsByInstance.get(obj);
-		if (virtualScript) return virtualScript.runExecutor();
-		else return require(obj);
-	}
+	static loadModule(object: ModuleScript, caller?: VirtualScript, level = 2): unknown {
+		const module = this.fromInstance.get(object);
 
-	/** An identifier used to store the object in `virtualScriptsByInstance`. */
-	readonly id = `VirtualScript-${HttpService.GenerateGUID(false)}`;
+		if (!module) return require(object);
+		else if (caller) Loader.currentlyLoading.set(caller, module);
+
+		// Check to see if this is a cyclic reference
+		Loader.checkTraceback(module, level + 1);
+
+		const result = module.runExecutor();
+
+		// Thread-safe cleanup avoids overwriting other loading modules
+		if (caller && Loader.currentlyLoading.get(caller) === module) Loader.currentlyLoading.delete(caller);
+
+		return result;
+	}
 
 	/** The function to be called at runtime when the script runs or gets required. */
 	private executor?: Executor;
@@ -61,35 +57,35 @@ export class VirtualScript {
 	/** Whether the executor has already been called. */
 	private jobComplete = false;
 
-	/** A custom environment for the object. */
-	private readonly env: VirtualEnv;
+	/** An identifier used for preventing cyclic references. */
+	readonly id = "VirtualScript-" + HttpService.GenerateGUID(false);
 
-	/** Creates a new VirtualScript object. */
 	constructor(
 		/** The Instance that represents this object used for globals. */
 		readonly instance: LuaSourceContainer,
 
 		/** The file this object extends. */
-		readonly file: File,
+		readonly path: string,
 
-		/** The scope of the Reconciler that created this object. Used to prevent overlapping globals when two Reconcilers are created. */
-		readonly scope: number,
-	) {
-		assert(file.origin, `VirtualScript file must have an origin (${file.location})`);
+		/** The root directory of the Session. */
+		readonly rootDir: string,
 
-		this.env = {
+		/** The contents of the file. */
+		readonly rawSource = readfile(path),
+
+		/** A custom environment used during runtime. */
+		private readonly scriptEnvironment: VirtualEnvironment = {
 			script: instance,
-			require: (obj: ModuleScript) => VirtualScript.require(obj),
-			_PATH: file.location,
-			_ROOT: file.origin,
-		};
-
-		// Initialize a scope array if it does not already exist.
-		if (!VirtualScript.virtualScriptsOfScope.has(scope)) VirtualScript.virtualScriptsOfScope.set(scope, [this]);
-		else VirtualScript.virtualScriptsOfScope.get(scope)!.push(this);
-
-		// Tracks this VirtualScript for external use.
-		VirtualScript.virtualScriptsByInstance.set(instance, this);
+			require: (obj: ModuleScript) =>
+				// The function's levels are as such:
+				// script (3) => require (2) => loadModule (1)
+				VirtualScript.loadModule(obj, this, 3),
+			_PATH: path,
+			_ROOT: rootDir,
+		},
+	) {
+		// Map the VirtualScript to the Roblox instance:
+		VirtualScript.fromInstance.set(instance, this);
 	}
 
 	/**
@@ -97,7 +93,10 @@ export class VirtualScript {
 	 * @returns The source of the VirtualScript.
 	 */
 	private getSource(): string {
-		return "setfenv(1, setmetatable(..., { __index = getfenv(0) }));" + readfile(this.file.location);
+		return (
+			"setfenv(1, setmetatable(..., { __index = getfenv(0), __metatable = 'This metatable is locked' }));" +
+			this.rawSource
+		);
 	}
 
 	/**
@@ -115,7 +114,7 @@ export class VirtualScript {
 	 */
 	createExecutor(): Executor {
 		if (this.executor) return this.executor;
-		const [f, err] = loadstring(this.getSource(), "=" + this.file.location);
+		const [f, err] = loadstring(this.getSource(), "=" + this.path);
 		assert(f, err);
 		return (this.executor = f);
 	}
@@ -127,11 +126,10 @@ export class VirtualScript {
 	runExecutor(): ReturnType<Executor> {
 		if (this.jobComplete) return this.result;
 
-		const result = this.createExecutor()(this.env);
+		const result = this.createExecutor()(this.scriptEnvironment);
 
 		// Modules must return a value.
-		if (this.instance.IsA("ModuleScript"))
-			assert(result, `Module '${this.file.location}' did not return any value`);
+		if (this.instance.IsA("ModuleScript")) assert(result, `Module '${this.path}' did not return any value`);
 
 		this.jobComplete = true;
 
@@ -145,7 +143,52 @@ export class VirtualScript {
 	deferExecutor(): Promise<ReturnType<Executor>> {
 		return Promise.defer((resolve) => resolve(this.runExecutor())).timeout(
 			30,
-			`Script ${this.file.location} reached execution timeout! Try not to yield the main thread in LocalScripts.`,
+			`Script ${this.path} reached execution timeout! Try not to yield the main thread in LocalScripts.`,
 		);
+	}
+}
+
+/** Handles loading modules and circular references. */
+namespace Loader {
+	/** Maps scripts to the module they're loading, like a history of `[Id of script who loaded]: Id of module` */
+	export const currentlyLoading = new Map<VirtualScript, VirtualScript>();
+
+	/**
+	 * Gets the dependency chain of the VirtualScript.
+	 * @param module The starting VirtualScript.
+	 * @param depth The depth of the cyclic reference.
+	 * @returns A string containing the paths of all VirtualScripts required until `currentModule`.
+	 */
+	export function getTraceback(module: VirtualScript, depth: number): string {
+		let traceback = module.path;
+		for (let i = 0; i < depth; i++) {
+			// Because the references are cyclic, there will always be
+			// a module loading in 'module'.
+			module = currentlyLoading.get(module)!;
+			traceback += `\n\t\t⇒ ${module.path}`;
+		}
+		return traceback;
+	}
+
+	/**
+	 * Check to see if the module is part of a a circular reference.
+	 * @param module The starting VirtualScript.
+	 * @returns Whether the dependency chain is recursive, and the depth.
+	 */
+	export function checkTraceback(module: VirtualScript, level: number) {
+		let currentModule: VirtualScript | undefined = module;
+		let depth = 0;
+		while (currentModule) {
+			depth += 1;
+			currentModule = currentlyLoading.get(currentModule);
+
+			// If the loop reaches 'module' again, there is a circular reference.
+			if (module === currentModule) {
+				const message =
+					`Requested module '${module.path}' was required recursively!\n\n` +
+					`\tChain: ${getTraceback(module, depth)}`;
+				error(message, level);
+			}
+		}
 	}
 }

@@ -1,10 +1,4 @@
-/*
- * File: http.ts
- * File Created: Wednesday, 2nd June 2021 6:43:27 pm
- * Author: richard
- */
-
-import { httpRequest } from "globals";
+import { httpRequest } from "api";
 
 /** Sends an HTTP GET request. */
 export const get = Promise.promisify((url: string) => game.HttpGetAsync(url));

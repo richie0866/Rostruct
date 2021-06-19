@@ -1,23 +1,23 @@
-import { HttpService } from "packages/services";
-import { makeFile } from "utils/filesystem";
+import { HttpService } from "modules/services";
+import { makeFile } from "utils/file-utils";
 
-interface JSONData {
-	[key: string]: string | number | boolean | JSONData;
+interface JsonData {
+	[key: string]: string | number | boolean | JsonData;
 }
 
 /** An object to read and write to JSON files. */
-export interface JSONInterface {
+export interface JsonStore {
 	/** A reference to the original path to the file. */
 	readonly file: string;
 
 	/** The current state of the JSON file. */
-	data?: JSONData;
+	data?: JsonData;
 
 	/** Saves the current state to the file. */
 	save(): void;
 
 	/** Loads the JSON data of the file. */
-	load(): JSONData;
+	load(): JsonData;
 }
 
 /**
@@ -25,7 +25,7 @@ export interface JSONInterface {
  * @param file The JSON file to open.
  * @returns A JSON data object.
  */
-export function openJson(file: string): JSONInterface {
+export function openJson(file: string): JsonStore {
 	return {
 		file: file,
 		data: undefined,
@@ -33,7 +33,7 @@ export function openJson(file: string): JSONInterface {
 			if (this.data !== undefined) makeFile(file, HttpService.JSONEncode(this.data));
 		},
 		load() {
-			const data = HttpService.JSONDecode<JSONData>(readfile(file));
+			const data = HttpService.JSONDecode<JsonData>(readfile(file));
 			this.data = data;
 			return data;
 		},

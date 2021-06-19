@@ -1,7 +1,7 @@
-import * as http from "utils/common/http";
-import { makeFile } from "utils/filesystem";
-import { extract } from "utils/common/extract";
-import { Release } from "../utils/github-release";
+import * as http from "utils/http";
+import { makeFile } from "utils/file-utils";
+import { extract } from "utils/extract";
+import Release from "./Release";
 
 /**
  * Downloads the asset file for a release.
