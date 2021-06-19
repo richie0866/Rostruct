@@ -82,7 +82,6 @@ class CsvReader {
 
 /**
  * Transforms a CSV file into a Roblox LocalizationTable.
- * @param sessionId The current session.
  * @param path A path to the CSV file.
  * @param name The name of the instance.
  * @returns A LocalizationTable with entries configured.

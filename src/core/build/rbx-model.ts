@@ -2,7 +2,6 @@ import { getContentId } from "api";
 
 /**
  * Transforms a `.rbxm` or `.rbxmx` file into a Roblox object.
- * @param sessionId The current session.
  * @param path A path to the model file.
  * @param name The name of the instance.
  * @returns The result of `game.GetObjects(getContentId(path))`.

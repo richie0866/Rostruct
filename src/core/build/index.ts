@@ -10,7 +10,7 @@ import { makePlainText } from "./txt";
 
 /**
  * Tries to turn the file or directory at `path` into an Instance. This function is recursive!
- * @param session The id of the current Session to avoid passing references to the Session object.
+ * @param session The current Session.
  * @param path The file to turn into an object.
  * @returns The Instance made from the file.
  */

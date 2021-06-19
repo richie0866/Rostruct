@@ -44,7 +44,6 @@ function jsonModel(modelData: JsonModel, path: string, name?: string): Creatable
 
 /**
  * Transforms a JSON model file into a Roblox object.
- * @param sessionId The current session.
  * @param path A path to the JSON file.
  * @param name The name of the instance.
  * @returns An Instance created from the JSON model file.

@@ -4,7 +4,6 @@ import { fileMetadata } from "./metadata";
 
 /**
  * Transforms a plain text file into a Roblox StringValue.
- * @param sessionId The current session.
  * @param path A path to the text file.
  * @param name The name of the instance.
  * @returns A StringValue object.

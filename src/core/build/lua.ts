@@ -45,7 +45,7 @@ export function makeLua(session: Session, path: string): LuaSourceContainer {
 
 /**
  * Transforms the parent directory into a Roblox script.
- * @param sessionId The current session.
+ * @param session The current session.
  * @param path A path to the `init.*.lua` file.
  * @param name The name of the instance.
  * @returns A Lua script with a VirtualScript binding.
