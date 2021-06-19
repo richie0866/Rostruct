@@ -8,11 +8,8 @@
 
 	??? missing "Not supported"
 
-		* Localization tables
-		* JSON models
 		* Rojo project files
 			* Project files structure your codebase around the `game` object, which would expose your project to the client.
-		* `*.meta.json` files
 
 	??? check "Extra functionality"
 
@@ -20,7 +17,8 @@
 
 	??? bug "Known issues"
 
-		* `init.meta.json` files only set properties to primitive types like `boolean`, `string`, etc.
+		* `*.model.json` files do not support Rojo's custom properties like `Instance.Tags` and `LocalizationTable.Content`.
+		* `*.meta.json` files infer property types differently than Rojo meta files.
 
 Rostruct file conversion mirrors [Rojo's sync details](https://rojo.space/docs/6.x/sync-details/).
 
