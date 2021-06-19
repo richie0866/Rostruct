@@ -253,3 +253,20 @@ function TS.await(promise)
 		error("The awaited Promise was cancelled", 2)
 	end
 end
+
+-- opcall
+
+function TS.opcall(func, ...)
+	local success, valueOrErr = pcall(func, ...)
+	if success then
+		return {
+			success = true,
+			value = valueOrErr,
+		}
+	else
+		return {
+			success = false,
+			error = valueOrErr,
+		}
+	end
+end
