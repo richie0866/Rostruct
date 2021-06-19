@@ -46,6 +46,3 @@ export interface DownloadResult {
 	/** Whether the cache was updated to include this download. */
 	Updated: boolean;
 }
-
-/** Prevent the transpiled Lua code from returning nil! */
-export const _ = undefined;
