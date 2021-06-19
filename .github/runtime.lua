@@ -1,5 +1,9 @@
 --[[
 	Originally RuntimeLib.lua supplied by roblox-ts, modified for use when bundled.
+	The original source of this module can be found in the link below, as well as the license:
+
+	https://github.com/roblox-ts/roblox-ts/blob/master/lib/RuntimeLib.lua
+	https://github.com/roblox-ts/roblox-ts/blob/master/LICENSE
 ]]
 
 local TS = {
