@@ -165,8 +165,9 @@ function TS.import(caller, parentPtr, ...)
 	-- Because 'Module.Parent' returns a FilePtr, the module handles the indexing.
 	-- Getting 'parentPtr.path' will return the result of FilePtr.Parent.Parent...
 	local modulePath = parentPtr.path .. table.concat({...}, "/") .. ".lua"
+	local moduleInit = parentPtr.path .. table.concat({...}, "/") .. "/init.lua"
 	local module = assert(
-		modulesByPath[modulePath] or modulesByPath[parentPtr.path .. table.concat({...}, "/") .. "/init.lua"],
+		modulesByPath[modulePath] or modulesByPath[moduleInit],
 		"No module exists at path '" .. modulePath .. "'"
 	)
 
