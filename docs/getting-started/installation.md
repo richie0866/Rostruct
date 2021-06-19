@@ -7,16 +7,6 @@ Learn how to integrate Rostruct into your workflow.
 	
 	Read the changelogs when updating Rostruct just in case you need to change your code.
 
-## What you need to know
-
-This guide assumes:
-
-- [x] You're familiar with development in an external code editor.
-  * If you're unsure of how to manage Roblox projects externally, [Rojo's documentation](https://rojo.space/docs/) provides an in-depth explanation of how it works and why you should do it.
-
-- [x] You understand how to use Promises.
-  * You can refer to evaera's [Promise documentation](https://eryn.io/roblox-lua-promise/) for a detailed guide on their purpose and usage. 
-
 ## Installation
 
 Rostruct is distributed as a Lua file. Before starting your local project, you'll need to set it up with your exploit.
@@ -25,7 +15,7 @@ Rostruct is distributed as a Lua file. Before starting your local project, you'l
 
 Rostruct can be installed with `HttpGetAsync`:
 
-```lua
+```lua hl_lines="1"
 local VERSION = "TAG_VERSION_HERE"
 local URL = "https://github.com/richie0866/Rostruct/releases/download/%s/Rostruct.lua"
 local Rostruct = loadstring(game:HttpGetAsync(string.format(URL, VERSION)))()

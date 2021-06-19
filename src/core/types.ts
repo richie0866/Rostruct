@@ -1,15 +1,15 @@
 /** A function that gets called when a VirtualScript is executed. */
-export type Executor = (globals: VirtualEnv) => unknown;
+export type Executor = (globals: VirtualEnvironment) => unknown;
 
 /** Base environment for VirtualScript instances. */
-export interface VirtualEnv {
+export interface VirtualEnvironment {
 	/** A reference to the script object that a file is being executed for. */
 	script: LuaSourceContainer;
 
 	/**
 	 * Runs the supplied `ModuleScript` if it has not been run already, and returns what the ModuleScript returned (in both cases).
 	 *
-	 * If the module is attached to a `VirtualScript` object, it returns what the VirtualScript returned.
+	 * If the object is bound to a `VirtualScript`, it returns what the VirtualScript returned.
 	 */
 	require: (obj: ModuleScript) => unknown;
 
@@ -46,6 +46,3 @@ export interface DownloadResult {
 	/** Whether the cache was updated to include this download. */
 	Updated: boolean;
 }
-
-/** Prevent the transpiled Lua code from returning nil! */
-export const _ = undefined;

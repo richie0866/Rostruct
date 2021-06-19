@@ -1,40 +1,5 @@
-/*
- * File: Krnl.d.ts
- * File Created: Friday, 28th May 2021 1:13:35 am
- * Author: richard
- */
-
-type MapKeyToModule = {
-	readonly Promise: typeof Promise;
-	readonly Maid: import("./modules/Maid");
-	readonly Signal: import("./modules/Signal");
-	readonly Thread: import("./modules/Thread");
-};
-
-interface Krnl {
-	Base64: {
-		readonly Encode: typeof base64_encode;
-		readonly Decode: typeof base64_decode;
-	};
-
-	Crypt: {
-		readonly Hash: typeof sha384_hash;
-	};
-
-	Vendor: {
-		readonly Maid: "https://raw.githubusercontent.com/Quenty/NevermoreEngine/version2/Modules/Shared/Events/Maid.lua";
-		readonly Promise: "https://gist.github.com/richie0866/f7c56370664cd8b6d13b02e70529fc86/raw/6e945905b6a1106276cf8b128893c2b50997a00f/Promise.lua";
-		readonly Signal: "https://gist.githubusercontent.com/richie0866/98879ede8725238d6eb8523774ec31b9/raw/7a4a57334056de0fe84f602315ba5c45524b57d9/Signal.lua";
-		readonly Thread: "https://gist.githubusercontent.com/richie0866/89a30f80b1562678a2d554c18c0a022f/raw/b53d733b2a52788648008d3bd7e553ea286f1d1e/Thread.lua";
-		readonly Hook: "https://gist.githubusercontent.com/richie0866/dfff74c366c141a681b580f613f7962f/raw/d89456887e62a8d5a36da0317f25454c433fa0bb/Hook.lua";
-	};
-
-	Require<T extends keyof MapKeyToModule>(module: T): MapKeyToModule[T];
-}
-
-declare const Krnl: Krnl;
-
-/** Returns the Roblox global environment.
+/**
+ * Returns the Roblox global environment.
  * @returns Roblox's global environment.
  */
 declare function getrenv(): { [key: string]: unknown };
@@ -88,7 +53,14 @@ declare function getcustomasset(file: string): string;
 /** Sends an HTTP request using a dictionary to specify the request data, such as the target URL, method, headers and request body data. It returns a dictionary that describes the response data received. */
 declare function request(requestOptions: RequestAsyncRequest): RequestAsyncResponse;
 
-// Instances
+/** Encodes the text to Base64. */
+declare function base64_encode(text: string): string;
+
+/** Encodes the text from Base64. */
+declare function base64_decode(base64: string): string;
+
+/** Hashes the text using the [SHA384](https://en.wikipedia.org/wiki/SHA-2) cipher. */
+declare function sha384_hash(text: string): string;
 
 interface DataModel {
 	/** Sends an HTTP GET request. */
@@ -98,16 +70,5 @@ interface DataModel {
 	HttpPostAsync(this: DataModel, url: string): string; // TODO: Check what it actually returns
 
 	/** Returns an array of Instances associated with the given [`content`](https://developer.roblox.com/en-us/articles/Content) URL. */
-	GetObjects(this: DataModel, url: string): Array<Instance>;
+	GetObjects(this: DataModel, url: string): Instance[];
 }
-
-// Crypt
-
-/** Encodes the text to Base64. */
-declare function base64_encode(text: string): string;
-
-/** Encodes the text from Base64. */
-declare function base64_decode(base64: string): string;
-
-/** Hashes the text using the [SHA384](https://en.wikipedia.org/wiki/SHA-2) cipher. */
-declare function sha384_hash(text: string): string;

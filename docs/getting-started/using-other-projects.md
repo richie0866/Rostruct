@@ -19,7 +19,7 @@ return project.Module:expect()
 
 Running a deploy script would be valid code in a Rostruct project. However, getting this library would yield the rest of your code. As one of the goals of Rostruct is to load assets *before* runtime, this is bad practice.
 
-## Local dependencies
+## In your project
 
 The best way to load a dependency in your Rostruct project is to include their source files in your codebase. You can achieve this by downloading source files through a stable GitHub Release yourself.
 
@@ -34,7 +34,7 @@ The best way to load a dependency in your Rostruct project is to include their s
 
 Once you've set up the files, Rostruct turns the dependencies into instances with the rest of your project, ensuring safe, immediate access to them. You should use the global `#!lua require()` function to load them:
 
-```lua
+```lua hl_lines="3"
 local myProject = script:FindFirstAncestor("MyProject")
 
 local Roact = require(myProject.Modules.Roact)
@@ -42,4 +42,10 @@ local Roact = require(myProject.Modules.Roact)
 local character = myProject.Assets.Character
 ```
 
-In general, most of the resources your project depends on should be included in your codebase, This ensures a quality user experience and minimizes loading times.
+In general, most of the resources your project depends on should be included in your codebase. This ensures a quality user experience and helps minimize loading times.
+
+## In your script
+
+If you're writing a script to distribute it in a single file, you'll have to use the functions Rostruct provides to load projects.
+
+The developers of the project should provide a way for you to load it outside a Rostruct project. However, if they haven't, consider following [this guide about running projects](./publishing-your-project.md#running-your-project) to write it for them.

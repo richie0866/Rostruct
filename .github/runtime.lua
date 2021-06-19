@@ -1,5 +1,9 @@
 --[[
 	Originally RuntimeLib.lua supplied by roblox-ts, modified for use when bundled.
+	The original source of this module can be found in the link below, as well as the license:
+
+	https://github.com/roblox-ts/roblox-ts/blob/master/lib/RuntimeLib.lua
+	https://github.com/roblox-ts/roblox-ts/blob/master/LICENSE
 ]]
 
 local TS = {
@@ -9,7 +13,7 @@ local TS = {
 setmetatable(TS, {
 	__index = function(self, k)
 		if k == "Promise" then
-			self.Promise = TS.initialize("packages", "Promise")
+			self.Promise = TS.initialize("modules", "Promise")
 			return self.Promise
 		end
 	end
@@ -165,8 +169,9 @@ function TS.import(caller, parentPtr, ...)
 	-- Because 'Module.Parent' returns a FilePtr, the module handles the indexing.
 	-- Getting 'parentPtr.path' will return the result of FilePtr.Parent.Parent...
 	local modulePath = parentPtr.path .. table.concat({...}, "/") .. ".lua"
+	local moduleInit = parentPtr.path .. table.concat({...}, "/") .. "/init.lua"
 	local module = assert(
-		modulesByPath[modulePath] or modulesByPath[parentPtr.path .. table.concat({...}, "/") .. "/init.lua"],
+		modulesByPath[modulePath] or modulesByPath[moduleInit],
 		"No module exists at path '" .. modulePath .. "'"
 	)
 
@@ -251,5 +256,22 @@ function TS.await(promise)
 		error(value, 2)
 	else
 		error("The awaited Promise was cancelled", 2)
+	end
+end
+
+-- opcall
+
+function TS.opcall(func, ...)
+	local success, valueOrErr = pcall(func, ...)
+	if success then
+		return {
+			success = true,
+			value = valueOrErr,
+		}
+	else
+		return {
+			success = false,
+			error = valueOrErr,
+		}
 	end
 end

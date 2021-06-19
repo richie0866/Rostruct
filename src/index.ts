@@ -1,22 +1,13 @@
-// Setup
+/**
+ * @description Rostruct builds your Lua projects from the filesystem.
+ * @author 0866
+ */
 
-import { init } from "core";
-init();
+import { bootstrap } from "bootstrap";
+import Promise from "modules/Promise";
 
-// Core
+bootstrap();
 
-export {
-	buildProject as Build,
-	deployProject as Deploy,
-	requireProject as Require,
-	downloadRelease as DownloadRelease,
-	downloadLatestRelease as DownloadLatestRelease,
-	clearReleaseCache as ClearReleaseCache,
-	Reconciler,
-	VirtualScript,
-} from "core";
-
-// Packages
-
-import Promise from "packages/Promise";
 export { Promise };
+
+export { build, fetch, fetchLatest, fetchAndBuild, fetchLatestAndBuild } from "Rostruct";
