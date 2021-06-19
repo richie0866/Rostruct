@@ -9,7 +9,7 @@ local TS = {
 setmetatable(TS, {
 	__index = function(self, k)
 		if k == "Promise" then
-			self.Promise = TS.initialize("packages", "Promise")
+			self.Promise = TS.initialize("modules", "Promise")
 			return self.Promise
 		end
 	end
