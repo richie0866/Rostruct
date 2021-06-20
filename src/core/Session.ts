@@ -1,7 +1,7 @@
 import { Store } from "./Store";
 import { HttpService } from "modules/services";
 import { VirtualScript } from "./VirtualScript";
-import build from "./build";
+import { build } from "./build";
 
 /** Class used to transform files into a Roblox instance tree. */
 export class Session {

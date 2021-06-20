@@ -1,6 +1,6 @@
 import { HttpService } from "modules/services";
 import * as http from "utils/http";
-import Release from "./Release";
+import type { Release } from "./types";
 
 /**
  * Gets a list of releases for the Github repository.

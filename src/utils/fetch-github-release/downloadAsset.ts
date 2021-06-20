@@ -1,7 +1,7 @@
 import * as http from "utils/http";
 import { makeFile } from "utils/file-utils";
 import { extract } from "utils/extract";
-import Release from "./Release";
+import type { Release } from "./types";
 
 /**
  * Downloads the asset file for a release.

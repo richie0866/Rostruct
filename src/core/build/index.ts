@@ -14,7 +14,7 @@ import { makePlainText } from "./txt";
  * @param path The file to turn into an object.
  * @returns The Instance made from the file.
  */
-function build(session: Session, path: string): Instance | undefined {
+export function build(session: Session, path: string): Instance | undefined {
 	if (isfolder(path)) {
 		let instance: Instance;
 
@@ -85,5 +85,3 @@ function build(session: Session, path: string): Instance | undefined {
 		}
 	}
 }
-
-export = build;

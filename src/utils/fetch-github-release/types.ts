@@ -1,4 +1,16 @@
-interface Author {
+/** Information about the release being downloaded. */
+export interface FetchInfo {
+	/** A reference to where the data was extracted to. */
+	location: string;
+
+	/** The tag of the release that was downloaded. */
+	tag: string;
+
+	/** Whether the cache was updated to include this download. */
+	updated: boolean;
+}
+
+export interface Author {
 	readonly login: string;
 	readonly id: number;
 	readonly node_id: string;
@@ -31,7 +43,7 @@ interface Author {
 	readonly site_admin: boolean;
 }
 
-interface Asset {
+export interface Asset {
 	/** @example `https://api.github.com/repos/${user}/${repo}/releases/assets/${id}` */
 	readonly url: string;
 	readonly id: number;
@@ -53,7 +65,7 @@ interface Asset {
  * Information about the latest release of a given Github repository.
  * See this [example](https://api.github.com/repos/Roblox/roact/releases/latest).
  */
-interface Release {
+export interface Release {
 	/** @example `https://api.github.com/repos/${user}/${repo}/releases/${id}` */
 	readonly url: string;
 	/** @example `https://api.github.com/repos/${user}/${repo}/releases/${id}/assets` */
@@ -79,5 +91,3 @@ interface Release {
 	readonly zipball_url: string;
 	readonly body: string;
 }
-
-export = Release;
