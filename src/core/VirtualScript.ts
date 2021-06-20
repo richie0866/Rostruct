@@ -1,6 +1,6 @@
 import { Store } from "./Store";
 import { HttpService } from "modules/services";
-import { Executor, VirtualEnvironment } from "./types";
+import type { Executor, VirtualEnvironment } from "./types";
 
 /** Class used to execute files in a Roblox instance context. */
 export class VirtualScript {
