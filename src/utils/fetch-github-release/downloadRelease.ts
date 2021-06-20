@@ -1,23 +1,12 @@
-import { openJson } from "utils/openJson";
+import { JsonStore } from "utils/JsonStore";
 import { downloadAsset } from "./downloadAsset";
-import { getRostructPath } from "../../bootstrap";
+import { bootstrap, getRostructPath } from "bootstrap";
 import { identify } from "./identify";
 import { getLatestRelease, getRelease } from "./getReleases";
-
-/** Information about the release being downloaded. */
-export interface FetchInfo {
-	/** A reference to where the data was extracted to. */
-	location: string;
-
-	/** The tag of the release that was downloaded. */
-	tag: string;
-
-	/** Whether the cache was updated to include this download. */
-	updated: boolean;
-}
+import type { FetchInfo } from "./types";
 
 /** Object used to modify the JSON file with decoded JSON data. */
-const tagStore = openJson(getRostructPath("RELEASE_TAGS"));
+const savedTags = new JsonStore(getRostructPath("RELEASE_TAGS"));
 
 /**
  * Downloads a release from the given repository. If `asset` is undefined, it downloads
@@ -45,11 +34,7 @@ export async function downloadRelease(owner: string, repo: string, tag: string, 
 	const release = await getRelease(owner, repo, tag);
 	await downloadAsset(release, path, asset);
 
-	return {
-		location: path,
-		tag: tag,
-		updated: true,
-	};
+	return { location: path, tag: tag, updated: true };
 }
 
 /**
@@ -71,15 +56,18 @@ export async function downloadLatestRelease(owner: string, repo: string, asset?:
 	const path = getRostructPath("RELEASE_CACHE") + id + "/";
 
 	const release = await getLatestRelease(owner, repo);
-	const tagStoreData = tagStore.load();
+
+	savedTags.open();
 
 	// Check if the cache is up-to-date
-	if (tagStoreData[id] === release.tag_name && isfolder(path))
+	if (savedTags.get(id) === release.tag_name && isfolder(path)) {
+		savedTags.close();
 		return { location: path, tag: release.tag_name, updated: false };
+	}
 
 	// Update the cache with the new tag
-	tagStoreData[id] = release.tag_name;
-	tagStore.save();
+	savedTags.set(id, release.tag_name);
+	savedTags.close();
 
 	// Make sure nothing is at the path before downloading!
 	if (isfolder(path)) delfolder(path);
@@ -87,16 +75,11 @@ export async function downloadLatestRelease(owner: string, repo: string, asset?:
 	// Download the asset to the cache
 	await downloadAsset(release, path, asset);
 
-	return {
-		location: path,
-		tag: release.tag_name,
-		updated: true,
-	};
+	return { location: path, tag: release.tag_name, updated: true };
 }
 
 /** Clears the release cache. */
 export function clearReleaseCache() {
 	delfolder(getRostructPath("RELEASE_CACHE"));
-	makefolder(getRostructPath("RELEASE_CACHE"));
-	writefile(getRostructPath("RELEASE_TAGS"), "{}");
+	bootstrap();
 }
