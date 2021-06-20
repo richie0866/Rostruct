@@ -9,25 +9,25 @@ const settableEntryPropertyNames: SettableEntryPropertyName[] = ["Context", "Exa
 
 /** Reads a CSV file and turns it into an array of `LocalizationEntries`. */
 class CsvReader {
+	/** A list of entries that can be passed to `LocalizationTable.SetEntries()`. */
+	public entries: LocalizationEntry[] = [];
+
 	/** The header of the CSV file. Used to map entry columns to the column name. */
 	private keys: SettableEntryPropertyName[] = [];
 
-	/** A list of entries that can be passed to `LocalizationTable.SetEntries()`. */
-	entries: LocalizationEntry[] = [];
-
 	constructor(
 		/** Raw file data. */
-		readonly raw: string,
+		public readonly raw: string,
 
 		/** The raw data split by row. */
-		readonly buffer = raw.split("\n"),
+		public readonly buffer = raw.split("\n"),
 	) {}
 
 	/**
 	 * Reads the CSV file and turns it into an array of `LocalizationEntries`.
 	 * @returns A list of localization entries.
 	 */
-	read() {
+	public read() {
 		// (i === 1) since otherwise transpiled to (i == 0)
 		for (const [i, line] of ipairs(this.buffer))
 			if (i === 1) this.readHeader(line);
@@ -40,7 +40,7 @@ class CsvReader {
 	 * Turns the header into an array of keys to be used as entry properties.
 	 * @param currentLine The first line of the CSV file.
 	 */
-	readHeader(currentLine: string) {
+	public readHeader(currentLine: string) {
 		this.keys = currentLine.split(",") as SettableEntryPropertyName[];
 	}
 
@@ -48,7 +48,7 @@ class CsvReader {
 	 * Checks if an entry can have the type of `LocalizationEntry`.
 	 * @param entry
 	 */
-	validateEntry(entry: LocalizationEntry): boolean {
+	public validateEntry(entry: LocalizationEntry): boolean {
 		return (
 			entry.Context !== undefined &&
 			entry.Key !== undefined &&
@@ -61,7 +61,7 @@ class CsvReader {
 	 * Creates a `LocalizationEntry` for the line in the CSV file.
 	 * @param currentLine A line from the CSV file.
 	 */
-	readEntry(currentLine: string) {
+	public readEntry(currentLine: string) {
 		const entry: Partial<LocalizationEntry> & { Values: LocalizationEntry["Values"] } = {
 			Values: new Map<string, string>(),
 		};

@@ -7,17 +7,17 @@ type FetchLatestParams = Parameters<typeof downloadLatestRelease>;
 
 /** Transforms files into Roblox objects and handles runtime. */
 class Rostruct {
-	/** The Session for this project. */
-	private readonly session: Session;
-
 	/** The project transformed into a Roblox instance. */
-	readonly tree: Instance;
+	public readonly tree: Instance;
 
 	/** The location of the project. */
-	readonly location: string;
+	public readonly location: string;
 
 	/** Information about the last call of `fetch` or `fetchLatest`. */
-	readonly fetchInfo?: FetchInfo;
+	public readonly fetchInfo?: FetchInfo;
+
+	/** The Session for this project. */
+	private readonly session: Session;
 
 	constructor(dir: string, fetchInfo?: FetchInfo) {
 		assert(type(dir) === "string", "(Rostruct) The target path must be a string");
@@ -33,7 +33,7 @@ class Rostruct {
 		this.fetchInfo = fetchInfo;
 
 		this.session = new Session(location);
-		this.tree = this.session.init();
+		this.tree = this.session.build();
 	}
 
 	/**
@@ -41,7 +41,7 @@ class Rostruct {
 	 * @param properties A map of property names and values.
 	 * @returns The Rostruct object.
 	 */
-	set(properties: Map<keyof WritableInstanceProperties<Instance>, never>) {
+	public set(properties: Map<keyof WritableInstanceProperties<Instance>, never>) {
 		for (const [prop, value] of properties) this.tree[prop] = value;
 		return this;
 	}
@@ -52,7 +52,7 @@ class Rostruct {
 	 * A promise that resolves with an array of scripts that finished executing.
 	 * If one script throws an error, the entire promise will cancel.
 	 */
-	defer(): Promise<LocalScript[]> {
+	public defer(): Promise<LocalScript[]> {
 		return this.session.simulate();
 	}
 
@@ -60,7 +60,7 @@ class Rostruct {
 	 * Requires the top-level ModuleScript, `tree`.
 	 * @returns A promise that resolves with what the module returned.
 	 */
-	async require(): Promise<ReturnType<Executor>> {
+	public async require(): Promise<ReturnType<Executor>> {
 		assert(classIs(this.tree, "ModuleScript"), `Object at path ${this.location} must be a module`);
 		return VirtualScript.loadModule(this.tree);
 	}
@@ -69,13 +69,13 @@ class Rostruct {
 	 * Requires the top-level ModuleScript, `tree`.
 	 * @returns What the module returned.
 	 */
-	requireAsync(): ReturnType<Executor> {
+	public requireAsync(): ReturnType<Executor> {
 		return this.require().expect();
 	}
 }
 
-/* Use const functions to mimic static class functions.
-   Using static functions forces 'export =' in 'index.ts', so use constants. */
+// Use function exports to mimic static class functions.
+// Otherwise, static functions forces using 'export =' in 'index.ts' to export Rostruct functions.
 
 /**
  * Transforms the files at `dir` into Roblox objects.
