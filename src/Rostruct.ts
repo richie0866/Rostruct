@@ -2,6 +2,9 @@ import { Session, VirtualScript, Executor } from "core";
 import { downloadLatestRelease, downloadRelease, FetchInfo } from "utils/fetch-github-release";
 import { pathUtils } from "utils/file-utils";
 
+type FetchParams = Parameters<typeof downloadRelease>;
+type FetchLatestParams = Parameters<typeof downloadLatestRelease>;
+
 /** Transforms files into Roblox objects and handles runtime. */
 class Rostruct {
 	/** The Session for this project. */
@@ -13,18 +16,38 @@ class Rostruct {
 	/** The location of the project. */
 	readonly location: string;
 
-	/** Turns the directory and all of its descendants into Roblox objects. */
-	constructor(dir: string) {
-		const location = pathUtils.addTrailingSlash(dir);
-		assert(type(location) === "string", "(Rostruct) The target path must be a string");
-		assert(isfolder(location), "(Rostruct) The target path must be a valid directory");
+	/** Information about the last call of `fetch` or `fetchLatest`. */
+	readonly fetchInfo?: FetchInfo;
+
+	constructor(dir: string, fetchInfo?: FetchInfo) {
+		assert(type(dir) === "string", "(Rostruct) The target path must be a string");
+		assert(!fetchInfo || type(fetchInfo) === "table", "(Rostruct) Invalid fetch info");
+
+		const location = fetchInfo
+			? fetchInfo.location + pathUtils.addTrailingSlash(dir)
+			: pathUtils.addTrailingSlash(dir);
+
+		assert(isfolder(location), `(Rostruct) The target path ${location} is not a valid directory`);
+
 		this.location = location;
+		this.fetchInfo = fetchInfo;
+
 		this.session = new Session(location);
 		this.tree = this.session.init();
 	}
 
 	/**
-	 * Runs every virtual LocalScript on deferred threads.
+	 * Sets the top-level instance's properties. Used for inline module loading.
+	 * @param properties A map of property names and values.
+	 * @returns The Rostruct object.
+	 */
+	set(properties: Map<keyof WritableInstanceProperties<Instance>, never>) {
+		for (const [prop, value] of properties) this.tree[prop] = value;
+		return this;
+	}
+
+	/**
+	 * Simulate script runtime by running LocalScripts on deferred threads.
 	 * @returns
 	 * A promise that resolves with an array of scripts that finished executing.
 	 * If one script throws an error, the entire promise will cancel.
@@ -35,15 +58,24 @@ class Rostruct {
 
 	/**
 	 * Requires the top-level ModuleScript, `tree`.
-	 * @returns
-	 * A promise that resolves with an array of scripts that finished executing.
-	 * If one script throws an error, the entire promise will cancel.
+	 * @returns A promise that resolves with what the module returned.
 	 */
 	async require(): Promise<ReturnType<Executor>> {
 		assert(classIs(this.tree, "ModuleScript"), `Object at path ${this.location} must be a module`);
 		return VirtualScript.loadModule(this.tree);
 	}
+
+	/**
+	 * Requires the top-level ModuleScript, `tree`.
+	 * @returns What the module returned.
+	 */
+	requireAsync(): ReturnType<Executor> {
+		return this.require().expect();
+	}
 }
+
+/* Use const functions to mimic static class functions.
+   Using static functions forces 'export =' in 'index.ts', so use constants. */
 
 /**
  * Transforms the files at `dir` into Roblox objects.
@@ -51,54 +83,37 @@ class Rostruct {
  * @param dir A path to the project directory.
  * @returns A new Rostruct object.
  */
-export const build = (dir: string) => new Rostruct(dir);
+export const build = (dir: string): Rostruct => new Rostruct(dir);
 
 /**
- * Downloads a release from the given repository.
- * If `assetName` is undefined, it downloads the source zip files and extracts them.
- * Automatically extracts .zip files. This function does not download prereleases or drafts.
+ * Downloads and builds a release from the given repository.
+ * If `asset` is undefined, it downloads source files through the zipball URL.
+ * Automatically extracts .zip files.
+ *
+ * @param target Build a specific directory in the downloaded release.
  * @param owner The owner of the repository.
  * @param repo The name of the repository.
  * @param tag The release tag to download.
- * @param assetName Optional asset to download. Defaults to the source files.
- * @returns A download result interface.
+ * @param asset Optional asset to download. Defaults to the source files.
+ *
+ * @returns A promise that resolves with a Rostruct object.
  */
-export const fetch = downloadRelease;
+export const fetch = async (target = "", ...args: FetchParams): Promise<Rostruct> =>
+	new Rostruct(target, await downloadRelease(...args));
 
 /**
- * Downloads the latest release from the given repository.
- * If `assetName` is undefined, it downloads the source zip files and extracts them.
- * Automatically extracts .zip files. This function does not download prereleases or drafts.
+ * **This function does not download prereleases or drafts.**
+ *
+ * Downloads and builds the latest release release from the given repository.
+ * If `asset` is undefined, it downloads source files through the zipball URL.
+ * Automatically extracts .zip files.
+ *
+ * @param target Build a specific directory in the downloaded release.
  * @param owner The owner of the repository.
  * @param repo The name of the repository.
- * @param tag The release tag to download.
- * @param assetName Optional asset to download. Defaults to the source files.
- * @returns A download result interface.
- */
-export const fetchLatest = downloadLatestRelease;
-
-/**
- * Sugar for:
- * ```
- * fetch(...).andThen(
- *     (result) => build(result.location),
- * )
- * ```
- * @param target Build a specific directory in the downloaded release.
+ * @param asset Optional asset to download. Defaults to the source files.
+ *
  * @returns A promise that resolves with a Rostruct object and the download result.
  */
-export const fetchAndBuild = async (target = "", ...args: Parameters<typeof fetch>) =>
-	build((await downloadRelease(...args)).location + pathUtils.addTrailingSlash(target));
-
-/**
- * Sugar for:
- * ```
- * fetchLatest(...).andThen(
- *     (result) => build(result.location),
- * )
- * ```
- * @param target Build a specific directory in the downloaded release.
- * @returns A promise that resolves with a Rostruct object and the download result.
- */
-export const fetchLatestAndBuild = async (target = "", ...args: Parameters<typeof fetchLatest>) =>
-	build((await downloadLatestRelease(...args)).location + pathUtils.addTrailingSlash(target));
+export const fetchLatest = async (target = "", ...args: FetchLatestParams): Promise<Rostruct> =>
+	new Rostruct(target, await downloadLatestRelease(...args));
