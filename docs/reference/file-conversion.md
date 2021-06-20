@@ -1,19 +1,17 @@
 # File conversion
 
-???+ danger "Important"
+???+ danger
 
 	Because Rostruct is for Roblox script execution, and Rojo is for the command-line, some key differences exist in functionality.
-	
-	Please exercise caution when using Rostruct with Rojo, and keep track of Rojo updates!
 
 	??? missing "Not supported"
 
 		* Rojo project files
 			* Project files structure your codebase around the `game` object, which would expose your project to the client.
 
-	??? check "Extra functionality"
+	??? warning "Differences"
 
-		* `.rbxm` and `.rbxmx` files are fully supported, but [Binary models](https://rojo.space/docs/6.x/sync-details/#models) are buggy in Rojo
+		* `.rbxm` and `.rbxmx` files are fully supported, but [the former](https://rojo.space/docs/6.x/sync-details/#models) is buggy in Rojo
 
 	??? bug "Known issues"
 
