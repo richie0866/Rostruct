@@ -1,6 +1,5 @@
-import { Session, VirtualScript } from "core";
-import { Executor } from "core/types";
-import { downloadLatestRelease, downloadRelease } from "utils/fetch-github-release";
+import { Session, VirtualScript, Executor } from "core";
+import { downloadLatestRelease, downloadRelease, FetchInfo } from "utils/fetch-github-release";
 import { pathUtils } from "utils/file-utils";
 
 /** Transforms files into Roblox objects and handles runtime. */
