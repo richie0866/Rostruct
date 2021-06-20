@@ -19,30 +19,3 @@ export interface VirtualEnvironment {
 	/** A reference to the root directory `Reconciler.reify` was originally called with. */
 	_ROOT: string;
 }
-
-/** Stores the results of project building functions. */
-export interface BuildResult {
-	/** The Instance tree built. */
-	Instance: Instance;
-
-	/** The file location of the project. */
-	Location: string;
-
-	/** A promise that resolves once all scripts finish executing, returning an array of every script run. */
-	RuntimeWorker?: Promise<LocalScript[]>;
-
-	/** A promise which resolves with what the module returned. */
-	Module?: Promise<unknown>;
-}
-
-/** Information about the release being downloaded. */
-export interface DownloadResult {
-	/** A reference to where the data was extracted to. */
-	Location: string;
-
-	/** The tag of the release that was downloaded. */
-	Tag: string;
-
-	/** Whether the cache was updated to include this download. */
-	Updated: boolean;
-}
