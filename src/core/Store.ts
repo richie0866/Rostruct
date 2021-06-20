@@ -1,4 +1,4 @@
-export type Store<K extends unknown = unknown, V extends unknown = unknown> = Map<K, V>;
+export type Store<K = unknown, V = unknown> = Map<K, V>;
 
 const globalStore = (getgenv().RostructStore as Map<string, Store>) ?? new Map<string, Store>();
 if (getgenv().RostructStore === undefined) {
