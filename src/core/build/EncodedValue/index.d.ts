@@ -1,3 +1,5 @@
+// TODO: Actually implement Rojo's Roblox DOM
+
 declare namespace EncodedValue {
 	/**
 	 * Constructs a Roblox data type from the property value.
