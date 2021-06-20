@@ -1,25 +1,24 @@
-export type Store<K = unknown, V = unknown> = Map<K, V>;
+type Store = Map<unknown, unknown>;
+type Stores = Map<string, Store>;
 
-const globalStore = (getgenv().RostructStore as Map<string, Store>) ?? new Map<string, Store>();
-if (getgenv().RostructStore === undefined) {
-	getgenv().RostructStore = globalStore;
-}
+// Ensures that stores persist between sessions.
+const stores =
+	getgenv().RostructStore !== undefined
+		? (getgenv().RostructStore as Stores)
+		: (getgenv().RostructStore = new Map<string, Store>());
 
-interface StoreConstructor {
-	getStore<K, V>(name: string): Store<K, V>;
-}
-
-/** Stores persistent data in the global environment. */
-export const Store: StoreConstructor = {
-	/** Creates a new Store object. */
-	getStore<K, V>(name: string) {
-		const store = globalStore.get(name);
-		if (store) return store as Store<K, V>;
-
-		const newStore = new Map<K, V>();
-
-		globalStore.set(name, newStore);
-
-		return newStore;
+/** Stores persistent data between sessions. */
+export const Store = {
+	/**
+	 * Lazily creates a Map object. The map is shared between all sessions of
+	 * the current game.
+	 * @param name The name of the store.
+	 * @returns A Map object.
+	 */
+	getStore<K, V>(storeName: string): Map<K, V> {
+		if (stores.has(storeName)) return stores.get(storeName) as Map<K, V>;
+		const store = new Map<K, V>();
+		stores.set(storeName, store);
+		return store;
 	},
-};
+} as const;
