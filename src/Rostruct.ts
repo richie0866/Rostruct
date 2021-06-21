@@ -1,5 +1,7 @@
-import { Session, VirtualScript, Executor } from "core";
-import { downloadLatestRelease, downloadRelease, FetchInfo } from "utils/fetch-github-release";
+import { Session, VirtualScript } from "core";
+import type { Executor } from "core";
+import { downloadLatestRelease, downloadRelease } from "utils/fetch-github-release";
+import type { FetchInfo } from "utils/fetch-github-release";
 import { pathUtils } from "utils/file-utils";
 
 type FetchParams = Parameters<typeof downloadRelease>;

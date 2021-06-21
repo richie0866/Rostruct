@@ -1,5 +1,6 @@
 import zzlib from "modules/zzlib";
-import { FileArray, makeFiles, pathUtils } from "utils/file-utils";
+import { makeUtils, pathUtils } from "utils/file-utils";
+import type { FileArray } from "utils/file-utils";
 
 /**
  * Extracts files from raw zip data.
@@ -21,5 +22,5 @@ export function extract(rawData: string, target: string, ungroup?: boolean) {
 			: fileArray.push([pathUtils.addTrailingSlash(target) + path, contents]);
 
 	// Make the files at the given target
-	makeFiles(fileArray);
+	makeUtils.makeFiles(fileArray);
 }
