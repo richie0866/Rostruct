@@ -1,5 +1,4 @@
 import Make from "modules/make/init";
-import Object from "modules/object-utils";
 import { pathUtils } from "utils/file-utils";
 import { fileMetadata } from "./metadata";
 
