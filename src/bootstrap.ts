@@ -1,4 +1,4 @@
-import { makeFiles } from "utils/file-utils";
+import { makeUtils } from "utils/file-utils";
 
 /** Assigns common folders to a keyword. */
 const Shortcut = {
@@ -15,7 +15,7 @@ export const getRostructPath = <T extends keyof Shortcut>(keyword: T): Shortcut[
 
 /** Sets up core files for Rostruct. */
 export const bootstrap = () =>
-	makeFiles([
+	makeUtils.makeFiles([
 		["rostruct/cache/releases/", ""],
 		["rostruct/cache/release_tags.json", "{}"],
 	]);

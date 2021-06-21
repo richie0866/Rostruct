@@ -1,7 +1,5 @@
 import * as pathUtils from "./path-utils";
-
-/** Data used to construct files and directories. */
-export type FileArray = [string, string | undefined][];
+import type { FileArray } from "./types";
 
 /**
  * Safely makes a folder by creating every parent before the final directory.

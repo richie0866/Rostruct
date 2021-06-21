@@ -1,5 +1,5 @@
 import * as http from "utils/http";
-import { makeFile } from "utils/file-utils";
+import { makeUtils } from "utils/file-utils";
 import { extract } from "utils/extract";
 import type { Release } from "./types";
 
@@ -32,7 +32,7 @@ export async function downloadAsset(release: Release, path: string, asset?: stri
 
 	asset !== undefined && asset.match("([^%.]+)$")[0] !== "zip"
 		? // If 'asset' does not end with '.zip', write the contents to a file.
-		  makeFile(path + asset, response.Body)
+		  makeUtils.makeFile(path + asset, response.Body)
 		: // Magic boolean alert! If 'asset' is undefined, pass it to the 'ungroup'
 		  // parameter. This is because the zipball contains a folder with the source code,
 		  // and we have to ungroup this folder to extract the source files to 'path'.
