@@ -25,8 +25,7 @@ export function fileMetadata(metaPath: string, instance: Instance) {
 	// Cannot modify the className of an existing instance:
 	assert(
 		metadata.className === undefined,
-		"className can only be specified in init.meta.json files\
-		 if the parent directory would turn into a Folder!",
+		"className can only be specified in init.meta.json files if the parent directory would turn into a Folder!",
 	);
 
 	// Uses Rojo's decoder to set properties from metadata.
