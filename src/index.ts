@@ -4,8 +4,8 @@
  */
 
 import { bootstrap } from "bootstrap";
+import { Rostruct } from "Rostruct";
 
 bootstrap();
 
-export * from "Rostruct";
-export { clearReleaseCache } from "utils/fetch-github-release";
+export = Rostruct;
