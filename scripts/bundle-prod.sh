@@ -32,7 +32,7 @@ TS.register(\"$file\", \"$name\", function()
 end)"
 }
 
-bundle=$(cat '.github/runtime.lua')
+bundle=$(cat 'scripts/runtime.lua')
 
 traverse() {
 	local dir="$1"

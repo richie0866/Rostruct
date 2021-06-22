@@ -32,7 +32,7 @@ TS.register(\"$file\", \"$name\", function()
 end)"
 }
 
-bundle=$(cat '.github/runtime.lua')
+bundle=$(cat 'scripts/runtime.lua')
 
 traverse() {
 	local dir="$1"
@@ -59,7 +59,7 @@ traverse() {
 
 traverse 'out'
 
-bundle+="$nl$(cat '.github/dev.lua')"
+bundle+="$nl$(cat 'scripts/dev.lua')"
 
 >Rostruct.lua
 echo "${bundle}" >>Rostruct.lua
