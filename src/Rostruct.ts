@@ -150,7 +150,9 @@ export class Rostruct {
 	 * @returns A promise that resolves with what the module returned.
 	 */
 	public async require(module: ModuleScript): Promise<ReturnType<Executor>> {
-		return this.requireAsync(module);
+		assert(classIs(module, "ModuleScript"), `(Rostruct.requireAsync) '${module}' must be a module`);
+		assert(module.IsDescendantOf(this.tree), `(Rostruct.requireAsync) '${module}' must be a in the Rostruct tree`);
+		return VirtualScript.loadModule(module);
 	}
 
 	/**
@@ -160,8 +162,6 @@ export class Rostruct {
 	 * @returns What the module returned.
 	 */
 	public requireAsync(module: ModuleScript): ReturnType<Executor> {
-		assert(classIs(module, "ModuleScript"), `(Rostruct.requireAsync) '${module}' must be a module`);
-		assert(module.IsDescendantOf(this.tree), `(Rostruct.requireAsync) '${module}' must be a in the Rostruct tree`);
-		return VirtualScript.loadModule(module);
+		return this.require(module).expect();
 	}
 }
