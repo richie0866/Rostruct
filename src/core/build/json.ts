@@ -17,7 +17,7 @@ export function makeJsonModule(session: Session, path: string, name: string): Mo
 
 	// Creates and tracks a VirtualScript object for this file.
 	// The VirtualScript returns the decoded JSON data when required.
-	const virtualScript = new VirtualScript(instance, path, session.dir);
+	const virtualScript = new VirtualScript(instance, path, session.root);
 	virtualScript.setExecutor(() => HttpService.JSONDecode(virtualScript.rawSource));
 	session.virtualScriptAdded(virtualScript);
 

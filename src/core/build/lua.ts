@@ -33,7 +33,7 @@ export function makeLua(session: Session, path: string): LuaSourceContainer {
 	const instance = Make(TRAILING_TO_CLASS[match], { Name: name });
 
 	// Create and track a VirtualScript object for this file:
-	session.virtualScriptAdded(new VirtualScript(instance, path, session.dir));
+	session.virtualScriptAdded(new VirtualScript(instance, path, session.root));
 
 	// Applies an adjacent meta file if it exists.
 	// This includes init.meta.json files!

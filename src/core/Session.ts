@@ -16,7 +16,7 @@ export class Session {
 
 	constructor(
 		/** The directory to turn into an instance tree. */
-		public readonly dir: string,
+		public readonly root: string,
 	) {
 		Session.sessions.set(this.sessionId, this);
 	}
@@ -39,12 +39,19 @@ export class Session {
 	}
 
 	/**
-	 * Turns the root directory and all descendants into Roblox objects.
+	 * Turns a folder in the root directory and all descendants into Roblox objects.
+	 * If `dir` is not provided, this function transforms the root directory.
+	 * @param dir Optional specific folder to build in the root directory.
 	 * @returns A Roblox object for the root directory.
 	 */
-	public build(): Instance {
+	public build(dir = ""): Instance {
+		assert(
+			isfile(this.root + dir) || isfolder(this.root + dir),
+			`The path '${this.root + dir}' must be a file or folder`,
+		);
+
 		// 'buildRoblox' should always return an Instance because 'dir' is a directory
-		return buildRoblox(this, this.dir)!;
+		return buildRoblox(this, this.root + dir)!;
 	}
 
 	/**
