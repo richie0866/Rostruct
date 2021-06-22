@@ -37,7 +37,7 @@ bundle=$(cat '.github/runtime.lua')
 traverse() {
 	local dir="$1"
 
-	# for file in $(ls $dir); do
+	# Do files first
 	for file in "$dir"/*; do
 		if [ -f "$file" ]; then
 			filename=$(basename -- "$file")
@@ -46,7 +46,12 @@ traverse() {
 			if [ "$extension" = 'lua' ]; then
 				bundle+=$(wrap_function_decl "$filename" "$file")
 			fi
-		elif [ -d "$file" ]; then
+		fi
+	done
+
+	# Do folders last
+	for file in "$dir"/*; do
+		if [ -d "$file" ]; then
 			traverse "$file"
 		fi
 	done
