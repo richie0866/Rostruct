@@ -28,7 +28,7 @@ jobs:
 
     - name: Package Rostruct
       run: |
-        npm run build:bundle:prod
+        npm run build:prod
 
     - name: Upload to release
       uses: AButler/upload-release-assets@v2.0
