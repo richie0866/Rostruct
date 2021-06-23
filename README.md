@@ -5,6 +5,7 @@
 	<a href="https://github.com/richie0866/Rostruct/actions/workflows/eslint.yml"><img src="https://github.com/richie0866/Rostruct/actions/workflows/eslint.yml/badge.svg" alt="GitHub Actions ESLint Status" /></a>
 	<a href="https://github.com/richie0866/Rostruct/releases/latest"><img src="https://img.shields.io/github/v/release/richie0866/Rostruct?include_prereleases" alt="Latest Release" /></a>
 	<a href="https://richie0866.github.io/Rostruct"><img src="https://img.shields.io/badge/docs-website-blue.svg" alt="Rostruct Documentation" /></a>
+	<br>
 	A modern exploiting solution, built for Roblox and Rojo
 </div>
 
@@ -62,25 +63,22 @@ If you'd like to contribute, [fork Rostruct](https://docs.github.com/en/get-star
 
 ### Building Rostruct
 
-Run `npm install` to install all dependencies used by this project.
-
-Then, run `rbxtsc -w` to start building the TypeScript source to Lua files.
+1. Run `npm install` to install all dependencies used by this project.
+2. Then, run `rbxtsc -w` to start building the TypeScript source to Lua files.
 
 ### Running Rostruct
 
-Run `npm run build:prod` in a Git Bash terminal to generate an output file. Make sure the `out/` directory is up-to-date with `rbxtsc`!
-
-The command should create a `Rostruct.lua` file in the root directory. At the end of the script, you'll find this code:
-
-```lua
-return TS.initialize("init")
-```
-
-Replace it with this code to use Rostruct:
-
-```lua
-local Rostruct = TS.initialize("init")
-```
+3. Run `npm run build:prod` in a Git Bash terminal to generate an output file. Make sure the `out/` directory is up-to-date with `rbxtsc`!
+4. The command should create a `Rostruct.lua` file in the root directory. At the end of the script, you'll find this code:
+   
+   ```lua
+   return TS.initialize("init")
+   ```
+   Replace it with this code to use Rostruct:
+   
+   ```lua
+   local Rostruct = TS.initialize("init")
+   ```
 
 ## License
 
