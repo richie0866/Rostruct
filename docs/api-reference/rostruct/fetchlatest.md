@@ -1,7 +1,7 @@
 # fetchLatest <span class="base-tag static-tag"></span> <span class="base-tag promise-tag"></span>
 
 ``` ts
-function fetchLatest(owner: string, repo: string, asset?: string): Package
+function fetchLatest(owner: string, repo: string, asset?: string): Promise<Package>
 ```
 
 Constructs a new [`Package`](../package/properties.md) object from the latest **stable** GitHub Release, with a defined `fetchInfo` property.
