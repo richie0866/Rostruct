@@ -21,9 +21,7 @@ The function returns a Promise that resolves once every script finishes executin
 ``` lua
 local package = Rostruct.open("PathTo/MyModule/")
 
-package:build("src/", {
-	Name = "MyModule",
-})
+package:build("src/", { Name = "MyModule" })
 
 package:start()
 	:andThen(function(scripts)
