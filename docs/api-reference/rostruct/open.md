@@ -4,7 +4,7 @@
 function open(rootDirectory: string): Package
 ```
 
-Constructs a new [`Package`](../package/properties.md) object from the given folder. The `fetchInfo` property is not defined.
+Constructs a new [`Package`](../package/properties.md) object from the given folder.
 
 ---
 
