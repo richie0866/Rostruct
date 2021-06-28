@@ -1,4 +1,6 @@
 import { getContentId } from "api";
+import type { Session } from "core/Session";
+import { VirtualScript } from "core/VirtualScript";
 
 /**
  * Transforms a `.rbxm` or `.rbxmx` file into a Roblox object.
@@ -6,17 +8,24 @@ import { getContentId } from "api";
  * @param name The name of the instance.
  * @returns The result of `game.GetObjects(getContentId(path))`.
  */
-export function makeRobloxModel(path: string, name: string): Instance {
+export function makeRobloxModel(session: Session, path: string, name: string): Instance {
 	assert(getContentId, `'${path}' could not be loaded; No way to get a content id`);
 
-	// A cool trick to load model files is to generate a content ID, which
-	// saves it to Roblox's content folder. Thus, it can be called as an
-	// argument for GetObjects.
+	// A neat trick to load model files is to generate a content ID, which
+	// moves it to Roblox's content folder, and then use it as the asset id for
+	// for GetObjects:
 	const tree = game.GetObjects(getContentId(path));
 	assert(tree.size() === 1, `'${path}' could not be loaded; Only one top-level instance is supported`);
 
-	const obj = tree[0];
-	obj.Name = name;
+	const model = tree[0];
+	model.Name = name;
 
-	return obj;
+	// Create VirtualScript objects for all scripts in the model
+	for (const obj of model.GetDescendants()) {
+		if (classIs(obj, "ModuleScript") || classIs(obj, "LocalScript")) {
+			session.virtualScriptAdded(new VirtualScript(obj, path, session.root));
+		}
+	}
+
+	return model;
 }

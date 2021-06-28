@@ -76,12 +76,12 @@ export function build(session: Session, path: string): Instance | undefined {
 		// Binary model
 		// https://rojo.space/docs/6.x/sync-details/#models
 		else if (name.match("(%.rbxm)$")[0] !== undefined) {
-			return makeRobloxModel(path, name.match("^(.*)%.rbxm$")[0] as string);
+			return makeRobloxModel(session, path, name.match("^(.*)%.rbxm$")[0] as string);
 		}
 		// XML model
 		// https://rojo.space/docs/6.x/sync-details/#models
 		else if (name.match("(%.rbxmx)$")[0] !== undefined) {
-			return makeRobloxModel(path, name.match("^(.*)%.rbxmx$")[0] as string);
+			return makeRobloxModel(session, path, name.match("^(.*)%.rbxmx$")[0] as string);
 		}
 	}
 }
