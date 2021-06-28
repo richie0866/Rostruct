@@ -17,7 +17,7 @@ export const clearCache = () => clearReleaseCache();
  * @param root A path to the project directory.
  * @returns A new Package object.
  */
-export const open = (root: string) => new Package(root);
+export const open = (root: string): Package => new Package(root);
 
 /**
  * Downloads and builds a release from the given repository.

@@ -1,6 +1,6 @@
 # Featured
 
-To gain a better understanding of Rostruct, seeing others' implementations may help.
+To get a better understanding of Rostruct, seeing others' implementations may help.
 
 ## How to get featured
 
@@ -19,4 +19,5 @@ A midi file auto-player for Roblox piano games.
 	* A single LocalScript initializes the code
 	* Uses common utility modules
 
-![MidiPlayer UI](../assets/images/midi-player-screenshot.png)
+!!! example
+	![MidiPlayer UI](../assets/images/midi-player-screenshot.png)

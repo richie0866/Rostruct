@@ -49,10 +49,10 @@ Although your deploy script is much longer, you now have immediate access to Ros
 
 ## Running your project
 
-After you've loaded Rostruct in your deploy script, use [`Rostruct.DownloadLatestRelease`](../reference/functions.md#downloadlatestrelease) to download your project's most recent GitHub Release files. This function automatically caches, updates, and version-checks your releases, to ensure a hassle-free user experience.
+After you've loaded Rostruct in your deploy script, use [`Rostruct.DownloadLatestRelease`](../api-reference/functions.md#downloadlatestrelease) to download your project's most recent GitHub Release files. This function automatically caches, updates, and version-checks your releases, to ensure a hassle-free user experience.
 
 !!! note
-	Drafts and prereleases are ignored in `DownloadLatestRelease`, but can be downloaded using [`Rostruct.DownloadRelease`](../reference/functions.md#downloadrelease).
+	Drafts and prereleases are ignored in `DownloadLatestRelease`, but can be downloaded using [`Rostruct.DownloadRelease`](../api-reference/functions.md#downloadrelease).
 
 ### Deployment
 

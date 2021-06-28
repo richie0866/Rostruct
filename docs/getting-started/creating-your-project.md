@@ -6,7 +6,7 @@ Every Lua script is loaded and executed with a modified global environment, maki
 
 ??? example "File conversion example"
 
-	Check out the [file conversion](../reference/file-conversion.md) page for more complete information.
+	Check out the [file conversion](../api-reference/file-conversion.md) page for more complete information.
 
 	=== "Source code"
 
@@ -41,7 +41,7 @@ Once you're done setting up and writing your code, you can deploy your local pro
 	local MyModule = build.Module:expect()
 	```
 
-For complete documentation, check out the [API reference](../reference/functions.md).
+For complete documentation, check out the [API reference](../api-reference/functions.md).
 
 ## Setting build metadata
 

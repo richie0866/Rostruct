@@ -33,7 +33,7 @@ local character = myProject.Assets.Character
 
 ## Catching Rostruct errors
 
-Functions like [`Rostruct.Require`](../reference/functions.md#require) and [`Rostruct.Deploy`](../reference/functions.md#deploy) use Promises to manage yielding and error handling. Errors thrown during runtime can be caught using the `#!lua Promise:catch()` method:
+Functions like [`Rostruct.Require`](../api-reference/functions.md#require) and [`Rostruct.Deploy`](../api-reference/functions.md#deploy) use Promises to manage yielding and error handling. Errors thrown during runtime can be caught using the `#!lua Promise:catch()` method:
 
 ```lua
 buildResult.RuntimeWorker:catch(function(err)
@@ -46,9 +46,9 @@ end)
 !!! warning
 	You should generally avoid using Rostruct functions *inside* of your source code. Use this function if you're going to use a module outside of a Rostruct project.
 
-If you need to quickly require a library in your script executor without deploying a new project, Rostruct has you covered with the [`Rostruct.Require`](../reference/functions.md#require) function.
+If you need to quickly require a library in your script executor without deploying a new project, Rostruct has you covered with the [`Rostruct.Require`](../api-reference/functions.md#require) function.
 
-The project you want to require must contain an `init.lua` file. This file tells Rostruct that the project turns into a ModuleScript. Check out the [file conversion](../reference/file-conversion.md) page for more information.
+The project you want to require must contain an `init.lua` file. This file tells Rostruct that the project turns into a ModuleScript. Check out the [file conversion](../api-reference/file-conversion.md) page for more information.
 
 Let's say a project is structured like such:
 
