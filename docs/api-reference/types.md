@@ -1,6 +1,6 @@
 # Types
 
-Some Rostruct functions may return tables to store useful data in a single place. The structures of these tables are documented on this page.
+Some Rostruct functions may return tables to store data in one place. The structures of these tables are documented on this page.
 
 ---
 
