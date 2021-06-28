@@ -29,12 +29,27 @@ export async function downloadRelease(owner: string, repo: string, tag: string, 
 	const path = getRostructPath("RELEASE_CACHE") + id + "/";
 
 	// If the path is taken, don't download it again
-	if (isfolder(path)) return Promise.resolve({ location: path, tag: tag, updated: false });
+	if (isfolder(path))
+		return {
+			location: path,
+			owner: owner,
+			repo: repo,
+			tag: tag,
+			asset: asset ?? "Source code",
+			updated: false,
+		};
 
 	const release = await getRelease(owner, repo, tag);
 	await downloadAsset(release, path, asset);
 
-	return { location: path, tag: tag, updated: true };
+	return {
+		location: path,
+		owner: owner,
+		repo: repo,
+		tag: tag,
+		asset: asset ?? "Source code",
+		updated: true,
+	};
 }
 
 /**
@@ -62,7 +77,14 @@ export async function downloadLatestRelease(owner: string, repo: string, asset?:
 	// Check if the cache is up-to-date
 	if (savedTags.get(id) === release.tag_name && isfolder(path)) {
 		savedTags.close();
-		return { location: path, tag: release.tag_name, updated: false };
+		return {
+			location: path,
+			owner: owner,
+			repo: repo,
+			tag: release.tag_name,
+			asset: asset ?? "Source code",
+			updated: false,
+		};
 	}
 
 	// Update the cache with the new tag
@@ -75,7 +97,14 @@ export async function downloadLatestRelease(owner: string, repo: string, asset?:
 	// Download the asset to the cache
 	await downloadAsset(release, path, asset);
 
-	return { location: path, tag: release.tag_name, updated: true };
+	return {
+		location: path,
+		owner: owner,
+		repo: repo,
+		tag: release.tag_name,
+		asset: asset ?? "Source code",
+		updated: true,
+	};
 }
 
 /** Clears the release cache. */

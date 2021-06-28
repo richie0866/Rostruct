@@ -1,13 +1,22 @@
 /** Information about the release being downloaded. */
 export interface FetchInfo {
-	/** A reference to where the data was extracted to. */
-	location: string;
+	/** The folder the release was saved to. */
+	readonly location: string;
 
-	/** The tag of the release that was downloaded. */
-	tag: string;
+	/** The owner of the repository. */
+	readonly owner: string;
 
-	/** Whether the cache was updated to include this download. */
-	updated: boolean;
+	/** The name of the repository. */
+	readonly repo: string;
+
+	/** The version of the release. */
+	readonly tag: string;
+
+	/** The specific asset that was downloaded. */
+	readonly asset: "Source code" | string;
+
+	/** Whether the operation downloaded a new release. */
+	readonly updated: boolean;
 }
 
 export interface Author {
