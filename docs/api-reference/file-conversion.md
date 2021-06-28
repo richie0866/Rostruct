@@ -24,18 +24,17 @@ Concepts on the table below will redirect you to their respective Rojo pages.
 
 ## Supported Rojo concepts
 
-| Concept                                                                              | File Name      |    Supported     |
-| ------------------------------------------------------------------------------------ | -------------- | :--------------: |
-| [Folders](https://rojo.space/docs/6.x/sync-details/#folders)                         | any directory  | :material-check: |
-| Server [scripts](https://rojo.space/docs/6.x/sync-details/#scripts)                  | `*.server.lua` | :material-minus: |
-| Client [scripts](https://rojo.space/docs/6.x/sync-details/#scripts)                  | `*.client.lua` | :material-check: |
-| Module [scripts](https://rojo.space/docs/6.x/sync-details/#scripts)                  | `*.lua`        | :material-check: |
-| XML [models](https://rojo.space/docs/6.x/sync-details/#models)                       | `*.rbxmx`      | :material-check: |
-| Binary [models](https://rojo.space/docs/6.x/sync-details/#models)                    | `*.rbxm`       | :material-check: |
-| [Localization tables](https://rojo.space/docs/6.x/sync-details/#localization-tables) | `*.csv`        | :material-check: |
-| [Plain text](https://rojo.space/docs/6.x/sync-details/#plain-text)                   | `*.txt`        | :material-check: |
-| [JSON modules](https://rojo.space/docs/6.x/sync-details/#json-modules)               | `*.json`       | :material-check: |
-| [JSON models](https://rojo.space/docs/6.x/sync-details/#json-models)                 | `*.model.json` | :material-check: |
-| [Projects](https://rojo.space/docs/6.x/sync-details/#project)                        | `*.model.json` | :material-close: |
-| [JSON models](https://rojo.space/docs/6.x/sync-details/#json-modules)                | `*.model.json` | :material-check: |
-| [Meta files](https://rojo.space/docs/6.x/sync-details/#json-modules)                 | `*.model.json` | :material-minus: |
+| Concept                                                                              | File Name        |    Supported     |
+| ------------------------------------------------------------------------------------ | --------------   | :--------------: |
+| [Folders](https://rojo.space/docs/6.x/sync-details/#folders)                         | any directory    | :material-check: |
+| Server [scripts](https://rojo.space/docs/6.x/sync-details/#scripts)                  | `*.server.lua`   | :material-minus: |
+| Client [scripts](https://rojo.space/docs/6.x/sync-details/#scripts)                  | `*.client.lua`   | :material-check: |
+| Module [scripts](https://rojo.space/docs/6.x/sync-details/#scripts)                  | `*.lua`          | :material-check: |
+| XML [models](https://rojo.space/docs/6.x/sync-details/#models)                       | `*.rbxmx`        | :material-check: |
+| Binary [models](https://rojo.space/docs/6.x/sync-details/#models)                    | `*.rbxm`         | :material-check: |
+| [Localization tables](https://rojo.space/docs/6.x/sync-details/#localization-tables) | `*.csv`          | :material-check: |
+| [Plain text](https://rojo.space/docs/6.x/sync-details/#plain-text)                   | `*.txt`          | :material-check: |
+| [JSON modules](https://rojo.space/docs/6.x/sync-details/#json-modules)               | `*.json`         | :material-check: |
+| [JSON models](https://rojo.space/docs/6.x/sync-details/#json-models)                 | `*.model.json`   | :material-check: |
+| [Projects](https://rojo.space/docs/6.x/sync-details/#project)                        | `*.project.json` | :material-close: |
+| [Meta files](https://rojo.space/docs/6.x/sync-details/#json-modules)                 | `*.meta.json`    | :material-minus: |
