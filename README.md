@@ -19,7 +19,7 @@ See the original concept [here](https://v3rmillion.net/showthread.php?tid=108167
 
 ## Why Rostruct?
 
-When it comes to exploiting, projects are developed and maintained within a single file. However, scripts that get too large become detrimental to your workflow. Debugging, management, and working in teams become more difficult as the project continues.
+When it comes to exploiting, projects are developed and maintained within a single file. However, scripts that get too large become detrimental to your workflow. Debugging, management, and working in teams becomes more difficult as the project continues.
 
 In contrast, if you've ever made a Rojo project, the files in your codebase can run in Roblox. Taking this **modular approach** to exploiting can significantly improve the development experience.
 
