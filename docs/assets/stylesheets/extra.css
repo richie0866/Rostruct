@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css?family=Inter:500,500i,600,600i%7C&display=fallback');
+
+* {
+    scroll-behavior: smooth;
+    scrollbar-color: dark;
+    color-scheme: dark;
+}
+
+.customcode {
+    font-family: 'JetBrains Mono', 'Roboto Mono', Consolas, monospace;
+    color: #E9EBFC;
+}
+
+.symbol {
+    font-family: 'JetBrains Mono', 'Roboto Mono', Consolas, monospace;
+    color: #8F92AB;
+    white-space: pre-wrap;
+    tab-size: 4;
+}
+
+.keyword {
+    font-family: 'JetBrains Mono', 'Roboto Mono', Consolas, monospace;
+    color: #a897ff;
+    white-space: pre-wrap;
+    tab-size: 4;
+}
+
+.key {
+    font-family: 'JetBrains Mono', 'Roboto Mono', Consolas, monospace;
+    color: #73DACA;
+    white-space: pre-wrap;
+    tab-size: 4;
+}
+
+.interface {
+    font-family: 'JetBrains Mono', 'Roboto Mono', Consolas, monospace;
+    color: #ffab73;
+    white-space: pre-wrap;
+    tab-size: 4;
+}
+
+.type {
+    font-family: 'JetBrains Mono', 'Roboto Mono', Consolas, monospace;
+    color: #79b3ff;
+    white-space: pre-wrap;
+    tab-size: 4;
+}
+
+.highlight {
+    font-family: 'JetBrains Mono', 'Roboto Mono', Consolas, monospace;
+    color: #90c9ff;
+    white-space: pre-wrap;
+    tab-size: 4;
+}

@@ -12,11 +12,11 @@ repo_url: https://github.com/richie0866/Rostruct
 # Configuration
 theme:
   name: material
-  custom_dir: docs/overrides
+  custom_dir: docs/assets/overrides
   
   font:
     code: JetBrains Mono
-    text: Roboto
+    text: Inter
 
   highlightjs: true
 
@@ -33,9 +33,10 @@ theme:
     - navigation.tabs
     - navigation.sections
 
-# Extra css
+# Extra
 extra_css:
-  - stylesheets/extra.css
+  - assets/stylesheets/extra.css
+  - assets/stylesheets/api-tags.css
 
 # Extensions
 markdown_extensions:
@@ -96,11 +97,23 @@ nav:
     - Examples:
       - Execution model: getting-started/execution-model.md
 
-  - Reference:
-    - Functions: reference/functions.md
-    - Types: reference/types.md
-    - Globals: reference/globals.md
-    - File conversion: reference/file-conversion.md
+  - API Reference:
+    - Home: api-reference/home.md
+    - Types: api-reference/types.md
+    - Rostruct:
+      - Static Functions:
+        - .open(): api-reference/rostruct/open.md
+        - .fetch(): api-reference/rostruct/fetch.md
+        - .fetchLatest(): api-reference/rostruct/fetchlatest.md
+        - .clearCache(): api-reference/rostruct/clearcache.md
+    - Package:
+      - Properties: api-reference/package/properties.md
+      - Methods:
+        - :build(): api-reference/package/build.md
+        - :start(): api-reference/package/start.md
+        - :require(): api-reference/package/require.md
+    - File conversion: api-reference/file-conversion.md
+    - Globals: api-reference/globals.md
 
   - Featured:
     - Community: featured/community.md
