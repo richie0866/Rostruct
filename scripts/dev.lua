@@ -17,7 +17,7 @@ end
 
 warn("\n--- Test MidiPlayer ---")
 do
-	local package = Rostruct.new("Util/MidiPlayer/")
+	local package = Rostruct.open("Util/MidiPlayer/")
 
 	--[[
 		Build project using start
@@ -43,7 +43,7 @@ end
 
 warn("\n--- Try all file types ---")
 do
-	local package = Rostruct.new("tests/build/")
+	local package = Rostruct.open("tests/build/")
 	package:build()
 	package:start():await()
 end
