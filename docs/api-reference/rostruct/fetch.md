@@ -1,7 +1,7 @@
 # fetch <span class="base-tag static-tag"></span> <span class="base-tag promise-tag"></span>
 
 ``` ts
-function fetch(owner: string, repo: string, tag: string, asset?: string): Package
+function fetch(owner: string, repo: string, tag: string, asset?: string): Promise<Package>
 ```
 
 Constructs a new [`Package`](../package/properties.md) object from the GitHub Release, with a defined `fetchInfo` property.
