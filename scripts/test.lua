@@ -34,7 +34,7 @@ end
 
 warn("Test MidiPlayer")
 do
-	local package = Rostruct.open("Util/MidiPlayer/")
+	local package = Rostruct.open("MidiPlayer/")
 	assertTypes("(MidiPlayer) Package", package, {
 		tree = "Instance",
 		root = "string",
@@ -44,7 +44,7 @@ do
 	--[[
 		Build project using start
 	]]
-	package:build("src/", { Name = "MidiPlayer" })
+	package:build("src/")
 	package:start()
 
 	--[[
@@ -83,23 +83,23 @@ end
 warn("Require Roact inline")
 do
 	local Roact = Rostruct.fetchLatest("Roblox", "roact")
-		:andThen(function(rostruct)
-			return rostruct:require(rostruct:build("src/", { Name = "Roact" }))
+		:andThen(function(package)
+			return package:require(package:build("src/", { Name = "Roact" }))
 		end)
 		:expect()
 
 	assert(
 		type(Roact) == "table" and type(Roact.createElement) == "function",
-		"Failed to require Roact inline"
+		"Failed to require Roact inline with tree"
 	)
 end
 
-warn("Require Roact inline with tree")
+warn("Require Roact inline with Roact.rbxm")
 do
-	local Roact = Rostruct.fetchLatest("Roblox", "roact")
-		:andThen(function(rostruct)
-			rostruct:build("src/", { Name = "Roact" })
-			return rostruct:require(rostruct.tree.Roact)
+	local Roact = Rostruct.fetchLatest("Roblox", "roact", "Roact.rbxm")
+		:andThen(function(package)
+			package:build("Roact.rbxm")
+			return package:require(package.tree.Roact)
 		end)
 		:expect()
 
