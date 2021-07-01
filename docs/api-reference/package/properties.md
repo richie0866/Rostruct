@@ -34,7 +34,7 @@ This property helps simplify Promise usage, since you don't need to store the re
 readonly root: string
 ```
 
-A reference to the root directory of the project, which was passed into the `Rostruct.open` function.
+A reference to the root directory of the project, which was passed into the `Rostruct.open` function, or automatically provided when fetching through GitHub.
 
 The value should *always* end with a forward slash!
 
@@ -46,6 +46,6 @@ The value should *always* end with a forward slash!
 readonly fetchInfo?: FetchInfo | undefined
 ```
 
-An object that stores information about the last `Rostruct.fetch` or `Rostruct.fetchLatest` operation.
+An object that stores data about the last `Rostruct.fetch` or `Rostruct.fetchLatest` operation.
 
 See the [FetchInfo](../types.md#fetchinfo) documentation for more info on how it's structured.

@@ -1,22 +1,18 @@
 # Creating your project
 
-Rostruct turns Lua projects into Roblox instances to provide an intuitive development environment compatible with Rojo. Keeping this in mind, your files should behave as scripts running in Roblox Studio.
-
-Every Lua script is loaded and executed with a modified global environment, making it almost identical to running a LocalScript or ModuleScript. This includes the ability to require other modules using the `#!lua require()` function as you would in Roblox Studio.
+Rostruct turns your Lua projects into Roblox objects for a modern development experience. So, you should structure your codebase around Roblox Instances.
 
 ??? example "File conversion example"
 
 	Check out the [file conversion](../api-reference/file-conversion.md) page for more complete information.
+	
+	![MyModule source](../assets/images/midi-player-src.png){ align=middle width=256px }
+	-> [`Package.build`](../api-reference/package/methods/../build.md) ->
+	![MyModule instance](../assets/images/midi-player-panel.svg){ align=middle width=256px }
 
-	=== "Source code"
+Every Lua script is loaded with a [modified global environment](../api-reference/globals.md), making it nearly identical to running a LocalScript or ModuleScript. This includes the ability to require other modules in your project using the `#!lua require()` function.
 
-		![MyModule source](../assets/images/midi-player-src.png){ width=256px }
-
-	=== "Rostruct"
-
-		![MyModule instance](../assets/images/midi-player-panel.svg){ width=256px }
-
-To set up a project, locate your executor's `workspace/` directory and create a folder somewhere to host your project. It's recommended to integrate Rojo into your workflow to test your code in Roblox Studio.
+To set up a project, locate your executor's `workspace/` directory and create a folder somewhere to host your project. You should store your codebase in a source folder, and that's all you need to start your project.
 
 ## Sync to Roblox as you write
 
@@ -26,26 +22,28 @@ You can get [Rojo for VS Code](https://marketplace.visualstudio.com/items?itemNa
 
 ## Building your project
 
-Once you're done setting up and writing your code, you can deploy your local project with:
+Once you're ready to test your local project, you can build it with:
 
-=== "Deploy"
+```lua
+local package = Rostruct.open("projects/MyProject/")
+local build = package:build("src/", { Name = "MyProject" })
+```
 
-	```lua
-	local build = Rostruct.Deploy("projects/MyProject/src/")
-	```
+Then, you can run every LocalScript in the project, or require a specific module:
 
-=== "Require"
+```lua
+-- Run all LocalScripts after the next Heartbeat event
+package:start()
 
-	```lua
-	local build = Rostruct.Require("projects/MyModule/src/")
-	local MyModule = build.Module:expect()
-	```
+-- Require a specific module
+local MyModule = package:require(build.MyModule)
+```
 
-For complete documentation, check out the [API reference](../api-reference/functions.md).
+For complete documentation, check out the [API reference](../api-reference/overview.md).
 
 ## Setting build metadata
 
-Some projects need to access the root instance to access other objects:
+Some scripts need to know the top-level instance to access other objects, like this:
 
 ```lua
 local myProject = script:FindFirstAncestor("MyProject")
@@ -55,24 +53,20 @@ local Roact = require(myProject.Modules.Roact)
 local character = myProject.Assets.Character
 ```
 
-Typically, in Rojo, the root instance's name can be set in the `project.json` file. However, Rostruct does not support Rojo project files, so how can you achieve this?
+Typically, in Rojo, that Instance's name can be set in the `*.project.json` file. However, Rostruct does not (and will not!) support Rojo project files.
 
-You can set build metadata with [meta files](https://rojo.space/docs/6.x/sync-details/#meta-files), a powerful tool from Rojo that tells Rostruct how to create the Instance for a file with the same name. For example, this meta file makes `foo.server.lua` disabled when turning into a script:
+Though this can be achieved with the `props` argument in the [`Package:build`](../api-reference/package/build.md) method, you can also use **meta files** to keep things simple.
 
-!!! info "Rostruct scripts run regardless of the `Disabled` property"
+[Meta files](https://rojo.space/docs/6.x/sync-details/#meta-files) are a powerful tool from Rojo that tells Rostruct how to create the Instance for a specific file. For example, this meta file changes the name of the parent folder, `src/`:
 
-=== "foo.meta.json"
+=== "init.meta.lua"
 
 	```json
 	{
 		"properties": {
-			"Disabled": true
+			"Name": "MyProject"
 		}
 	}
 	```
 
-=== "foo.server.lua"
-
-	![Disabled script](../assets/images/disabled-script.png)
-
-For a full explanation, see Rojo's page on [meta files](https://rojo.space/docs/6.x/sync-details/#meta-files).
+For a more detailed explanation, see Rojo's page on [meta files](https://rojo.space/docs/6.x/sync-details/#meta-files).

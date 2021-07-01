@@ -1,38 +1,37 @@
-# Setup
+# Installation
 
 Learn how to integrate Rostruct into your workflow.
 
 !!! warning
 	Automatically getting the latest Rostruct release is discouraged, as **breaking changes** can happen at any time.
 	
-	Read the changelogs when updating Rostruct just in case you need to change your code.
+	Read the latest release's description when updating Rostruct just in case you need to change your code.
 
-## Installation
+---
 
-Rostruct is distributed as a Lua file. Before starting your local project, you'll need to set it up with your exploit.
+Rostruct is distributed as a Lua file. Before starting your local project, you should learn how to load Rostruct.
 
-### with HTTP GET <small>recommended</small> { data-toc-label="with HTTP GET" }
+## with HTTP GET <small>recommended</small> { data-toc-label="with HTTP GET" }
 
-Rostruct can be installed with `HttpGetAsync`:
+Rostruct can be loaded with `HttpGetAsync`:
 
-```lua hl_lines="1"
-local VERSION = "TAG_VERSION_HERE"
-local URL = "https://github.com/richie0866/Rostruct/releases/download/%s/Rostruct.lua"
-local Rostruct = loadstring(game:HttpGetAsync(string.format(URL, VERSION)))()
+```lua hl_lines="3"
+local Rostruct = loadstring(game:HttpGetAsync(
+	"https://github.com/richie0866/Rostruct/releases/download/"
+	.. "TAG_VERSION_HERE"
+	.. "/Rostruct.lua"
+))()
 ```
 
 This will load the Rostruct script for the given [GitHub Release](https://github.com/richie0866/Rostruct/releases) **tag version**.
 
-??? tip "How do I get the tag version?"
-	![image](../assets/images/github-tag-version.png){ align=right width=512 }
+## with `#!lua loadfile()`
 
-	The tag version is **not** the name of the release.
-	
-	You can find the tag version to the left of the release name:
+Prefer downloading Rostruct beforehand if you'd like to avoid yielding.
 
-### with `#!lua loadfile()`
+To do this, save the latest `Rostruct.lua` file from the [GitHub Releases page](https://github.com/richie0866/Rostruct/releases/latest) somewhere in your executor's `workspace/` directory.
 
-Storing Rostruct in the filesystem is a great way to cut down loading times during development. Save the latest `Rostruct.lua` file from the [GitHub Releases page](https://github.com/richie0866/Rostruct/releases/latest) to your executor's `workspace/` directory. You can load the Lua file with:
+You can load the Lua file with:
 
 === "loadfile"
 

@@ -4,17 +4,19 @@
 function build(fileOrFolder?: string, props?: {[prop: string]: any}): Instance
 ```
 
-Constructs and returns a new instance from a file or folder in the `root` directory. If `fileOrFolder` is not defined, it builds the root directory.
+Constructs a new Instance from a file or folder in the `root` directory, with the properties `props`. Instances returned by this function can also be found in [`Package.tree`](properties.md#tree).
 
-The function returns an Instance whose Parent is set to [`Package.tree`](properties.md#tree). The `props` parameter is applied to the instance *before* the Parent is set.
+If `fileOrFolder` is a string, the function transforms `#!lua Package.root .. fileOrFolder`.
 
-You can see the specifics on how files turn into Roblox objects on the [file conversion page](../file-conversion.md).
+If `fileOrFolder` is `nil`, the function transforms the root directory.
+
+You can see how files turn into Roblox objects on the [file conversion page](../file-conversion.md).
 
 !!! tip
 	Model files (`*.rbxm`, `*.rbxmx`) that contain LocalScript and ModuleScript instances act just like normal Rostruct scripts - but the [`_PATH`](../globals.md#_path) global points to the model file.
 
 !!! caution
-	Avoid building the root directory if it contains files not meant to be Roblox objects.
+	Avoid building the root directory if it contains files Rostruct shouldn't use. It's good practice to store your source code in a specific folder in your project.
 
 ---
 

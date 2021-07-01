@@ -88,30 +88,29 @@ nav:
   - Home: index.md
 
   - Getting started:
-    - "Why Rostruct?": getting-started/why-rostruct.md
-    - Setup:
-      - Installation: getting-started/installation.md
+    - Overview: getting-started/overview.md
+    - Installation: getting-started/installation.md
+    - Usage:
       - Creating your project: getting-started/creating-your-project.md
       - Publishing your project: getting-started/publishing-your-project.md
       - Using other projects: getting-started/using-other-projects.md
-    - Examples:
       - Execution model: getting-started/execution-model.md
 
   - API Reference:
-    - Home: api-reference/home.md
+    - Overview: api-reference/overview.md
     - Types: api-reference/types.md
     - Rostruct:
-      - Static Functions:
-        - .open(): api-reference/rostruct/open.md
-        - .fetch(): api-reference/rostruct/fetch.md
-        - .fetchLatest(): api-reference/rostruct/fetchlatest.md
-        - .clearCache(): api-reference/rostruct/clearcache.md
+      - Functions:
+        - open: api-reference/rostruct/open.md
+        - fetch: api-reference/rostruct/fetch.md
+        - fetchLatest: api-reference/rostruct/fetchlatest.md
+        - clearCache: api-reference/rostruct/clearcache.md
     - Package:
       - Properties: api-reference/package/properties.md
       - Methods:
-        - :build(): api-reference/package/build.md
-        - :start(): api-reference/package/start.md
-        - :require(): api-reference/package/require.md
+        - build: api-reference/package/build.md
+        - start: api-reference/package/start.md
+        - require: api-reference/package/require.md
     - File conversion: api-reference/file-conversion.md
     - Globals: api-reference/globals.md
 

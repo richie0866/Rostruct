@@ -14,6 +14,6 @@ Jump directly to the documentation for some common APIs:
 
 ### Package
 
-* [properties](package/properties.md)
+* [Properties](package/properties.md)
 * [build](package/build.md)
 * [require](package/require.md)
