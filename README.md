@@ -61,12 +61,12 @@ If there are any features you think are missing, feel free to [open an issue](ht
 
 If you'd like to contribute, [fork Rostruct](https://docs.github.com/en/get-started/quickstart/fork-a-repo) and submit a [pull request](https://docs.github.com/en/github/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests) when you're ready.
 
-### Building Rostruct
+### Setup
 
 1. Run `npm install` to install all dependencies used by this project.
-2. Then, run `rbxtsc -w` to start building the TypeScript source to Lua files.
+2. Then, run `rbxtsc -w` to start building the TypeScript source to Lua files as you make changes.
 
-### Running Rostruct
+### Testing
 
 3. Run `npm run build:prod` in a Git Bash terminal to generate an output file. Make sure the `out/` directory is up-to-date with `rbxtsc`!
 4. The command should create a `Rostruct.lua` file in the root directory. At the end of the script, you'll find this code:
@@ -74,7 +74,7 @@ If you'd like to contribute, [fork Rostruct](https://docs.github.com/en/get-star
    ```lua
    return TS.initialize("init")
    ```
-   Replace it with this code to use Rostruct:
+   Replace it with this code to use Rostruct underneath it:
    
    ```lua
    local Rostruct = TS.initialize("init")
