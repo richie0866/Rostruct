@@ -84,7 +84,7 @@ export class Package {
 	public async require(module: ModuleScript): Promise<ReturnType<Executor>> {
 		assert(classIs(module, "ModuleScript"), `(Package.require) '${module}' must be a module`);
 		assert(module.IsDescendantOf(this.tree), `(Package.require) '${module}' must be a descendant of Package.tree`);
-		return VirtualScript.loadModule(module);
+		return VirtualScript.requireFromInstance(module);
 	}
 
 	/**
