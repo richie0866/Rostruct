@@ -18,7 +18,7 @@ const TRAILING_TO_CLASS: { [trailing: string]: "Script" | "ModuleScript" | "Loca
  * @param name The name of the instance.
  * @returns A Lua script with a VirtualScript binding.
  */
-export function makeLua(session: Session, path: string): LuaSourceContainer {
+export function makeLua(session: Session, path: string, nameOverride?: string): LuaSourceContainer {
 	const fileName = pathUtils.getName(path);
 
 	// Look for a name and file type that fits:
@@ -30,7 +30,7 @@ export function makeLua(session: Session, path: string): LuaSourceContainer {
 
 	// Creates an Instance for the preceding match.
 	// If an error was not thrown, this line should always succeed.
-	const instance = Make(TRAILING_TO_CLASS[match], { Name: name });
+	const instance = Make(TRAILING_TO_CLASS[match], { Name: nameOverride ?? name });
 
 	// Create and track a VirtualScript object for this file:
 	session.virtualScriptAdded(new VirtualScript(instance, path, session.root));
@@ -53,9 +53,7 @@ export function makeLua(session: Session, path: string): LuaSourceContainer {
 export function makeLuaInit(session: Session, path: string): Instance {
 	// The parent directory will always exist for an init file.
 	const parentDir = pathUtils.getParent(path)!;
-	const instance = makeLua(session, path);
-
-	instance.Name = pathUtils.getName(parentDir);
+	const instance = makeLua(session, path, pathUtils.getName(parentDir));
 
 	return instance;
 }
