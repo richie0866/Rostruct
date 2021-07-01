@@ -2,6 +2,8 @@ import { getContentId } from "api";
 import type { Session } from "core/Session";
 import { VirtualScript } from "core/VirtualScript";
 
+type ScriptWithSource = LuaSourceContainer & { Source: string };
+
 /**
  * Transforms a `.rbxm` or `.rbxmx` file into a Roblox object.
  * @param path A path to the model file.
@@ -17,14 +19,17 @@ export function makeRobloxModel(session: Session, path: string, name: string): I
 	const tree = game.GetObjects(getContentId(path));
 	assert(tree.size() === 1, `'${path}' could not be loaded; Only one top-level instance is supported`);
 
-	const model = tree[0];
+	const model = tree[0] as Instance | ScriptWithSource;
 	model.Name = name;
 
 	// Create VirtualScript objects for all scripts in the model
-	for (const obj of model.GetDescendants()) {
-		if (classIs(obj, "ModuleScript") || classIs(obj, "LocalScript")) {
-			session.virtualScriptAdded(new VirtualScript(obj, path, session.root));
+	for (const obj of model.GetDescendants() as (Instance | ScriptWithSource)[]) {
+		if (obj.IsA("LuaSourceContainer")) {
+			session.virtualScriptAdded(new VirtualScript(obj, path, session.root, obj.Source));
 		}
+	}
+	if (model.IsA("LuaSourceContainer")) {
+		session.virtualScriptAdded(new VirtualScript(model, path, session.root, model.Source));
 	}
 
 	return model;
