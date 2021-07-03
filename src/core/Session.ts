@@ -68,9 +68,6 @@ export class Session {
 			if (v.instance.IsA("LocalScript"))
 				executingPromises.push(v.deferExecutor().andThenReturn(v.instance as LocalScript));
 
-		// Define as constant because the typing for 'Promise.all' is funky
-		const promise = Promise.all(executingPromises).timeout(10);
-
-		return promise as Promise<LocalScript[]>;
+		return Promise.all<Promise<LocalScript>[]>(executingPromises).timeout(10);
 	}
 }
