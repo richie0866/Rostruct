@@ -42,5 +42,5 @@ Concepts on the table below will redirect you to their respective Rojo pages.
 | [Plain text](https://rojo.space/docs/6.x/sync-details/#plain-text)                   | `*.txt`          | :material-check: |
 | [JSON modules](https://rojo.space/docs/6.x/sync-details/#json-modules)               | `*.json`         | :material-check: |
 | [JSON models](https://rojo.space/docs/6.x/sync-details/#json-models)                 | `*.model.json`   | :material-check: |
-| [Projects](https://rojo.space/docs/6.x/sync-details/#project)                        | `*.project.json` | :material-close: |
+| [Projects](https://rojo.space/docs/6.x/sync-details/#projects)                       | `*.project.json` | :material-close: |
 | [Meta files](https://rojo.space/docs/6.x/sync-details/#json-modules)                 | `*.meta.json`    | :material-minus: |
