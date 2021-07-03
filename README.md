@@ -57,7 +57,7 @@ Scripts have preset `script` and `require` globals to mirror LocalScript and Mod
 
 ## Contributing
 
-If there are any features you think are missing, feel free to [open an issue](https://github.com/richie0866/Rostruct/issues)!
+If there are any features you think are missing, or the code can be improved, feel free to [open an issue](https://github.com/richie0866/Rostruct/issues)!
 
 If you'd like to contribute, [fork Rostruct](https://docs.github.com/en/get-started/quickstart/fork-a-repo) and submit a [pull request](https://docs.github.com/en/github/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests) when you're ready.
 
