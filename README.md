@@ -34,7 +34,7 @@ Documentation is available at the [GitHub Pages site](https://richie0866.github.
 <img src="img/example-vscode-and-roblox.png" align="right"
      alt="Rostruct Build Example" height="300">
 
-Rostruct builds instances following a [file conversion model](https://richie0866.github.io/Rostruct/reference/file-conversion/). Files compatible with Rostruct (`lua`, `json`, `rbxm`, etc.) are turned into Roblox instances.
+Rostruct builds instances following a [file conversion model](https://richie0866.github.io/Rostruct/api-reference/file-conversion/). Files compatible with Rostruct (`lua`, `json`, `rbxm`, etc.) are turned into Roblox instances.
 
 Scripts have preset `script` and `require` globals to mirror LocalScript and ModuleScript objects. This way, runtime is similar between Roblox Studio and script executors.
 
