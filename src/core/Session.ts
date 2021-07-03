@@ -39,19 +39,18 @@ export class Session {
 	}
 
 	/**
-	 * Turns a folder in the root directory and all descendants into Roblox objects.
-	 * If `dir` is not provided, this function transforms the root directory.
-	 * @param dir Optional specific folder to build in the root directory.
+	 * Turns descendants of the root directory into Roblox objects.
+	 * If `path` is not provided, this function transforms the root directory.
+	 * @param path Optional descendant to build in the root directory.
 	 * @returns A Roblox object for the root directory.
 	 */
-	public build(dir = ""): Instance {
+	public build(path = ""): Instance | undefined {
 		assert(
-			isfile(this.root + dir) || isfolder(this.root + dir),
-			`The path '${this.root + dir}' must be a file or folder`,
+			isfile(this.root + path) || isfolder(this.root + path),
+			`The path '${this.root + path}' must be a file or folder`,
 		);
 
-		// 'buildRoblox' should always return an Instance because 'dir' is a directory
-		return buildRoblox(this, this.root + dir)!;
+		return buildRoblox(this, this.root + path);
 	}
 
 	/**

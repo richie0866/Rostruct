@@ -4,7 +4,7 @@ import type { FetchInfo } from "utils/fetch-github-release";
 import { pathUtils } from "utils/file-utils";
 import Make from "modules/make/init";
 
-/** Transforms files into Roblox objects and handles runtime. */
+/** Transforms files into Roblox objects and handles runtime. Acts as a wrapper for Session. */
 export class Package {
 	/** A Folder containing objects created from the `build()` method. */
 	public readonly tree = Make("Folder", { Name: "Tree" });
@@ -52,6 +52,7 @@ export class Package {
 		);
 
 		const instance = this.session.build(fileOrFolder);
+		assert(instance, `(Package.build) The path '${this.root + fileOrFolder}' could not be turned into an Instance`);
 
 		// Set object properties
 		if (props !== undefined) {
