@@ -1,8 +1,14 @@
 # File conversion
 
+??? example
+	
+	![MyModule source](../assets/images/midi-player-src.png){ align=middle width=256px }
+	-> [`Package.build`](../api-reference/package/methods/../build.md) ->
+	![MyModule instance](../assets/images/midi-player-panel.svg){ align=middle width=256px }
+
 ???+ danger
 
-	Because Rostruct is for Roblox script execution, and Rojo is for Roblox game development, some key differences exist in functionality.
+	Because Rostruct runs code, and Rojo syncs code to Roblox Studio, some key differences exist in functionality.
 
 	!!! missing "Not supported"
 
@@ -11,7 +17,7 @@
 
 	!!! warning "Differences"
 
-		* `.rbxm` and `.rbxmx` files are fully supported, but [the former](https://rojo.space/docs/6.x/sync-details/#models) is buggy in Rojo
+		* `.rbxm` and `.rbxmx` files are fully supported, but [the former](https://rojo.space/docs/6.x/sync-details/#models) is buggy in Rojo.
 
 	!!! bug "Known issues"
 
@@ -25,7 +31,7 @@ Concepts on the table below will redirect you to their respective Rojo pages.
 ## Supported Rojo concepts
 
 | Concept                                                                              | File Name        |    Supported     |
-| ------------------------------------------------------------------------------------ | --------------   | :--------------: |
+| ------------------------------------------------------------------------------------ | ---------------- | :--------------: |
 | [Folders](https://rojo.space/docs/6.x/sync-details/#folders)                         | any directory    | :material-check: |
 | Server [scripts](https://rojo.space/docs/6.x/sync-details/#scripts)                  | `*.server.lua`   | :material-minus: |
 | Client [scripts](https://rojo.space/docs/6.x/sync-details/#scripts)                  | `*.client.lua`   | :material-check: |

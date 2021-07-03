@@ -13,13 +13,13 @@ The **retriever** handles the execution of your repo's latest GitHub Release. Ho
 
 ## Loading Rostruct
 
-In the retriever, you can load Rostruct in two ways: through an HTTP request, or through Rostruct's source code. Each option has its pros and cons, so choose whichever one best fits your project.
+In the retriever, you can load Rostruct in two ways: with an HTTP request, or from Rostruct's source code. Each option has its pros and cons, so choose whichever one best fits your project.
 
 ### with HTTP GET <small>recommended</small> { data-toc-label="with HTTP GET" }
 
-If you prefer a more quick and concise way to load Rostruct, you can load through an HTTP request. 
+If you prefer a quick and concise way to load Rostruct, you can load it with an HTTP request. 
 
-To do this, you should first pick a release from the [GitHub Releases page](https://github.com/richie0866/Rostruct/releases/latest). Once you've done that, you can copy the **tag version** and paste it as `TAG_VERSION_HERE` in this code:
+To do this, you should pick a release from the [GitHub Releases page](https://github.com/richie0866/Rostruct/releases/latest), and copy the **tag version** to `TAG_VERSION_HERE` in this code:
 
 ```lua hl_lines="3"
 local Rostruct = loadstring(game:HttpGetAsync(
@@ -29,7 +29,7 @@ local Rostruct = loadstring(game:HttpGetAsync(
 ))()
 ```
 
-This loads the Rostruct library by downloading the source and executing it. You can now [deploy your project](#deployment).
+This loads the Rostruct library by getting the source and executing it. You can now [deploy your project](#deployment).
 
 ### with source code
 
@@ -47,7 +47,7 @@ local Rostruct = TS.initialize("init")
 ??? question "What is `TS`?"
 	Because Rostruct uses TypeScript for Roblox, it uses the `TS` module to simulate its runtime. Essentially, running `#!lua TS.initialize("init")` requires Rostruct.
 
-Although your retriever is about 5,000 lines longer (ouch!), you now have immediate access to Rostruct, with no yielding required.
+Although your retriever is about 5,000 lines longer (ouch!), you can use Rostruct immediately after it, unlike the first method that yields your code.
 
 ## Running your project
 
@@ -83,22 +83,23 @@ You can deploy your project using Rostruct's `fetch` functions, which return a P
 				package:build("src/", { Name = "Roact" })
 			)
 		end)
-		-- Finally, wait until the Promise is done
+		-- Finally, wait until the Promise is done, and
+		-- return the result of package:require
 		:expect()
 	```
 
-Remember to test your code! Anyone with this script can deploy your project in a Roblox script executor.
+Now, anyone with this script can deploy your project in a Roblox script executor. Remember to test your code!
 
-You can shorten the script you distribute by saving the retriever in your repo and getting its source with `request` or `HttpGetAsync`:
+You can simplify the script for end-user by saving the retriever in your repo and loading its source with `HttpGetAsync`:
 
 ### Distribution
 
 Some users may prefer a short and concise way to use your project. To account for this, you should provide additional code that uses the `loadstring-HttpGet` pattern to run your project's retriever.
 
-Loading your module through an HTTP request may seem counterproductive, but it's much easier for developers to manage in their single-file project. So, your code should look something like this:
+Loading your module through an HTTP request may seem counterproductive, but some developers may prefer it in a single-file project. So, your code should look something like this:
 
 ```lua
-local Foo = loadstring(game:HttpGetAsync("RAW_RETRIEVER_URL"))()
+local Foo = loadstring(game:HttpGetAsync("LINK_TO_RAW_RETRIEVER"))()
 ```
 
 `RAW_RETRIEVER_URL` should be replaced with a link to your retriever's raw contents. It may be in your best interest to [load Rostruct internally](#with-source-code) to avoid the extra HTTP request.

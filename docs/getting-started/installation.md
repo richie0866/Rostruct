@@ -27,7 +27,7 @@ This will load the Rostruct script for the given [GitHub Release](https://github
 
 ## with `#!lua loadfile()`
 
-Prefer downloading Rostruct beforehand if you'd like to avoid yielding.
+If you'd rather avoid yielding, you can load Rostruct locally.
 
 To do this, save the latest `Rostruct.lua` file from the [GitHub Releases page](https://github.com/richie0866/Rostruct/releases/latest) somewhere in your executor's `workspace/` directory.
 

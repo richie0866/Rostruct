@@ -15,7 +15,7 @@ A useful pattern is to keep all assets within your project for immediate access.
 		* Thread.lua <small>(ModuleScript)</small>
 	* init.meta.json <small>(Renames 'src' to 'MyProject')</small>
 
-We can write `MyController.lua` to get assets with this code:
+We can get other modules and assets in `MyController.lua` with this code:
 
 ```lua
 -- MyProject/Controllers/MyController.lua
@@ -54,4 +54,3 @@ package:start()
 * Code should not rely on services like CollectionService that expose you to the client, so use an alternative
 * LocalScripts should try to finish ASAP and avoid yielding the **main thread** if possible
 * The codebase should never be exposed to the `game` object to prevent security vulnerabilities
-* Avoid using Rostruct in your project to load dependencies; Instead, check out [how to use a module](using-other-projects.md)
