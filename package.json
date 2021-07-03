@@ -6,8 +6,8 @@
   "scripts": {
     "prepublishOnly": "rbxtsc",
     "build:luau": "cross-env NODE_ENV=production TYPE=Luau rbxtsc --verbose --type=package",
-    "build:prod": "chmod +x \"./scripts/bundle-prod.sh\" && bash ./scripts/bundle-prod.sh",
-    "build:test": "chmod +x \"./scripts/bundle-test.sh\" && bash ./scripts/bundle-test.sh"
+    "build:prod": "chmod +x \"./bin/bundle-prod.sh\" && bash ./bin/bundle-prod.sh",
+    "build:test": "chmod +x \"./bin/bundle-test.sh\" && bash ./bin/bundle-test.sh"
   },
   "keywords": [],
   "author": "",
