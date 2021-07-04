@@ -11,21 +11,21 @@
 
 ---
 
-**Rostruct** is a script execution tool that runs Roblox projects in a Roblox script executor. This solution substitutes frameworks that use `HttpGetAsync` and `GetObjects` to load and run code. You can use it with [Rojo](https://rojo.space/) to take advantage of game development tools in your exploits.
+**Rostruct** is a project execution framework that runs your code as Roblox instances. This framework substitutes methods that use `HttpGetAsync` and `GetObjects` to load and run code. You can use it with [Rojo](https://rojo.space/) to take advantage of game development tools in your exploits.
 
-Whether you're familiar with Rojo, want easy access to assets, or need to get external dependencies, you might enjoy using this library. 
+Whether you're familiar with Rojo, want easy asset management, or need some dependencies, you might enjoy using this library. 
 
 See the original concept [here](https://v3rmillion.net/showthread.php?tid=1081675).
 
 ## Why Rostruct?
 
-When it comes to exploiting, projects are developed and maintained within a single file. However, scripts that get too large become detrimental to your workflow. Debugging, management, and working in teams becomes more difficult as the project continues.
+When it comes to exploiting, projects are often developed and maintained within a single file. However, scripts that get too large become detrimental to your workflow. Over time, your project becomes more difficult to debug, maintain, and share.
 
-In contrast, if you've ever made a Rojo project, the files in your codebase can run in Roblox. Taking this **modular approach** to exploiting can significantly improve the development experience.
+In contrast, with Rojo, your codebase gets turned directly into Roblox Instances. Taking this modular approach to exploiting can significantly improve the development experience.
 
 Rostruct's design complements a Rojo-based workflow, introducing script developers to a professional way to manage projects.
 
-## Usage
+## [Usage](https://richie0866.github.io/Rostruct)
 
 Documentation is available at the [GitHub Pages site](https://richie0866.github.io/Rostruct).
 
