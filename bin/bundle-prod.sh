@@ -61,4 +61,5 @@ traverse 'out'
 
 bundle+="${nl}${nl}return TS.initialize(\"init\")"
 
+>Rostruct.lua
 echo "${bundle}" >>Rostruct.lua
