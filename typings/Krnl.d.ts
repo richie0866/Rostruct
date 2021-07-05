@@ -72,3 +72,17 @@ interface DataModel {
 	/** Returns an array of Instances associated with the given [`content`](https://developer.roblox.com/en-us/articles/Content) URL. */
 	GetObjects(this: DataModel, url: string): Instance[];
 }
+
+// Synapse
+
+declare const syn: {
+	request: typeof request;
+};
+
+declare const getsynasset: typeof getcustomasset;
+
+// Scriptware
+
+declare const http: {
+	request: typeof request;
+};
