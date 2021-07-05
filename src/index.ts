@@ -4,10 +4,11 @@
  */
 
 import { bootstrap } from "bootstrap";
-import { Package } from "Package";
-import { clearReleaseCache, downloadLatestRelease, downloadRelease } from "utils/fetch-github-release";
 
 bootstrap();
+
+import { Package } from "Package";
+import { clearReleaseCache, downloadLatestRelease, downloadRelease } from "utils/fetch-github-release";
 
 /** Clears the GitHub Release cache. */
 export const clearCache = () => clearReleaseCache();
