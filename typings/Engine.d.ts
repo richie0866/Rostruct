@@ -24,6 +24,9 @@ declare function loadstring(
 	chunkname?: string,
 ): LuaTuple<[(...params: Array<unknown>) => unknown, string | undefined]>;
 
+/** Returns the name of the executor. */
+declare function identifyexecutor(): string;
+
 // Filesystem
 
 /** Check whether the given path points to a file. */
