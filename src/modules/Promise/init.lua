@@ -1170,7 +1170,7 @@ end
 function Promise.prototype:_resolve(...)
 	if self._status ~= Promise.Status.Started then
 		if Promise.is((...)) then
-			(...):_consumerCancelled(self)
+			select(1, ...):_consumerCancelled(self)
 		end
 		return
 	end
