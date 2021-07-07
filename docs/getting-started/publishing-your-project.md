@@ -35,7 +35,7 @@ This loads the Rostruct library by getting the source and executing it. You can 
 
 If you don't want to make an HTTP request, you can load Rostruct instantly by using the source code in your script. In other words, you'll be using Rostruct as an **internal module**.
 
-To add Rostruct's source to your retriever, download the `Rostruct.lua` asset from your preferred release of Rostruct from the [GitHub Releases page](https://github.com/richie0866/Rostruct/releases/latest).
+To add Rostruct's source to your retriever, download the `Rostruct.lua` asset from your preferred release of Rostruct from the [GitHub Releases page](https://github.com/richie0866/Rostruct/releases/latest), and paste it into your retriever.
 
 This file should end with `#!lua return Rostruct`. Since you're going to use Rostruct, all you have to do is remove that line!
 
