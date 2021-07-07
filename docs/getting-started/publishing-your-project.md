@@ -37,17 +37,9 @@ If you don't want to make an HTTP request, you can load Rostruct instantly by us
 
 To add Rostruct's source to your retriever, download the `Rostruct.lua` asset from your preferred release of Rostruct from the [GitHub Releases page](https://github.com/richie0866/Rostruct/releases/latest).
 
-This file should end with `#!lua return TS.initialize("init")`, which requires Rostruct as a module, and returns the result.
-Because you will be using Rostruct from the source, replace that last line with the following code:
+This file should end with `#!lua return Rostruct`. Since you're going to use Rostruct, you should remove that line, and you can use Rostruct!
 
-```lua
-local Rostruct = TS.initialize("init")
-```
-
-??? question "What is `TS`?"
-	Because Rostruct uses TypeScript for Roblox, it uses the `TS` module to simulate its runtime. Essentially, running `#!lua TS.initialize("init")` requires Rostruct.
-
-Although your retriever is about 5,000 lines longer (ouch!), you can use Rostruct immediately after it, unlike the first method that yields your code.
+Although this bloats up your file, unlike the first method, you can use Rostruct immediately.
 
 ## Running your project
 
