@@ -13,6 +13,14 @@ local function assertTypes(name, t, types)
 	end
 end
 
+local function printChildren(obj, depth)
+	depth = depth and depth + 1 or 0
+	print(string.rep("    ", depth) .. obj.Name)
+	for _, v in ipairs(obj:GetChildren()) do
+		printChildren(v, depth)
+	end
+end
+
 warn("Assert package types")
 do
 	local package
@@ -41,20 +49,15 @@ do
 		fetchInfo = "nil",
 	})
 
-	--[[
-		Build project using start
-	]]
+	-- Deploy project
 	package:build("src/")
 	package:start()
+	printChildren(package.tree)
 
-	--[[
-		Require inner module
-	]]
+	-- Require inner module
 	assert(type(package:requireAsync(package.tree.MidiPlayer.MIDI)) == "table", "Failed to require Tree.MidiPlayer.MIDI")
 
-	--[[
-		Require specific file
-	]]
+	-- Require specific file
 	package:build("src/Util/Thread.lua")
 	assert(type(package:requireAsync(package.tree.Thread)) == "table", "Failed to require Tree.Thread")
 end
