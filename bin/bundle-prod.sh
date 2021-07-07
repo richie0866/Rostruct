@@ -14,21 +14,16 @@ wrap_function_decl() {
 	# Replace '_G' variable with 'TS._G'
 	content=${content//_G\[script\]/"TS._G[script]"}
 
+	# Replace compound operators
+	# content=${content//([a-zA-Z_][a-zA-Z0-9_]*)\s*(\.\.|\+|\-|\*|\/|\%|\^)\s*\=/"I HATE COMPOUND OPERATORS"}
+	# | sed -e 's/([a-zA-Z_][a-zA-Z0-9_]*)\s*(\.\.|\+|\-|\*|\/|\%|\^)\s*\=/IHATECOMPOPS/g'
+
 	# Add tab to newlines
 	content=${content//${nl}/$nl	}
 
-	echo "$nl$nl-- $file:
-TS.register(\"$file\", \"$name\", function()
-
-    -- Setup
+	echo "${nl}TS.register(\"$file\", \"$name\", function()
     local script = TS.get(\"$file\")
-
-    -- Start of $name
-
     ${content}
-
-    -- End of $name
-
 end)"
 }
 
@@ -57,9 +52,16 @@ traverse() {
 	done
 }
 
+# Load all Lua files
 traverse 'out'
 
-bundle+="${nl}${nl}return TS.initialize(\"init\")"
+# End by returning the main module
+bundle+="${nl}return TS.initialize(\"init\")"
 
+# Clear any existing Rostruct.lua file
 >Rostruct.lua
-echo "${bundle}" >>Rostruct.lua
+
+# Generate an output by removing all compound assignments and minifying the source
+output=$(echo "${bundle}" | sed -E 's/(([A-z0-9_]+\.)*[A-z_][A-z0-9_]*)\s*(\.\.|\+|\-|\*|\/|\%|\^)\=/\1 = \1 \3/g' | npx luamin -c)
+
+echo "local Rostruct = (function() ${output} end)()${nl}${nl}return Rostruct" >>Rostruct.lua
