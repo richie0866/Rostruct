@@ -37,7 +37,7 @@ If you don't want to make an HTTP request, you can load Rostruct instantly by us
 
 To add Rostruct's source to your retriever, download the `Rostruct.lua` asset from your preferred release of Rostruct from the [GitHub Releases page](https://github.com/richie0866/Rostruct/releases/latest).
 
-This file should end with `#!lua return Rostruct`. Since you're going to use Rostruct, you should remove that line, and you can use Rostruct!
+This file should end with `#!lua return Rostruct`. Since you're going to use Rostruct, all you have to do is remove that line!
 
 Although this bloats up your file, unlike the first method, you can use Rostruct immediately.
 
