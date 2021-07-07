@@ -1,4 +1,4 @@
 # Auto detect text files and perform LF normalization
 * text=auto
 * text eol=lf
-src/modules/* linguist-vendored
+src/modules/**/*.lua linguist-vendored
