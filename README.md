@@ -72,13 +72,9 @@ If you'd like to contribute, [fork Rostruct](https://docs.github.com/en/get-star
 4. The command should create a `Rostruct.lua` file in the root directory. At the end of the script, you'll find this code:
    
    ```lua
-   return TS.initialize("init")
+   return Rostruct
    ```
-   Replace it with this code to use Rostruct underneath it:
-   
-   ```lua
-   local Rostruct = TS.initialize("init")
-   ```
+   You can replace that line with code that uses Rostruct.
 
 ## License
 
