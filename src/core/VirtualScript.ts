@@ -2,30 +2,12 @@ import { Store } from "./Store";
 import { HttpService } from "modules/services";
 import type { Executor, VirtualEnvironment } from "./types";
 
-/** Maps scripts to the module they're loading, like a history of `[Id of script who loaded]: Id of module` */
+/** Maps scripts to the module they're loading, like a history of `[script who loaded]: module` */
 const currentlyLoading = new Map<VirtualScript, VirtualScript>();
 
 /**
- * Gets the dependency chain of the VirtualScript.
+ * Check if a module contains a cyclic dependency chain.
  * @param module The starting VirtualScript.
- * @param depth The depth of the cyclic reference.
- * @returns A string containing the paths of all VirtualScripts required until `currentModule`.
- */
-function getTraceback(module: VirtualScript, depth: number): string {
-	let traceback = module.getPath();
-	for (let i = 0; i < depth; i++) {
-		// Because the references are cyclic, there will always be
-		// a module loading in 'module'.
-		module = currentlyLoading.get(module)!;
-		traceback += `\n\t\t⇒ ${module.getPath()}`;
-	}
-	return traceback;
-}
-
-/**
- * Check to see if the module is part of a a circular reference.
- * @param module The starting VirtualScript.
- * @returns Whether the dependency chain is recursive, and the depth.
  */
 function checkTraceback(module: VirtualScript) {
 	let currentModule: VirtualScript | undefined = module;
@@ -34,22 +16,27 @@ function checkTraceback(module: VirtualScript) {
 		depth += 1;
 		currentModule = currentlyLoading.get(currentModule);
 
-		// If the loop reaches 'module' again, there is a circular reference.
+		// If the loop reaches 'module' again, this is a cyclic reference.
 		if (module === currentModule) {
-			throw (
-				`Requested module '${module.getPath()}' was required recursively!\n\n` +
-				`\tChain: ${getTraceback(module, depth)}`
-			);
+			let traceback = module.getPath();
+
+			// Create a string to represent the dependency chain.
+			for (let i = 0; i < depth; i++) {
+				currentModule = currentlyLoading.get(currentModule)!;
+				traceback += `\n\t\t⇒ ${currentModule.getPath()}`;
+			}
+
+			throw `Requested module '${module.getPath()}' contains a cyclic reference` + `\n\tTraceback: ${traceback}`;
 		}
 	}
 }
 
-/** Class used to execute files in a Roblox instance context. */
+/** Manages file execution. */
 export class VirtualScript {
 	/** Maps VirtualScripts to their instances. */
 	private static readonly fromInstance = Store.getStore<LuaSourceContainer, VirtualScript>("VirtualScriptStore");
 
-	/** An identifier used for preventing cyclic references. */
+	/** An identifier for this VirtualScript. */
 	public readonly id = "VirtualScript-" + HttpService.GenerateGUID(false);
 
 	/** The function to be called at runtime when the script runs or gets required. */
@@ -71,13 +58,12 @@ export class VirtualScript {
 		/** The file this object extends. */
 		public readonly path: string,
 
-		/** The root directory of the Session. */
+		/** The root directory. */
 		public readonly root: string,
 
 		/** The contents of the file. */
 		public readonly rawSource = readfile(path),
 	) {
-		// Initialize property members
 		this.scriptEnvironment = {
 			script: instance,
 			require: (obj: ModuleScript) =>
@@ -87,23 +73,19 @@ export class VirtualScript {
 			_PATH: path,
 			_ROOT: root,
 		};
-
 		VirtualScript.fromInstance.set(instance, this);
 	}
 
 	/**
-	 * Gets the VirtualScript attached to a specific instance.
-	 * @param obj The object that may have a VirtualScript.
-	 * @returns A possible VirtualScript object.
+	 * Gets an existing VirtualScript for a specific instance.
+	 * @param object
 	 */
-	public static getFromInstance(obj: LuaSourceContainer): VirtualScript | undefined {
-		return this.fromInstance.get(obj);
+	public static getFromInstance(object: LuaSourceContainer): VirtualScript | undefined {
+		return this.fromInstance.get(object);
 	}
 
 	/**
-	 * Gets a `VirtualScript` from the given module and returns the result of
-	 * `VirtualScript.execute`.
-	 *
+	 * Executes a `VirtualScript` from the given module and returns the result.
 	 * @param object The ModuleScript to require.
 	 * @returns What the module returned.
 	 */
@@ -115,13 +97,12 @@ export class VirtualScript {
 
 	/**
 	 * Requires a `ModuleScript`. If the module has a `VirtualScript` counterpart,
-	 * this method will call `VirtualScript.execute` and return the results.
+	 * it calls `VirtualScript.execute` and returns the result.
 	 *
 	 * Detects recursive references using roblox-ts's RuntimeLib solution.
 	 * The original source of this module can be found in the link below, as well as the license:
-	 *
-	 * Source: https://github.com/roblox-ts/roblox-ts/blob/master/lib/RuntimeLib.lua
-	 * License: https://github.com/roblox-ts/roblox-ts/blob/master/LICENSE
+	 * - Source: https://github.com/roblox-ts/roblox-ts/blob/master/lib/RuntimeLib.lua
+	 * - License: https://github.com/roblox-ts/roblox-ts/blob/master/LICENSE
 	 *
 	 * @param object The ModuleScript to require.
 	 * @param caller The calling VirtualScript.
@@ -133,13 +114,13 @@ export class VirtualScript {
 
 		currentlyLoading.set(caller, module);
 
-		// Check to see if this is a cyclic reference
+		// Check for a cyclic dependency
 		checkTraceback(module);
 
 		const result = module.runExecutor();
 
 		// Thread-safe cleanup avoids overwriting other loading modules
-		if (caller && currentlyLoading.get(caller) === module) currentlyLoading.delete(caller);
+		if (currentlyLoading.get(caller) === module) currentlyLoading.delete(caller);
 
 		return result;
 	}
@@ -176,8 +157,8 @@ export class VirtualScript {
 	 * Runs the executor function if not already run and returns results.
 	 * @returns The value returned by the executor.
 	 */
-	public runExecutor(): ReturnType<Executor> {
-		if (this.jobComplete) return this.result;
+	public runExecutor<T extends unknown = unknown>(): T {
+		if (this.jobComplete) return this.result as never;
 
 		const result = this.createExecutor()(this.scriptEnvironment);
 
@@ -186,15 +167,15 @@ export class VirtualScript {
 
 		this.jobComplete = true;
 
-		return (this.result = result);
+		return (this.result = result) as never;
 	}
 
 	/**
 	 * Runs the executor function if not already run and returns results.
 	 * @returns A promise which resolves with the value returned by the executor.
 	 */
-	public deferExecutor(): Promise<ReturnType<Executor>> {
-		return Promise.defer((resolve) => resolve(this.runExecutor())).timeout(
+	public deferExecutor<T extends unknown = unknown>(): Promise<T> {
+		return Promise.defer<T>((resolve) => resolve(this.runExecutor<T>())).timeout(
 			30,
 			`Script ${this.getPath()} reached execution timeout! Try not to yield the main thread in LocalScripts.`,
 		);
