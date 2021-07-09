@@ -139,7 +139,7 @@ export class VirtualScript {
 		const result = module.runExecutor();
 
 		// Thread-safe cleanup avoids overwriting other loading modules
-		if (caller && currentlyLoading.get(caller) === module) currentlyLoading.delete(caller);
+		if (currentlyLoading.get(caller) === module) currentlyLoading.delete(caller);
 
 		return result;
 	}
