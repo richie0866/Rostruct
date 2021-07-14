@@ -89,3 +89,16 @@ declare const getsynasset: typeof getcustomasset;
 declare const http: {
 	request: typeof request;
 };
+
+// Roblox
+
+/**
+ * Sets the environment to be used by the given function. `f` can be a Lua function or a number that specifies the function at that stack level:
+ * Level 1 is the function calling `setfenv`. `setfenv` returns the given function.
+ *
+ * As a special case, when f is 0 setfenv changes the environment of the running thread. In this case, setfenv returns no values.
+ *
+ * @param f A Lua function or the stack level.
+ * @param env The new environment.
+ */
+declare function setfenv<T extends number | Callback>(f: T, env: object): T extends 0 ? undefined : T;

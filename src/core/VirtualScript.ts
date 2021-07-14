@@ -18,15 +18,18 @@ function checkTraceback(module: VirtualScript) {
 
 		// If the loop reaches 'module' again, this is a cyclic reference.
 		if (module === currentModule) {
-			let traceback = module.getPath();
+			let traceback = module.getChunkName();
 
 			// Create a string to represent the dependency chain.
 			for (let i = 0; i < depth; i++) {
 				currentModule = currentlyLoading.get(currentModule)!;
-				traceback += `\n\t\t⇒ ${currentModule.getPath()}`;
+				traceback += `\n\t\t⇒ ${currentModule.getChunkName()}`;
 			}
 
-			throw `Requested module '${module.getPath()}' contains a cyclic reference` + `\n\tTraceback: ${traceback}`;
+			throw (
+				`Requested module '${module.getChunkName()}' contains a cyclic reference` +
+				`\n\tTraceback: ${traceback}`
+			);
 		}
 	}
 }
@@ -62,17 +65,20 @@ export class VirtualScript {
 		public readonly root: string,
 
 		/** The contents of the file. */
-		public readonly rawSource = readfile(path),
+		public readonly source = readfile(path),
 	) {
-		this.scriptEnvironment = {
-			script: instance,
-			require: (obj: ModuleScript) =>
-				// The function's levels are as such:
-				// script (3) => require (2) => loadModule (1)
-				VirtualScript.loadModule(obj, this),
-			_PATH: path,
-			_ROOT: root,
-		};
+		this.scriptEnvironment = setmetatable(
+			{
+				script: instance,
+				require: (obj: ModuleScript) => VirtualScript.loadModule(obj, this),
+				_PATH: path,
+				_ROOT: root,
+			},
+			{
+				__index: getfenv(0) as never,
+				__metatable: "This metatable is locked",
+			},
+		);
 		VirtualScript.fromInstance.set(instance, this);
 	}
 
@@ -126,9 +132,9 @@ export class VirtualScript {
 	}
 
 	/**
-	 * Returns a path to the module for debugging.
+	 * Returns the chunk name for the module for traceback.
 	 */
-	public getPath() {
+	public getChunkName() {
 		const file = this.path.sub(this.root.size() + 1);
 		return `@${file} (${this.instance.GetFullName()})`;
 	}
@@ -144,13 +150,14 @@ export class VirtualScript {
 
 	/**
 	 * Gets or creates a new executor function, and returns the executor function.
+	 * The executor is automatically given a special global environment.
 	 * @returns The executor function.
 	 */
 	public createExecutor(): Executor {
 		if (this.executor) return this.executor;
-		const [f, err] = loadstring(this.getSource(), `=${this.getPath()}`);
+		const [f, err] = loadstring(this.source, `=${this.getChunkName()}`);
 		assert(f, err);
-		return (this.executor = f);
+		return (this.executor = setfenv(f, this.scriptEnvironment));
 	}
 
 	/**
@@ -162,8 +169,8 @@ export class VirtualScript {
 
 		const result = this.createExecutor()(this.scriptEnvironment);
 
-		// Modules must return a value.
-		if (this.instance.IsA("ModuleScript")) assert(result, `Module '${this.getPath()}' did not return any value`);
+		if (this.instance.IsA("ModuleScript") && result === undefined)
+			throw `Module '${this.getChunkName()}' did not return any value`;
 
 		this.jobComplete = true;
 
@@ -177,18 +184,7 @@ export class VirtualScript {
 	public deferExecutor<T extends unknown = unknown>(): Promise<T> {
 		return Promise.defer<T>((resolve) => resolve(this.runExecutor<T>())).timeout(
 			30,
-			`Script ${this.getPath()} reached execution timeout! Try not to yield the main thread in LocalScripts.`,
-		);
-	}
-
-	/**
-	 * Generates a source script that injects globals into the environment.
-	 * @returns The source of the VirtualScript.
-	 */
-	private getSource(): string {
-		return (
-			"setfenv(1, setmetatable(..., { __index = getfenv(0), __metatable = 'This metatable is locked' }));" +
-			this.rawSource
+			`Script ${this.getChunkName()} reached execution timeout! Try not to yield the main thread in LocalScripts.`,
 		);
 	}
 }
