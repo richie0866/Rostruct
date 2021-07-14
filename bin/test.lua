@@ -1,4 +1,3 @@
-
 local Rostruct = TS.initialize("init")
 
 local function assertTypes(name, t, types)

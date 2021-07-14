@@ -59,7 +59,7 @@ traverse() {
 
 traverse 'out'
 
-bundle+="$nl$(cat 'bin/test.lua')"
+bundle+="$nl$nl$(cat 'bin/test.lua')"
 
 >Rostruct.lua
 echo "${bundle}" >>Rostruct.lua

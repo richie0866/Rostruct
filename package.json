@@ -7,7 +7,8 @@
     "prepublishOnly": "rbxtsc",
     "build:luau": "cross-env NODE_ENV=production TYPE=Luau rbxtsc --verbose --type=package",
     "build:prod": "chmod +x \"./bin/bundle-prod.sh\" && bash ./bin/bundle-prod.sh",
-    "build:test": "chmod +x \"./bin/bundle-test.sh\" && bash ./bin/bundle-test.sh"
+    "build:test": "chmod +x \"./bin/bundle-test.sh\" && bash ./bin/bundle-test.sh",
+    "build:test:min": "chmod +x \"./bin/bundle-test-min.sh\" && bash ./bin/bundle-test-min.sh"
   },
   "keywords": [],
   "author": "",

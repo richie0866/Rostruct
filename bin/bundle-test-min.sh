@@ -54,10 +54,14 @@ traverse 'out'
 # End by returning the main module
 bundle+="${nl}return TS.initialize(\"init\")"
 
-# Clear any existing Rostruct.lua file
->Rostruct.lua
-
 # Generate an output by removing all compound assignments and minifying the source
 output=$(echo "${bundle}" | sed -E 's/(([A-z0-9_]+\.)*[A-z_][A-z0-9_]*)\s*(\.\.|\+|\-|\*|\/|\%|\^)\=/\1 = \1 \3/g' | npx luamin -c)
 
-echo "local Rostruct = (function() ${output} end)()${nl}${nl}return Rostruct" >>Rostruct.lua
+# Finalize the test code
+output="local Rostruct = (function() ${output} end)()${nl}${nl}"
+output+="$nl$(cat 'bin/test.lua' | sed 's/local Rostruct = TS.initialize("init")//g')"
+
+# Clear any existing Rostruct.lua file
+>Rostruct.lua
+
+echo "$output" >>Rostruct.lua
