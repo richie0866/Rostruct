@@ -17,6 +17,8 @@ Whether you're familiar with Rojo, want easy asset management, or need some depe
 
 See the original concept [here](https://v3rmillion.net/showthread.php?tid=1081675).
 
+See also [rbxm-suite](https://github.com/richie0866/rbxm-suite).
+
 ## Why Rostruct?
 
 When it comes to exploiting, projects are often developed and maintained within a single file. However, scripts that get too large become detrimental to your workflow. Over time, your project becomes more difficult to debug, maintain, and share.
