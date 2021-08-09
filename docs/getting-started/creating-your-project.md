@@ -57,7 +57,7 @@ Though this can be achieved with the `props` argument in the [`Package:build`](.
 
 [Meta files](https://rojo.space/docs/6.x/sync-details/#meta-files) are a powerful tool from Rojo that tells Rostruct how to create the Instance for a specific file. For example, this meta file changes the name of the parent folder, `src/`:
 
-=== "src/init.meta.lua"
+=== "src/init.meta.json"
 
 	```json
 	{
