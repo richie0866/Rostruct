@@ -17,7 +17,7 @@ Whether you're familiar with Rojo, want easy asset management, or need some depe
 
 See the original concept [here](https://v3rmillion.net/showthread.php?tid=1081675).
 
-See also [rbxm-suite](https://github.com/richie0866/rbxm-suite).
+See [rbxm-suite](https://github.com/richie0866/rbxm-suite) for a more efficient solution!
 
 ## Why Rostruct?
 
