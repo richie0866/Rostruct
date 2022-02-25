@@ -1,0 +1,67 @@
+.base-tag {
+    color: white;
+    padding: 4px;
+    padding-inline: 8px 8px;
+    border-radius: 4px;
+    vertical-align: middle;
+    font-size: 50%;
+    font-weight: bold;
+    font-family: 'JetBrains Mono', 'Roboto Mono', Consolas, monospace;
+    margin-left: 4px;
+}
+
+.static-tag {
+    background: #8f59d6;
+}
+
+.static-tag::before {
+    content: "static";
+}
+
+.promise-tag {
+    background: #d659d0;
+}
+
+.promise-tag::before {
+    content: "Promise";
+}
+
+.yields-tag {
+    background: #8f59d6;
+}
+
+.yields-tag::before {
+    content: "yields";
+}
+
+.constructor-tag {
+    background: rgb(214, 89, 89);
+}
+
+.constructor-tag::before {
+    content: "constructor";
+}
+
+.interface-tag {
+    background: #da8146;
+}
+
+.interface-tag::before {
+    content: "interface";
+}
+
+.debug-tag {
+    background: #1ba565;
+}
+
+.debug-tag::before {
+    content: "debug";
+}
+
+.read-only-tag {
+    background: #1ba5a5;
+}
+
+.read-only-tag::before {
+    content: "read only";
+}
