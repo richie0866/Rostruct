@@ -1,4 +1,4 @@
-import Make from "modules/make/init";
+import Make from "modules/make";
 import { pathUtils } from "utils/file-utils";
 import { fileMetadata } from "./metadata";
 

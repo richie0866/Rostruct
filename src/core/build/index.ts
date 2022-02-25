@@ -29,7 +29,7 @@ export function build(session: Session, path: string): Instance | undefined {
 		// Populate the instance here! This is a workaround for a possible
 		// cyclic reference when attempting to call 'makeObject' from another
 		// file.
-		for (const child of listfiles(path)) {
+		for (const child of listfiles(pathUtils.trimTrailingSlash(path))) {
 			const childInstance = build(session, pathUtils.addTrailingSlash(child));
 			if (childInstance) childInstance.Parent = instance;
 		}

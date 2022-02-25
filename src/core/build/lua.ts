@@ -1,6 +1,6 @@
 import { Session } from "core/Session";
 import { VirtualScript } from "core/VirtualScript";
-import Make from "modules/make/init";
+import Make from "modules/make";
 import { replace } from "utils/replace";
 import { pathUtils } from "utils/file-utils";
 import { fileMetadata } from "./metadata";

@@ -20,6 +20,12 @@ export function addTrailingSlash(path: string): string {
 	else return path;
 }
 
+export function trimTrailingSlash(path: string): string {
+	path = path.gsub("\\", "/")[0];
+	if (path.sub(-1) === "/") return path.sub(0, -2);
+	else return path;
+}
+
 /** Appends a file with no extension with `.file`. */
 export function addExtension(file: string): string {
 	const hasExtension = file.reverse().match("^([^%./]+%.)")[0] !== undefined;

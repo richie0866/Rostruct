@@ -1,40 +1,40 @@
 {
-  "name": "@rbxts/rostruct",
-  "version": "1.0.0",
-  "description": "",
-  "main": "src/index.ts",
-  "scripts": {
-    "prepublishOnly": "rbxtsc",
-    "build:luau": "cross-env NODE_ENV=production TYPE=Luau rbxtsc --verbose --type=package",
-    "build:prod": "chmod +x \"./bin/bundle-prod.sh\" && bash ./bin/bundle-prod.sh",
-    "build:test": "chmod +x \"./bin/bundle-test.sh\" && bash ./bin/bundle-test.sh",
-    "build:test:min": "chmod +x \"./bin/bundle-test-min.sh\" && bash ./bin/bundle-test-min.sh"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "files": [
-    "out"
-  ],
-  "publishConfig": {
-    "access": "public"
-  },
-  "devDependencies": {
-    "@rbxts/compiler-types": "^1.1.1-types.3",
-    "@rbxts/types": "^1.0.489",
-    "@typescript-eslint/eslint-plugin": "^4.27.0",
-    "@typescript-eslint/parser": "^4.25.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^3.4.0",
-    "eslint-plugin-roblox-ts": "0.0.27",
-    "luamin": "^1.0.4",
-    "prettier": "^2.3.0",
-    "typescript": "^4.3.2"
-  },
-  "dependencies": {
-    "@rbxts/make": "^1.0.5",
-    "@rbxts/object-utils": "^1.0.4",
-    "eslint": "^7.29.0",
-    "roblox-ts": "^1.1.1"
-  }
+	"name": "@rbxts/rostruct",
+	"version": "1.0.0",
+	"description": "",
+	"main": "src/index.ts",
+	"scripts": {
+		"prepublishOnly": "rbxtsc",
+		"build:luau": "cross-env NODE_ENV=production TYPE=Luau rbxtsc --verbose --type=package",
+		"build:prod": "chmod +x \"./bin/bundle-prod.sh\" && bash ./bin/bundle-prod.sh",
+		"build:test": "npm run build:luau && chmod +x \"./bin/bundle-test.sh\" && bash ./bin/bundle-test.sh",
+		"build:test:min": "chmod +x \"./bin/bundle-test-min.sh\" && bash ./bin/bundle-test-min.sh"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"files": [
+		"out"
+	],
+	"publishConfig": {
+		"access": "public"
+	},
+	"devDependencies": {
+		"@rbxts/compiler-types": "^1.1.1-types.3",
+		"@rbxts/types": "^1.0.489",
+		"@typescript-eslint/eslint-plugin": "^4.27.0",
+		"@typescript-eslint/parser": "^4.25.0",
+		"eslint-config-prettier": "^8.3.0",
+		"eslint-plugin-prettier": "^3.4.0",
+		"eslint-plugin-roblox-ts": "0.0.27",
+		"luamin": "^1.0.4",
+		"prettier": "^2.3.0",
+		"typescript": "^4.3.2"
+	},
+	"dependencies": {
+		"@rbxts/make": "^1.0.5",
+		"@rbxts/object-utils": "^1.0.4",
+		"eslint": "^7.29.0",
+		"roblox-ts": "^1.1.1"
+	}
 }

@@ -2,7 +2,7 @@ import { Session, VirtualScript } from "core";
 import type { Executor } from "core";
 import type { FetchInfo } from "utils/fetch-github-release";
 import { pathUtils } from "utils/file-utils";
-import Make from "modules/make/init";
+import Make from "modules/make";
 
 /** Transforms files into Roblox objects and handles runtime. Acts as a wrapper for Session. */
 export class Package {

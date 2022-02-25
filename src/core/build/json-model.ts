@@ -1,4 +1,4 @@
-import Make from "modules/make/init";
+import Make from "modules/make";
 import { HttpService } from "modules/services";
 import EncodedValue from "./EncodedValue";
 

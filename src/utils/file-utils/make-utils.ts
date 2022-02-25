@@ -7,8 +7,18 @@ import type { FileArray } from "./types";
  * @param location The path of the directory to make.
  */
 export function makeFolder(location: string) {
-	let absolutePath = "";
-	for (const [name] of location.gmatch("[^/]*/")) makefolder((absolutePath += name));
+	const parts = location.split("/");
+	const last = parts.pop();
+	if (last === undefined) {
+		return;
+	}
+	const parent = parts.join("/");
+	if (parent !== "") {
+		makeFolder(parent);
+	}
+	if (!isfolder(location) && !isfile(location)) {
+		makefolder(location);
+	}
 }
 
 /**
@@ -18,7 +28,9 @@ export function makeFolder(location: string) {
  * @param content Optional file contents.
  */
 export function makeFile(file: string, content?: string) {
-	makeFolder(file);
+	const parts = file.split("/");
+	parts.pop();
+	makeFolder(parts.join("/"));
 	writefile(pathUtils.addExtension(file), content ?? "");
 }
 
